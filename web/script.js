@@ -17,19 +17,18 @@ let piosk = {
       piosk.appendUrl(item.url)
     })
   },
-  notifyErr () {
+  showStatus (xhr) {
     let tmpErr = $('#template-err').contents().clone()
+    tmpErr.html(xhr.responseText)
     $('#urls').append(tmpErr)
-    setTimeout(() => {
-      $('.alert-danger').remove()
-    }, 5000)
+    setTimeout(_ => { $('.alert-danger').remove() }, 5000)
   }
 }
 
 $(document).ready(() => {
-  $.getJSON('/config.json') // { urls: [ { url: 'https://...' } ] }
+  $.getJSON('/config')
   .done(piosk.renderPage)
-  .fail(xhr => { piosk.notifyErr(xhr.responseText) })
+  .fail(piosk.showStatus)
 
   $('#add-url').on('click', piosk.addNewUrl)
   $('#new-url').on('keyup', (e) => { if (e.key === 'Enter') piosk.addNewUrl() })
@@ -44,9 +43,15 @@ $(document).ready(() => {
     $('li.list-group-item').each((index, item) => {
       config.urls.push({ url: $(item).find('a').attr('href') })
     })
-    console.log(config)
 
-    // $.post( '/config', { config })
-    // .fail(piosk.notifyErr)
+    $.ajax({
+      url: '/config',
+      type: 'POST',
+      data: JSON.stringify(config),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: piosk.showStatus,
+      error: piosk.showStatus
+    })
   })
 })

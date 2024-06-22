@@ -1,0 +1,28 @@
+{
+  "name": "piosk",
+  "version": "0.1.0",
+  "description": "One-shot set up Raspberry Pi in kiosk mode as a webpage shuffler, with a web interface for management.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/debloper/piosk.git"
+  },
+  "keywords": [
+    "piosk",
+    "kiosk mode",
+    "raspberry pi",
+    "wayfire autostart"
+  ],
+  "author": "Soumya Deb <debloper@gmail.com>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/debloper/piosk/issues"
+  },
+  "homepage": "https://github.com/debloper/piosk#readme",
+  "dependencies": {
+    "express": "^5.0.0-beta.3"
+  }
+}

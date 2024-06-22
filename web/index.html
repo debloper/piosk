@@ -13,43 +13,18 @@
       <div class="container-md d-flex justify-content-between">
         <h1 class="my-1">Pi<span class="bg-danger mx-1 px-1 rounded">OSK</span></h1>
         <div class="input-group w-75">
-          <input type="text" class="form-control form-control-lg" placeholder="...add URLs of webpages as screens">
-          <button type="button" class="btn btn-secondary">ADD</button>
-          <button type="button" class="btn btn-danger">
-            APPLY
-            <span class="align-text-bottom">⏻</span>
-          </button>
+          <input  id="new-url" type="text"   class="form-control form-control-lg" placeholder="...add URLs of webpages as screens">
+          <button id="add-url" type="button" class="btn btn-secondary">ADD</button>
+          <button id="execute" type="button" class="btn btn-danger">APPLY <span class="align-text-bottom">⏻</span></button>
         </div>
       </div>
     </nav>
 
     <div id="urls" class="container-md my-5">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item text-truncate fs-3">
-          <button type="button" class="btn btn-close mx-3" aria-label="Remove"></button>
-          <a class="link-underline-dark" href="https://time.is/clock">time.is/clock</a>
-        </li>
-        <li class="list-group-item text-truncate fs-3">
-          <button type="button" class="btn btn-close mx-3" aria-label="Remove"></button>
-          <a class="link-underline-dark" href="https://windy.com">windy.com</a>
-        </li>
-        <li class="list-group-item text-truncate fs-3">
-          <button type="button" class="btn btn-close mx-3" aria-label="Remove"></button>
-          <a class="link-underline-dark" href="https://github.com/trending">github.com/trending</a>
-        </li>
-        <li class="list-group-item text-truncate fs-3">
-          <button type="button" class="btn btn-close mx-3" aria-label="Remove"></button>
-          <a class="link-underline-dark" href="https://www.perplexity.ai/discover">perplexity.ai/discover</a>
-        </li>
-        <li class="list-group-item text-truncate fs-3">
-          <button type="button" class="btn btn-close mx-3" aria-label="Remove"></button>
-          <a class="link-underline-dark" href="https://www.google.com/search?q=nasdaq+nvda">google.com/search?q=nasdaq+nvda</a>
-        </li>
-      </ul>
+      <ul class="list-group list-group-flush"></ul>
     </div>
 
     <footer id="colophon" class="container-md text-center fs-4 my-5">
-      <hr />
       <kbd><a class="text-decoration-none" href="https://github.com/debloper/piosk" target="_blank">{}</a></kbd>
       w/
       <kbd><a class="text-decoration-none" href="https://youtube.com/@BreakerSpace" target="_blank"><3</a></kbd>
@@ -70,6 +45,6 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <!-- <script src="script.js"></script> -->
+    <script src="script.js"></script>
   </body>
 </html>
