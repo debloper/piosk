@@ -1,16 +1,19 @@
 {
     "urls": [
         {
-            "url": "https://time.is/clock"
+            "url": "https://windy.com/"
         },
         {
-            "url": "https://windy.com/"
+            "url": "https://time.is/clock"
         },
         {
             "url": "https://github.com/trending"
         },
         {
             "url": "https://news.ycombinator.com/"
+        },
+        {
+            "url": "https://huggingface.co/papers"
         },
         {
             "url": "https://www.perplexity.ai/discover"

@@ -1,0 +1,11 @@
+[Unit]
+Description=PiOSK
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/piosk
+
+[Install]
+WantedBy=multi-user.target
