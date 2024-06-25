@@ -41,7 +41,7 @@ systemctl enable piosk.service
 systemctl start piosk.service
 
 # Report the URL with hostname & IP address for dashboard access
-echo -e "\033[0;35mPiOSK is now installed.\n\033[0m"
+echo -e "\033[0;35m\nPiOSK is now installed.\033[0m"
 echo -e "Visit either of these links to access PiOSK dashboard:"
 echo -e "\t- \033[0;32mhttp://$(hostname)/\033[0m or, \n\t- \033[0;32mhttp://$(hostname -I | cut -d " " -f1)/\033[0m"
 echo -e "Configure links to shuffle; then apply changes to reboot."

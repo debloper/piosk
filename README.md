@@ -20,7 +20,7 @@ This is far from done. It's just the first checkpoint that meets my initial goal
 
 1. Boot into Raspberry Pi desktop[^1]
 2. Ensure network/WiFi/internet is working
-3. Ensure [desktop autologin](https://www.raspberrypi.com/documentation/computers/configuration.html#boot-options) is enabled for the user
+3. Ensure [desktop auto login](https://www.raspberrypi.com/documentation/computers/configuration.html#boot-options) is enabled (is default)
 4. Ensure screen does not timeout & adjust brightness
 5. Ensure SSH is working if you want to install remotely
 
@@ -35,7 +35,7 @@ This is far from done. It's just the first checkpoint that meets my initial goal
 Either open terminal on the Raspberry Pi's desktop environment, or remote login to it; and run the following command:
 
 ```bash
-curl https://raw.githubusercontent.com/debloper/piosk/main/setup.sh | sudo bash -c -
+curl -sSL https://raw.githubusercontent.com/debloper/piosk/main/setup.sh | sudo bash -
 ```
 
 That's it[^2].
