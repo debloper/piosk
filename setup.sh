@@ -30,7 +30,7 @@ npm i
 # Create & install an executable wrapper to start up the web GUI
 echo '#!/bin/sh' > piosk
 echo "cd $SITE/piosk/" >> piosk
-echo "npm start" >> piosk
+echo "node index.js" >> piosk
 chmod +x piosk
 cp piosk /usr/bin/piosk
 
@@ -39,3 +39,10 @@ cp piosk.service /etc/systemd/system/piosk.service
 systemctl daemon-reload
 systemctl enable piosk.service
 systemctl start piosk.service
+
+# Report the URL with hostname & IP address for dashboard access
+echo -e "\033[0;35mPiOSK is now installed.\n\033[0m"
+echo -e "Visit either of these links to access PiOSK dashboard:"
+echo -e "\t- \033[0;32mhttp://$(hostname)/\033[0m or, \n\t- \033[0;32mhttp://$(hostname -I | cut -d " " -f1)/\033[0m"
+echo -e "Configure links to shuffle; then apply changes to reboot."
+echo -e "\033[0;31mThe kiosk mode will start on next startup.\033[0m"
