@@ -6,7 +6,7 @@ cd $SITE
 
 # Update if there's a better way to install node than nodesource
 # Although, building (electron?) runtime binary can be an option
-curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+[ $(which node) ] || curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 # Install deps (apt update already handled by nodesource script)
 apt install -y git jq nodejs wtype
 
@@ -18,11 +18,14 @@ echo "[autostart]" >> $SITE/.config/wayfire.ini
 echo "browser = $SITE/piosk/browser.sh" >> $SITE/.config/wayfire.ini
 echo "switcher = bash $SITE/piosk/switcher.sh" >> $SITE/.config/wayfire.ini
 
-# If PiOSK config doesn't exist, use sample config to create one
-[ -f $SITE/piosk/config.json ] || cp $SITE/piosk/config.json.sample $SITE/piosk/config.json
-
-# But if config backup exists, use that instead of sample config
-[ -f $SITE/piosk.config.bak ] || mv $SITE/piosk.config.bak $SITE/piosk/config.json
+# If PiOSK config doesn't exist, try backup or use sample config
+if [ ! -f $SITE/piosk/config.json ]; then
+    if [ -f $SITE/piosk.config.bak ]; then
+        mv piosk.config.bak piosk/config.json
+    else
+        mv piosk/config.json.sample piosk/config.json
+    fi
+fi
 
 # Not necessary to change directory; npm does take --prefix path
 cd $SITE/piosk
@@ -32,8 +35,11 @@ npm i
 
 # Add dashboard web server to rc.local to autostart on each boot
 sed -i '/^exit/d' /etc/rc.local
-echo "cd $SITE/piosk/ && node index.js" >> /etc/rc.local
+echo "cd $SITE/piosk/ && node index.js &" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
+
+# Also, start the server without needing to wait for next reboot
+node index.js &
 
 # Report the URL with hostname & IP address for dashboard access
 echo -e "\033[0;35m\nPiOSK is now installed.\033[0m"
