@@ -21,24 +21,19 @@ echo "switcher = bash $SITE/piosk/switcher.sh" >> $SITE/.config/wayfire.ini
 # If PiOSK config doesn't exist, use sample config to create one
 [ -f $SITE/piosk/config.json ] || cp $SITE/piosk/config.json.sample $SITE/piosk/config.json
 
+# But if config backup exists, use that instead of sample config
+[ -f $SITE/piosk.config.bak ] || mv $SITE/piosk.config.bak $SITE/piosk/config.json
+
 # Not necessary to change directory; npm does take --prefix path
 cd $SITE/piosk
 # This either goes in active development, or stays as is forever
 # In either of the cases, `npm ci` is less suitable than `npm i`
 npm i
 
-# Create & install an executable wrapper to start up the web GUI
-echo '#!/bin/sh' > piosk
-echo "cd $SITE/piosk/" >> piosk
-echo "node index.js" >> piosk
-chmod +x piosk
-cp piosk /usr/bin/piosk
-
-# And set up the systemd unit to automatically start the service
-cp piosk.service /etc/systemd/system/piosk.service
-systemctl daemon-reload
-systemctl enable piosk.service
-systemctl start piosk.service
+# Add dashboard web server to rc.local to autostart on each boot
+sed -i '/^exit/d' /etc/rc.local
+echo "cd $SITE/piosk/ && node index.js" >> /etc/rc.local
+echo "exit 0" >> /etc/rc.local
 
 # Report the URL with hostname & IP address for dashboard access
 echo -e "\033[0;35m\nPiOSK is now installed.\033[0m"

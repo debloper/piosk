@@ -12,6 +12,10 @@ This is far from done. It's just the first checkpoint that meets my initial goal
 
 # 1. Set Up Guide
 
+[![PiOSK Setup Video Walkthrough](https://img.youtube.com/vi/hCpFUm-Irfo/maxresdefault.jpg)](https://youtu.be/hCpFUm-Irfo)
+
+***PiOSK Setup Video Walkthrough***
+
 > [!IMPORTANT]  
 > As of version 1.x, PiOSK ***[assumes](#21-assumptions)*** a few things to keep itself lean and just focus on essentials. It may still work even if some of those assumptions aren't met; however, report/fixes for those edge cases are welcome and appreciated.
 
@@ -53,7 +57,7 @@ That's it[^2].
 5. When rebooted, wait for the kiosk mode to start & flip through the pages in fullscreen mode
 
 
-### 1.3.1 Advanced
+### 1.3.2 Advanced
 
 > [!WARNING]  
 > Try these at your own risk; if you know what you're doing. Misconfiguration(s) may break the setup.
@@ -67,6 +71,27 @@ That's it[^2].
 [^3]: PiOSK uses port 80 on the Pi to serve the web dashboard. If you're planning to use the Pi for other purposes, make sure to avoid port collision.
 
 ![PiOSK Dashboard Web GUI](assets/dashboard.png)
+
+## 1.4 Updating
+
+For now, there's no direct way to update the setup. This will change.
+
+You should uninstall old version and then reinstall the new version. As long as you don't delete the backup config file (created during uninstallation), it should be picked up and reinstated by the reinstallation process.
+
+Look into the Uninstallation section for the next steps.
+
+
+## 1.5 Uninstallation
+
+In order to uninstall/remove PiOSK from your system, run the `cleanup.sh` script as the user for whom PiOSK was installed:
+
+```bash
+sudo cleanup.sh
+```
+
+> [!NOTE]  
+> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. git, jq, Node.js, wtype). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break. It's also because if you're going to reinstall or update PiOSK, then they'll have to be installed again. Uncomment the last section in `cleanup.sh` file if you really want to remove those packages.
+
 
 # 2. Appendix
 
