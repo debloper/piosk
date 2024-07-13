@@ -12,7 +12,7 @@ This is far from done. It's just the first checkpoint that meets my initial goal
 
 # 1. Set Up Guide
 
-[![PiOSK Setup Video Walkthrough](https://img.youtube.com/vi/hCpFUm-Irfo/maxresdefault.jpg)](https://youtu.be/hCpFUm-Irfo)
+[![PiOSK Setup Video Walkthrough](https://img.youtube.com/vi/CrQjc6P-g1A/maxresdefault.jpg)](https://youtu.be/CrQjc6P-g1A)
 
 ***PiOSK Setup Video Walkthrough***
 
