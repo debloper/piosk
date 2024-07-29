@@ -118,9 +118,11 @@ sudo scripts/cleanup.sh
     - Also be mindful of [LCD burn-in](https://en.wikipedia.org/wiki/Screen_burn-in) if displaying very limited number of static pages
     - DSI displays are more discreet, but they may require driver setup to work properly
 - Choose the right OS Image
-    - Use the Pi imager tool for flashing
+    - Use Raspberry Pi [imager tool](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-using-imager) for flashing
+    - Alternatively, you can use [network install](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-over-the-network)
     - If your Pi has 4GB or less memory, choose 32bit image
     - Use Debian Bookworm based images (for better Wayland/Wayfire support)
+    - Apply the necessary customizations (user account, WiFi credentials, SSH access etc)
 - Take necessary steps to harden security
     - Disable touchscreen unless required
     - Disable ports that aren't required
