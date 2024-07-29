@@ -22,9 +22,10 @@ This is far from done. It's just the first checkpoint that meets my initial goal
 
 ## 1.1 Preparation
 
-1. Boot into Raspberry Pi desktop[^1]
-2. Ensure network/WiFi/internet is working
-3. Ensure [desktop auto login](https://www.raspberrypi.com/documentation/computers/configuration.html#boot-options) is enabled (is default)
+0. Boot into Raspberry Pi desktop[^1]
+1. Ensure username, hostname etc. are configured
+2. Check ethernet/WiFi works & has internet access
+3. Enable [desktop auto login](https://www.raspberrypi.com/documentation/computers/configuration.html#boot-options) (set by default on RPi OS)
 4. Ensure screen does not timeout & adjust brightness
 5. Ensure SSH is working if you want to install remotely
 
