@@ -53,8 +53,9 @@ That's it[^2].
 1. Visit `http://<pi's IP address>/`[^3] from a different device on the network
 2. You should see the PiOSK dashboard with a list of sample URLs as kiosk mode screens
 3. Feel free to add & remove links as necessary (at least 1 link is necessary for it to work)
-4. Once you're happy with the list, press `APPLY ⏻` button to apply changes and reboot PiOSK
-5. When rebooted, wait for the kiosk mode to start & flip through the pages in fullscreen mode
+4. The URLs don't have to be of remote domains. You can use localhost or even `file:///path`
+5. Once you're happy with the list, press `APPLY ⏻` button to apply changes and reboot PiOSK
+6. When rebooted, wait for the kiosk mode to start & flip through the pages in fullscreen mode
 
 
 ### 1.3.2 Advanced
