@@ -39,7 +39,7 @@ This is far from done. It's just the first checkpoint that meets my initial goal
 Either open terminal on the Raspberry Pi's desktop environment, or remote login to it; and run the following command:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/debloper/piosk/main/setup.sh | sudo bash -
+curl -sSL https://raw.githubusercontent.com/debloper/piosk/main/scripts/setup.sh | sudo bash -
 ```
 
 That's it[^2].
@@ -64,8 +64,8 @@ That's it[^2].
 
 1. The PiOSK repo is cloned to the user's `$HOME/piosk`
 2. You can change the dashboard port from `index.js`
-3. You can change the per-page timeout from `switcher.sh`
-4. You can change browser behavior (e.g. no full screen) from `browser.sh`
+3. You can change the per-page timeout from `scripts/switcher.sh`
+4. You can change browser behavior (e.g. no full screen) from `scripts/browser.sh`
 5. Some changes can be applied without rebooting, but rebooting is safer
 
 [^3]: PiOSK uses port 80 on the Pi to serve the web dashboard. If you're planning to use the Pi for other purposes, make sure to avoid port collision.
@@ -83,10 +83,10 @@ Look into the Uninstallation section for the next steps.
 
 ## 1.5 Uninstallation
 
-In order to uninstall/remove PiOSK from your system, run the `cleanup.sh` script as the user for whom PiOSK was installed:
+In order to uninstall/remove PiOSK from your system, run the `scripts/cleanup.sh` script as the user for whom PiOSK was installed:
 
 ```bash
-sudo cleanup.sh
+sudo scripts/cleanup.sh
 ```
 
 > [!NOTE]  

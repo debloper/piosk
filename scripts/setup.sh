@@ -7,6 +7,7 @@ cd $SITE
 # Update if there's a better way to install node than nodesource
 # Although, building (electron?) runtime binary can be an option
 [ $(which node) ] || curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+
 # Install deps (apt update already handled by nodesource script)
 apt install -y git jq nodejs wtype
 
@@ -15,8 +16,8 @@ git clone https://github.com/debloper/piosk.git || git -C piosk pull
 
 # Set up wayfire autostart config to start up browser & switcher
 echo "[autostart]" >> $SITE/.config/wayfire.ini
-echo "browser = $SITE/piosk/browser.sh" >> $SITE/.config/wayfire.ini
-echo "switcher = bash $SITE/piosk/switcher.sh" >> $SITE/.config/wayfire.ini
+echo "browser = $SITE/piosk/scripts/browser.sh" >> $SITE/.config/wayfire.ini
+echo "switcher = bash $SITE/piosk/scripts/switcher.sh" >> $SITE/.config/wayfire.ini
 
 # If PiOSK config doesn't exist, try backup or use sample config
 if [ ! -f $SITE/piosk/config.json ]; then
