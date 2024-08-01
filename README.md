@@ -5,9 +5,10 @@
 
 This started as a simple automation script &mdash; a wrapper of the [official Raspberry Pi kiosk mode tutorial](https://www.raspberrypi.com/tutorials/how-to-use-a-raspberry-pi-in-kiosk-mode/) for personal use. Then one thing lead to the other and I found myself installing nodejs & writing systemd unit files...
 
-That's when I realized... maybe there are other people (or future me) who'd also find it useful.
+That's when I realized... maybe there are other people (or future me) who'd also find this "single script setup" useful.
 
-This is far from done. It's just the first checkpoint that meets my initial goal of making the entire process a "single script setup".
+> [!NOTE]  
+> And apparently, I wasn't wrong! From GitHub [stars](https://github.com/debloper/piosk/stargazers), [issue](https://github.com/debloper/piosk/issues) reports, to [news articles](https://www.hackster.io/news/fe890d007c32) covering PiOSK - the community acceptance has been far more than I had imagined. So, with the wide range of users, there's a need for stabilizing the repo and consolidating the features. The followup updates will be less frequent, and more thoroughly tested. It's not a feature freeze, but priority would be on the refactor and maintenance.
 
 
 # 1. Set Up Guide
@@ -17,7 +18,7 @@ This is far from done. It's just the first checkpoint that meets my initial goal
 ***PiOSK Setup Video Walkthrough***
 
 > [!IMPORTANT]  
-> As of version 1.x, PiOSK ***[assumes](#21-assumptions)*** a few things to keep itself lean and just focus on essentials. It may still work even if some of those assumptions aren't met; however, report/fixes for those edge cases are welcome and appreciated.
+> As of version 3.x, PiOSK ***[assumes](#21-assumptions)*** a few things to keep itself lean and just focuses on the essentials. It may still work even if some of those assumptions aren't met; however, report/fixes for those edge cases are welcome and appreciated.
 
 
 ## 1.1 Preparation
@@ -26,8 +27,9 @@ This is far from done. It's just the first checkpoint that meets my initial goal
 1. Ensure username, hostname etc. are configured
 2. Check ethernet/WiFi works & has internet access
 3. Enable [desktop auto login](https://www.raspberrypi.com/documentation/computers/configuration.html#boot-options) (set by default on RPi OS)
-4. Ensure screen does not timeout & adjust brightness
-5. Ensure SSH is working if you want to install remotely
+4. Ensure it's using Wayland with Wayfire compositor
+5. Ensure screen does not timeout & adjust brightness
+6. Ensure SSH is working if you want to install remotely
 
 [^1]: That is to say... boot into `runlevel 5` or `graphical.target` and not in console mode &mdash; it's **NOT** a recommendation to use the 3.4GB boot image named [Raspberry Pi OS Desktop](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-desktop)
 
