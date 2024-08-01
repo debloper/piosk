@@ -1,7 +1,7 @@
 SITE=$(cat /etc/passwd | grep /$SUDO_USER: | cut -f6 -d:)
 cd $SITE
 
-mv piosk/confg.json piosk.config.bak
+mv piosk/config.json piosk.config.bak
 echo -e "PiOSK config is backed up to: \033[0;32m$SITE/piosk.config.bak\033[0m"
 
 rm -rf piosk
