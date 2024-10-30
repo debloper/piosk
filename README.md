@@ -1,3 +1,14 @@
+> [!CAUTION]
+> <details>
+> <summary>Do NOT switch to <a href="https://www.raspberrypi.com/news/a-new-release-of-raspberry-pi-os/" target="_blank" title="labwc release">labwc</a> compositor</summary>
+>
+> The latest version of Raspberry Pi OS (on 2024-10-28) has switched to `labwc` compositor by default; and for upgrades on systems using `wayfire`, it asks users to switch to `labwc`. While `labwc` is a fine wayland compositor, and perhaps the better choice for RPi OS suppoorting all the older SoCs, it completely breaks PiOSK setup. PiOSK was made ground up with `wayfire` in mind, using its autostart features & hasn't been changed to work with `labwc` (which will break `wayfire` then).
+>
+> In the meantime while we figure out what to do about it, some brave souls have figured out how make it work "[the `labwc` way](https://github.com/debloper/piosk/issues/52#issuecomment-2445275732)", which is an appropriate fix for anyone who has accidentally switched to `labwc` and facing this issue.
+> </details>
+
+---
+
 ![PiOSK Banner](assets/banner.png)
 **One-shot set up Raspberry Pi in kiosk mode as a webpage shuffler, with a web interface for management.**
 
