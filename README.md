@@ -122,9 +122,8 @@ sudo scripts/cleanup.sh
 ## 2.2 Recommendations
 
 - Choose the right Raspberry Pi
-    - Pi Zero 2 W is perhaps the most fitting RPi for the job
-    - Older Pi Zero (1.3, Zero W etc.) may struggle running Chromium
-    - A Pi4 or Pi5 may be overkill, but shouldn't face any issue
+    - Raspberry Pi Zeros struggle running Chromium due to low RAM
+    - Raspberry Pi4 or Pi5 (or their compute modules) are ideal for PiOSK
 - Choose the right display/screen
     - Not related to PiOSK, but resolution matters for browser based kiosk mode
         - Browser content window resolutions smaller than `1024px*600px` may not be ideal
