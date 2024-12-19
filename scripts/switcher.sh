@@ -1,3 +1,4 @@
+#!/bin/bash
 export XDG_RUNTIME_DIR=/run/user/1000
 
 # THIS IS NOT THE BEST WAY TO SWITCH & REFRESH TABS BUT IT WORKS
@@ -17,5 +18,5 @@ for ((TURN=1; TURN<=$((10*URLS)); TURN++)) do
       fi
     fi
   fi
-  sleep 10
+  sleep 30
 done
