@@ -1,0 +1,17 @@
+[Unit]
+Description=Run piosk 'switcher.sh' to switch tabs
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/sleep 30
+ExecStart=/bin/bash /opt/piosk/scripts/switcher.sh
+WorkingDirectory=PI_USER_HOME_DIR
+User=PI_USER
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=PI_USER_HOME_DIR/.Xauthority
+Environment=XDG_RUNTIME_DIR=/run/user/PI_USER_ID
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical.target
