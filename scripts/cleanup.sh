@@ -1,27 +1,50 @@
-SITE=$(cat /etc/passwd | grep /$SUDO_USER: | cut -f6 -d:)
-cd $SITE
+#!/bin/bash
 
-mv piosk/config.json piosk.config.bak
-echo -e "PiOSK config is backed up to: \033[0;32m$SITE/piosk.config.bak\033[0m"
+# Define colors using tput
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+BLUE=$(tput setaf 4)
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
 
-rm -rf piosk
-echo -e "\033[0;31m1. removed cloned repository.\033[0m"
+PI_USER="$SUDO_USER"
+PI_USER_HOME_DIR=$(eval echo ~$SUDO_USER)
 
-sed -i "/piosk/d" /etc/rc.local
-echo -e "\033[0;31m2. removed startup run command.\033[0m"
+# Check if the script is running as root
+if [ "$EUID" -ne 0 ]; then
+  echo "${RED}This script requires root privileges. Attempting to escalate...${RESET}"
 
-sed -i "/\[autostart\]/d" .config/wayfire.ini
-sed -i "/^browser/d" .config/wayfire.ini
-sed -i "/^switcher/d" .config/wayfire.ini
-echo -e "\033[0;31m3. removed autostart wayfire config.\033[0m"
+  # Re-execute the script with sudo
+  sudo "$0" "$@"
+  exit $?  # Exit with the status of the sudo command
+fi
 
-# If you wanna reinstall/update PiOSK, then ignore the following
-#
-# Forced uninstallation of system packages may cause instability
-# That's why -y flag is avoided to use interactive user approval
-# Even safer option would be to review & uninstall them manually
-# Uncomment the following lines if you are totally sure about it
-#
-# echo -e "\033[0;31m4. removing installed dependencies.\033[0m"
-# apt remove -y git jqnodejs wtype
-# rm -rf /etc/apt/sources.list.d/nodesource.list
+  echo "${GREEN}Running as root. Continuing with the uninstallation...${RESET}"
+
+#first backup the config.json file
+cp /opt/piosk/config.json $PI_USER_HOME_DIR/config.json.bak
+chown $PI_USER:$PI_USER $PI_USER_HOME_DIR/config.json.bak
+
+echo "${BLUE}${BOLD}/opt/piosk/config.json${RESET}${GREEN} backed up to ${BOLD}$PI_USER_HOME_DIR/config.json.bak${RESET}"
+
+echo "${BLUE}Stopping all systemd services, please wait...${RESET}"
+
+systemctl stop piosk-switcher
+systemctl stop piosk-webserver
+systemctl stop piosk-browser
+
+echo "${BLUE}Deleting all piosk systemd services...${RESET}"
+
+rm /etc/systemd/system/piosk-switcher.service
+rm /etc/systemd/system/piosk-webserver.service
+rm /etc/systemd/system/piosk-browser.service
+
+echo "${BLUE}Reloading systemd...${RESET}"
+
+systemctl daemon-reload
+
+echo "${BLUE}Deleting package files...${RESET}"
+
+rm -rf /opt/piosk
+
+echo "${GREEN}Uninstallation complete...${RESET}"

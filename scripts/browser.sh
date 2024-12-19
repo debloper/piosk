@@ -1,3 +1,4 @@
+#!/bin/bash
 chromium-browser \
   $(jq -r '.urls | map(.url) | join(" ")' ~/piosk/config.json) \
   --kiosk \
