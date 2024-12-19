@@ -129,7 +129,7 @@ systemctl daemon-reload
 echo "${BLUE}Enabling scripts...${RESET}"
 systemctl enable piosk-browser
 systemctl enable piosk-switcher
-systemctl enable piosk-browser
+systemctl enable piosk-webserver
 
 echo "${BLUE}Starting scripts, may take up to 30 seconds...${RESET}"
 #fork the switcher due to the long PreStart sleep, otherwise the setup script will block
