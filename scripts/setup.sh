@@ -92,7 +92,7 @@ PI_USER="$SUDO_USER"
 PI_USER_HOME_DIR=$(eval echo ~$SUDO_USER)
 PI_USER_ID=$(id -u $SUDO_USER)
 
-TEMPLATE_FILE="$DEST_DIR/templates/piosk-browser.service"
+TEMPLATE_FILE="$DEST_DIR/services/piosk-browser.service"
 OUTPUT_FILE="/etc/systemd/system/piosk-browser.service"
 
 # Verify the template file exists
@@ -107,7 +107,7 @@ sed -e "s|PI_USER_HOME_DIR|$PI_USER_HOME_DIR|g" \
     -e "s|PI_USER_ID|$PI_USER_ID|g" \
     -e "s|PI_USER|$PI_USER|g" \
     "$TEMPLATE_FILE" > "$OUTPUT_FILE"
-TEMPLATE_FILE="$DEST_DIR/templates/piosk-switcher.service"
+TEMPLATE_FILE="$DEST_DIR/services/piosk-switcher.service"
 OUTPUT_FILE="/etc/systemd/system/piosk-switcher.service"
 
 sed -e "s|PI_USER_HOME_DIR|$PI_USER_HOME_DIR|g" \
@@ -115,7 +115,7 @@ sed -e "s|PI_USER_HOME_DIR|$PI_USER_HOME_DIR|g" \
     -e "s|PI_USER|$PI_USER|g" \
     "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
-TEMPLATE_FILE="$DEST_DIR/templates/piosk-webserver.service"
+TEMPLATE_FILE="$DEST_DIR/services/piosk-webserver.service"
 OUTPUT_FILE="/etc/systemd/system/piosk-webserver.service"
 
 
@@ -138,4 +138,5 @@ systemctl start piosk-switcher &
 systemctl start piosk-webserver
 
 echo "${GREEN}${BOLD}Installation is complete. Piosk should be running.${RESET}"
+
 
