@@ -1,0 +1,13 @@
+[Unit]
+Description=Run piosk webserver
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/sleep 5
+ExecStart=/usr/bin/node /opt/piosk/index.js
+WorkingDirectory=/opt/piosk
+User=root
+Restart=on-failure
+
+[Install]
+WantedBy=graphical.target
