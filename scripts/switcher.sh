@@ -5,7 +5,7 @@ export XDG_RUNTIME_DIR=/run/user/1000
 # should parameterize cycle count & sleep delay with config.json
 
 # count the number of URLs, that are configured to cycle through
-URLS=$(jq -r '.urls | length' ~/piosk/config.json)
+URLS=$(jq -r '.urls | length' /opt/piosk/config.json)
 
 # swich tabs each 10s, refresh tabs each 10th cycle & then reset
 for ((TURN=1; TURN<=$((10*URLS)); TURN++)) do

@@ -1,73 +1,89 @@
 #!/bin/bash
+set -e
 
 # Installation directory
 PIOSK_DIR="/opt/piosk"
 
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-BLUE=$(tput setaf 4)
-BOLD=$(tput bold)
-RESET=$(tput sgr0)
+RESET='\033[0m'      # Reset to default
+ERROR='\033[1;31m'   # Bold Red
+SUCCESS='\033[1;32m' # Bold Green
+WARNING='\033[1;33m' # Bold Yellow
+INFO='\033[1;34m'    # Bold Blue
+CALLOUT='\033[1;35m' # Bold Magenta
+DEBUG='\033[1;36m'   # Bold Cyan
 
-echo "Checking superuser privileges..."
+echo -e "${INFO}Checking superuser privileges...${RESET}"
 if [ "$EUID" -ne 0 ]; then
-  echo "${RED}Not running as superuser. Escalating...${RESET}"
+  echo -e "${ERROR}Not running as superuser. Escalating...${RESET}"
 
-  # Re-execute the script with sudo
-  sudo "$0" "$@"
+  sudo "$0" "$@" # Re-execute the script as superuser
   exit $?  # Exit with the status of the sudo command
 fi
 
-echo "Configuring autologin..."
+echo -e "${INFO}Configuring autologin...${RESET}"
 if grep -q "autologin" "/etc/systemd/system/getty@tty1.service.d/autologin.conf" 2>/dev/null; then
-  echo "${GREEN}autologin is enabled!${RESET}."
+  echo -e "${SUCCESS}\tautologin is already enabled!${RESET}."
 else
-  echo "${RED}autologin is disabled!${RESET}"
   raspi-config nonint do_boot_behaviour B4
+  echo -e "${SUCCESS}\tautologin has been enabled!${RESET}"
 fi
 
-echo "Installing dependencies..."
+echo -e "${INFO}Installing dependencies...${RESET}"
 apt install -y git jq wtype nodejs npm
 
-echo "Cloning repository..."
-git clone https://github.com/debloper/piosk.git $PIOSK_DIR
+echo -e "${INFO}Cloning repository...${RESET}"
+git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
+cd "$PIOSK_DIR"
 
-echo "Checking out latest release..."
-cd $PIOSK_DIR
+# echo -e "${INFO}Checking out latest release...${RESET}"
 git checkout devel
 # git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
 
-echo "Installing npm dependencies..."
+echo -e "${INFO}Installing npm dependencies...${RESET}"
 npm i
 
-echo "Installing PiOSK services..."
-PI_USER=$SUDO_USER
-PI_SUID=$(id -u $SUDO_USER)
-PI_HOME=$(eval echo ~$SUDO_USER)
+echo -e "${INFO}Restoring configurations...${RESET}"
+if [ ! -f /opt/piosk/config.json ]; then
+    if [ -f /opt/piosk.config.bak ]; then
+        mv /opt/piosk.config.bak /opt/piosk/config.json
+    else
+        mv config.json.sample config.json
+    fi
+fi
+
+echo -e "${INFO}Installing PiOSK services...${RESET}"
+PI_USER="$SUDO_USER"
+PI_SUID=$(id -u "$SUDO_USER")
+PI_HOME=$(eval echo ~"$SUDO_USER")
 
 sed -e "s|PI_HOME|$PI_HOME|g" \
     -e "s|PI_SUID|$PI_SUID|g" \
     -e "s|PI_USER|$PI_USER|g" \
-    $PIOSK_DIR/services/piosk-runner.template > /etc/systemd/system/piosk-runner.service
+    "$PIOSK_DIR/services/piosk-runner.template" > "/etc/systemd/system/piosk-runner.service"
 
 sed -e "s|PI_HOME|$PI_HOME|g" \
     -e "s|PI_SUID|$PI_SUID|g" \
     -e "s|PI_USER|$PI_USER|g" \
-    $PIOSK_DIR/services/piosk-switcher.template > /etc/systemd/system/piosk-switcher.service
+    "$PIOSK_DIR/services/piosk-switcher.template" > "/etc/systemd/system/piosk-switcher.service"
 
-cp $PIOSK_DIR/services/piosk-dashboard.template /etc/systemd/system/piosk-dashboard.service
+cp "$PIOSK_DIR/services/piosk-dashboard.template" /etc/systemd/system/piosk-dashboard.service
 
-echo "${BLUE}Reloading systemd daemons...${RESET}"
+echo -e "${INFO}Reloading systemd daemons...${RESET}"
 systemctl daemon-reload
 
-echo "${BLUE}Enabling PiOSK daemons...${RESET}"
+echo -e "${INFO}Enabling PiOSK daemons...${RESET}"
 systemctl enable piosk-runner
 systemctl enable piosk-switcher
 systemctl enable piosk-dashboard
 
-echo "${BLUE}Starting PiOSK daemons...${RESET}"
+echo -e "${INFO}Starting PiOSK daemons...${RESET}"
 systemctl start piosk-runner
 systemctl start piosk-switcher
 systemctl start piosk-dashboard
 
-echo "${GREEN}${BOLD}Installation is complete. PiOSK should be running.${RESET}"
+echo -e "${CALLOUT}\nPiOSK is now installed.${RESET}"
+echo -e "Visit either of these links to access PiOSK dashboard:"
+echo -e "\t- ${INFO}\033[0;32mhttp://$(hostname)/${RESET} or,"
+echo -e "\t- ${INFO}http://$(hostname -I | cut -d " " -f1)/${RESET}"
+echo -e "Configure links to shuffle; then apply changes to reboot."
+echo -e "${WARNING}\033[0;31mThe kiosk mode will launch on next startup.${RESET}"

@@ -1,50 +1,47 @@
 #!/bin/bash
+set -e
 
-# Define colors using tput
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-BLUE=$(tput setaf 4)
-BOLD=$(tput bold)
-RESET=$(tput sgr0)
+# Installation directory
+PIOSK_DIR="/opt/piosk"
 
-PI_USER="$SUDO_USER"
-PI_USER_HOME_DIR=$(eval echo ~$SUDO_USER)
+RESET='\033[0m'      # Reset to default
+ERROR='\033[1;31m'   # Bold Red
+SUCCESS='\033[1;32m' # Bold Green
+WARNING='\033[1;33m' # Bold Yellow
+INFO='\033[1;34m'    # Bold Blue
+CALLOUT='\033[1;35m' # Bold Magenta
+DEBUG='\033[1;36m'   # Bold Cyan
 
-# Check if the script is running as root
+echo -e "${INFO}Checking superuser privileges...${RESET}"
 if [ "$EUID" -ne 0 ]; then
-  echo "${RED}This script requires root privileges. Attempting to escalate...${RESET}"
+  echo -e "${ERROR}Not running as superuser. Escalating...${RESET}"
 
-  # Re-execute the script with sudo
-  sudo "$0" "$@"
+  sudo "$0" "$@" # Re-execute the script as superuser
   exit $?  # Exit with the status of the sudo command
 fi
 
-  echo "${GREEN}Running as root. Continuing with the uninstallation...${RESET}"
+echo -e "${INFO}Backing up configuration...${RESET}"
+cp /opt/piosk/config.json /opt/piosk.config.bak
 
-#first backup the config.json file
-cp /opt/piosk/config.json $PI_USER_HOME_DIR/config.json.bak
-chown $PI_USER:$PI_USER $PI_USER_HOME_DIR/config.json.bak
-
-echo "${BLUE}${BOLD}/opt/piosk/config.json${RESET}${GREEN} backed up to ${BOLD}$PI_USER_HOME_DIR/config.json.bak${RESET}"
-
-echo "${BLUE}Stopping all systemd services, please wait...${RESET}"
-
+echo -e "${INFO}Stopping PiOSK services...${RESET}"
 systemctl stop piosk-switcher
-systemctl stop piosk-webserver
-systemctl stop piosk-browser
+systemctl stop piosk-runner
+systemctl stop piosk-dashboard
 
-echo "${BLUE}Deleting all piosk systemd services...${RESET}"
+echo -e "${INFO}Disabling PiOSK services...${RESET}"
+systemctl disable piosk-switcher
+systemctl disable piosk-runner
+systemctl disable piosk-dashboard
 
+echo -e "${INFO}Removing PiOSK services...${RESET}"
 rm /etc/systemd/system/piosk-switcher.service
-rm /etc/systemd/system/piosk-webserver.service
-rm /etc/systemd/system/piosk-browser.service
+rm /etc/systemd/system/piosk-runner.service
+rm /etc/systemd/system/piosk-dashboard.service
 
-echo "${BLUE}Reloading systemd...${RESET}"
-
+echo -e "${INFO}Reloading systemd daemons...${RESET}"
 systemctl daemon-reload
 
-echo "${BLUE}Deleting package files...${RESET}"
-
+echo -e "${INFO}Removing PiOSK directory...${RESET}"
 rm -rf /opt/piosk
 
-echo "${GREEN}Uninstallation complete...${RESET}"
+echo -e "${CALLOUT}Successfully uninstalled PiOSK.${RESET}"

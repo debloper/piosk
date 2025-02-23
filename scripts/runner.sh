@@ -1,6 +1,6 @@
 #!/bin/bash
 chromium-browser \
-  $(jq -r '.urls | map(.url) | join(" ")' ~/piosk/config.json) \
+  $(jq -r '.urls | map(.url) | join(" ")' /opt/piosk/config.json) \
   --disable-component-update \
   --disable-composited-antialiasing \
   --disable-gpu-driver-bug-workarounds \
@@ -18,4 +18,4 @@ chromium-browser \
   --kiosk \
   --no-first-run \
   --noerrdialogs \
-  --ozone-platform=wayland \
+  --ozone-platform=wayland
