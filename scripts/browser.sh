@@ -1,20 +1,21 @@
 #!/bin/bash
 chromium-browser \
   $(jq -r '.urls | map(.url) | join(" ")' ~/piosk/config.json) \
-  --kiosk \
-  --fast \
-  --fast-start \
-  --no-first-run \
-  --noerrdialogs \
+  --disable-component-update \
+  --disable-composited-antialiasing \
+  --disable-gpu-driver-bug-workarounds \
   --disable-infobars \
-  --ozone-platform=wayland \
-  --enable-features=OverlayScrollbar \
+  --disable-low-res-tiling \
+  --disable-pinch \
+  --disable-session-crashed-bubble \
+  --disable-smooth-scrolling \
   --enable-accelerated-video-decode \
   --enable-gpu-rasterization \
-  --enable-oop-rasterization \
-  --ignore-gpu-blocklist \
-  --disable-smooth-scrolling \
-  --disable-low-res-tiling \
   --enable-low-end-device-mode \
-  --disable-composited-antialiasing \
-  --start-maximized
+  --enable-oop-rasterization \
+  --force-device-scale-factor=1 \
+  --ignore-gpu-blocklist \
+  --kiosk \
+  --no-first-run \
+  --noerrdialogs \
+  --ozone-platform=wayland \

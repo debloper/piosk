@@ -34,30 +34,34 @@ git clone https://github.com/debloper/piosk.git $PIOSK_DIR
 
 echo "Checking out latest release..."
 cd $PIOSK_DIR
-git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
+git checkout devel
+# git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
 
 echo "Installing npm dependencies..."
 npm i
 
 echo "Installing PiOSK services..."
 
-# Variables based on $SUDO_USER
-PI_USER="$SUDO_USER"
-PI_USER_HOME_DIR=$(eval echo ~$SUDO_USER)
-PI_USER_ID=$(id -u $SUDO_USER)
+# Memoizing $SUDO_USER variables
+PI_USER=$SUDO_USER
+PI_SUID=$(id -u $SUDO_USER)
+PI_HOME=$(eval echo ~$SUDO_USER)
 
-sed -e "s|PI_USER_HOME_DIR|$PI_USER_HOME_DIR|g" \
-    -e "s|PI_USER_ID|$PI_USER_ID|g" \
+sed -e "s|PI_USER_HOME_DIR|$PI_HOME|g" \
+    -e "s|PI_USER_ID|$PI_SUID|g" \
     -e "s|PI_USER|$PI_USER|g" \
-    "$PIOSK_DIR/templates/piosk-browser.service" > "/etc/systemd/system/piosk-browser.service"
+    $PIOSK_DIR/services/piosk-runner.template > /etc/systemd/system/piosk-runner.service
 
-sed -e "s|PI_USER_HOME_DIR|$PI_USER_HOME_DIR|g" \
-    -e "s|PI_USER_ID|$PI_USER_ID|g" \
+sed -e "s|PI_USER_HOME_DIR|$PI_HOME|g" \
+    -e "s|PI_USER_ID|$PI_SUID|g" \
     -e "s|PI_USER|$PI_USER|g" \
-    "$PIOSK_DIR/templates/piosk-switcher.service" > "/etc/systemd/system/piosk-switcher.service"
+    $PIOSK_DIR/services/piosk-switcher.template > /etc/systemd/system/piosk-switcher.service
+
+cp $PIOSK_DIR/services/piosk-dashboard.template /etc/systemd/system/piosk-dashboard.service
 
 echo "${BLUE}Reloading systemd daemons...${RESET}"
 systemctl daemon-reload
+
 echo "${BLUE}Enabling PiOSK daemons...${RESET}"
 systemctl enable piosk-browser
 systemctl enable piosk-switcher
