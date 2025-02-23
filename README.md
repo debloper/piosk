@@ -1,14 +1,3 @@
-> [!CAUTION]
-> <details>
-> <summary>Do NOT switch to <a href="https://www.raspberrypi.com/news/a-new-release-of-raspberry-pi-os/" target="_blank" title="labwc release">labwc</a> compositor</summary>
->
-> The latest version of Raspberry Pi OS (on 2024-10-28) has switched to `labwc` compositor by default; and for upgrades on systems using `wayfire`, it asks users to switch to `labwc`. While `labwc` is a fine wayland compositor, and perhaps the better choice for RPi OS suppoorting all the older SoCs, it completely breaks PiOSK setup. PiOSK was made ground up with `wayfire` in mind, using its autostart features & hasn't been changed to work with `labwc` (which will break `wayfire` then).
->
-> In the meantime while we figure out what to do about it, some brave souls have figured out how make it work "[the `labwc` way](https://github.com/debloper/piosk/issues/52#issuecomment-2445275732)", which is an appropriate fix for anyone who has accidentally switched to `labwc` and facing this issue.
-> </details>
-
----
-
 ![PiOSK Banner](assets/banner.png)
 **One-shot set up Raspberry Pi in kiosk mode as a webpage shuffler, with a web interface for management.**
 
@@ -29,7 +18,7 @@ That's when I realized... maybe there are other people (or future me) who'd also
 ***PiOSK Setup Video Walkthrough***
 
 > [!IMPORTANT]  
-> As of version 3.x, PiOSK ***[assumes](#21-assumptions)*** a few things to keep itself lean and just focuses on the essentials. It may still work even if some of those assumptions aren't met; however, report/fixes for those edge cases are welcome and appreciated.
+> PiOSK ***[assumes](#21-assumptions)*** a few things to keep itself lean and just focuses on the essentials. It should still work even if some of those assumptions aren't met, but it may require some tinkering & manual overrides. Issue reports or fixes for those edge cases are appreciated & welcome!
 
 
 ## 1.1 Preparation
@@ -38,9 +27,6 @@ That's when I realized... maybe there are other people (or future me) who'd also
 1. Ensure username, hostname etc. are configured
 2. Check ethernet/WiFi works & has internet access
 3. Enable [desktop auto login](https://www.raspberrypi.com/documentation/computers/configuration.html#boot-options) (set by default on RPi OS)
-4. Ensure it's using Wayland with Wayfire compositor
-5. Ensure screen does not timeout & adjust brightness
-6. Ensure SSH is working if you want to install remotely
 
 [^1]: That is to say... boot into `runlevel 5` or `graphical.target` and not in console mode &mdash; it's **NOT** a recommendation to use the 3.4GB boot image named [Raspberry Pi OS Desktop](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-desktop)
 
@@ -77,11 +63,11 @@ That's it[^2].
 > [!WARNING]  
 > Try these at your own risk; if you know what you're doing. Misconfiguration(s) may break the setup.
 
-1. The PiOSK repo is cloned to the user's `$HOME/piosk`
+1. The PiOSK repo is cloned to `/opt/piosk`
 2. You can change the dashboard port from `index.js`
 3. You can change the per-page timeout from `scripts/switcher.sh`
-4. You can change browser behavior (e.g. no full screen) from `scripts/browser.sh`
-5. Some changes can be applied without rebooting, but rebooting is safer
+4. You can change browser behavior (e.g. no full screen) from `scripts/runner.sh`
+5. Some changes can be applied without rebooting, but rebooting is simpler
 
 [^3]: PiOSK uses port 80 on the Pi to serve the web dashboard. If you're planning to use the Pi for other purposes, make sure to avoid port collision.
 
@@ -98,44 +84,37 @@ Look into the Uninstallation section for the next steps.
 
 ## 1.5 Uninstallation
 
-In order to uninstall/remove PiOSK from your system, run the `scripts/cleanup.sh` script as the user for whom PiOSK was installed:
+In order to uninstall/remove PiOSK from your system, run the `cleanup.sh` script:
 
 ```bash
-sudo scripts/cleanup.sh
+sudo /opt/piosk/scripts/cleanup.sh
 ```
 
 > [!NOTE]  
-> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. git, jq, Node.js, wtype). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break. It's also because if you're going to reinstall or update PiOSK, then they'll have to be installed again. Uncomment the last section in `cleanup.sh` file if you really want to remove those packages.
-
+> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. `git`, `jq`, `Node.js`, `wtype`). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.
 
 # 2. Appendix
 
 ## 2.1 Assumptions
 
-1. You're using a Raspberry Pi (other SBCs may work, not tested)
-2. You're using "[Raspberry Pi OS with desktop (32bit)](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-32-bit)" (other distros may work, not tested)
-3. You've applied proper [OS customizations](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options) & the Pi is able to access the internet (required for setup)
-4. You're using **Wayland with Wayfire compositor** (probably the only *"must have"* during runtime)
-5. You're using the same user to run the setup script for whom desktop auto login is configured
-6. You're not using port 80 on the Pi to run some other web server (apart from PiOSK dashboard)
+0. You're using a Raspberry Pi (other SBCs may work, not tested)
+1. You're using "[Raspberry Pi OS with desktop (32bit)](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-32-bit)" (other distros may work, not tested)
+2. You've applied proper [OS customizations](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options) & the Pi is able to access the internet (required for setup)
+3. You're not using port 80 on the Pi to run some other web server (apart from PiOSK dashboard)
 
 ## 2.2 Recommendations
 
-- Choose the right Raspberry Pi
-    - Raspberry Pi Zeros struggle running Chromium due to low RAM
-    - Raspberry Pi4 or Pi5 (or their compute modules) are ideal for PiOSK
+- Choose the right device and OS
+  - If your Pi has 4GB or less memory, choose 32bit image
+  - Raspberry Pi Zeros struggle running Chromium due to low memory
+  - Raspberry Pi4 or Pi5 (or their compute modules) are ideal for PiOSK
+  - Apply the necessary customizations (user account, WiFi credentials, SSH access etc)
 - Choose the right display/screen
-    - Not related to PiOSK, but resolution matters for browser based kiosk mode
-        - Browser content window resolutions smaller than `1024px*600px` may not be ideal
-        - Different websites have different responsive rules & handle small screens differently
-    - Also be mindful of [LCD burn-in](https://en.wikipedia.org/wiki/Screen_burn-in) if displaying very limited number of static pages
-    - DSI displays are more discreet, but they may require driver setup to work properly
-- Choose the right OS Image
-    - Use Raspberry Pi [imager tool](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-using-imager) for flashing
-    - Alternatively, you can use [network install](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-over-the-network)
-    - If your Pi has 4GB or less memory, choose 32bit image
-    - Use Debian Bookworm based images (for better Wayland/Wayfire support)
-    - Apply the necessary customizations (user account, WiFi credentials, SSH access etc)
+  - Not related to PiOSK, but resolution matters for browser based kiosk mode
+    - Browser content window resolutions smaller than `1024px*600px` may not be ideal
+    - Different websites have different responsive rules & handle small screens differently
+  - Also be mindful of [LCD burn-in](https://en.wikipedia.org/wiki/Screen_burn-in) if displaying very limited number of static pages
+  - DSI displays are more discreet, but they may require driver setup to work properly
 - Take necessary steps to harden security
     - Disable touchscreen unless required
     - Disable ports that aren't required

@@ -17,5 +17,4 @@ chromium-browser \
   --ignore-gpu-blocklist \
   --kiosk \
   --no-first-run \
-  --noerrdialogs \
-  --ozone-platform=wayland
+  --noerrdialogs

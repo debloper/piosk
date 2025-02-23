@@ -14,7 +14,7 @@ DEBUG='\033[1;36m'   # Bold Cyan
 
 echo -e "${INFO}Checking superuser privileges...${RESET}"
 if [ "$EUID" -ne 0 ]; then
-  echo -e "${ERROR}Not running as superuser. Escalating...${RESET}"
+  echo -e "${DEBUG}Escalating privileges as superuser...${RESET}"
 
   sudo "$0" "$@" # Re-execute the script as superuser
   exit $?  # Exit with the status of the sudo command
@@ -24,7 +24,13 @@ echo -e "${INFO}Configuring autologin...${RESET}"
 if grep -q "autologin" "/etc/systemd/system/getty@tty1.service.d/autologin.conf" 2>/dev/null; then
   echo -e "${SUCCESS}\tautologin is already enabled!${RESET}."
 else
-  raspi-config nonint do_boot_behaviour B4
+  if command -v raspi-config >/dev/null 2>&1; then
+    echo -e "${DEBUG}Enabling autologin using raspi-config...${RESET}"
+    raspi-config nonint do_boot_behaviour B4
+  else
+    echo -e "${ERROR}Could not enable autologin${RESET}"
+    echo -e "${ERROR}Please configure autologin manually and rerun setup.${RESET}"
+  fi
   echo -e "${SUCCESS}\tautologin has been enabled!${RESET}"
 fi
 
@@ -36,7 +42,7 @@ git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
 cd "$PIOSK_DIR"
 
 # echo -e "${INFO}Checking out latest release...${RESET}"
-git checkout devel
+# git checkout devel
 # git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
 
 echo -e "${INFO}Installing npm dependencies...${RESET}"
