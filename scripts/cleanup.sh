@@ -1,27 +1,47 @@
-SITE=$(cat /etc/passwd | grep /$SUDO_USER: | cut -f6 -d:)
-cd $SITE
+#!/bin/bash
+set -e
 
-mv piosk/config.json piosk.config.bak
-echo -e "PiOSK config is backed up to: \033[0;32m$SITE/piosk.config.bak\033[0m"
+# Installation directory
+PIOSK_DIR="/opt/piosk"
 
-rm -rf piosk
-echo -e "\033[0;31m1. removed cloned repository.\033[0m"
+RESET='\033[0m'      # Reset to default
+ERROR='\033[1;31m'   # Bold Red
+SUCCESS='\033[1;32m' # Bold Green
+WARNING='\033[1;33m' # Bold Yellow
+INFO='\033[1;34m'    # Bold Blue
+CALLOUT='\033[1;35m' # Bold Magenta
+DEBUG='\033[1;36m'   # Bold Cyan
 
-sed -i "/piosk/d" /etc/rc.local
-echo -e "\033[0;31m2. removed startup run command.\033[0m"
+echo -e "${INFO}Checking superuser privileges...${RESET}"
+if [ "$EUID" -ne 0 ]; then
+  echo -e "${ERROR}Not running as superuser. Escalating...${RESET}"
 
-sed -i "/\[autostart\]/d" .config/wayfire.ini
-sed -i "/^browser/d" .config/wayfire.ini
-sed -i "/^switcher/d" .config/wayfire.ini
-echo -e "\033[0;31m3. removed autostart wayfire config.\033[0m"
+  sudo "$0" "$@" # Re-execute the script as superuser
+  exit $?  # Exit with the status of the sudo command
+fi
 
-# If you wanna reinstall/update PiOSK, then ignore the following
-#
-# Forced uninstallation of system packages may cause instability
-# That's why -y flag is avoided to use interactive user approval
-# Even safer option would be to review & uninstall them manually
-# Uncomment the following lines if you are totally sure about it
-#
-# echo -e "\033[0;31m4. removing installed dependencies.\033[0m"
-# apt remove -y git jqnodejs wtype
-# rm -rf /etc/apt/sources.list.d/nodesource.list
+echo -e "${INFO}Backing up configuration...${RESET}"
+cp /opt/piosk/config.json /opt/piosk.config.bak
+
+echo -e "${INFO}Stopping PiOSK services...${RESET}"
+systemctl stop piosk-switcher
+systemctl stop piosk-runner
+systemctl stop piosk-dashboard
+
+echo -e "${INFO}Disabling PiOSK services...${RESET}"
+systemctl disable piosk-switcher
+systemctl disable piosk-runner
+systemctl disable piosk-dashboard
+
+echo -e "${INFO}Removing PiOSK services...${RESET}"
+rm /etc/systemd/system/piosk-switcher.service
+rm /etc/systemd/system/piosk-runner.service
+rm /etc/systemd/system/piosk-dashboard.service
+
+echo -e "${INFO}Reloading systemd daemons...${RESET}"
+systemctl daemon-reload
+
+echo -e "${INFO}Removing PiOSK directory...${RESET}"
+rm -rf /opt/piosk
+
+echo -e "${CALLOUT}Successfully uninstalled PiOSK.${RESET}"

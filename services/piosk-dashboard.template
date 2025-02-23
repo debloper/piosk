@@ -1,0 +1,12 @@
+[Unit]
+Description=Run PiOSK dashboard
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=npm start --prefix /opt/piosk/
+User=root
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

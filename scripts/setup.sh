@@ -1,50 +1,95 @@
-# NOTE: the sudo invoker _HAS TO BE_ same as the auto-login user
-# Because we need to update that specific user's wayfire configs
-# Ensure making this abundantly clear in the install instuctions
-SITE=$(cat /etc/passwd | grep /$SUDO_USER: | cut -f6 -d:)
-cd $SITE
+#!/bin/bash
+set -e
 
-# Update if there's a better way to install node than nodesource
-# Although, building (electron?) runtime binary can be an option
-[ $(which node) ] || curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+# Installation directory
+PIOSK_DIR="/opt/piosk"
 
-# Install deps (apt update already handled by nodesource script)
-apt install -y git jq nodejs wtype
+RESET='\033[0m'      # Reset to default
+ERROR='\033[1;31m'   # Bold Red
+SUCCESS='\033[1;32m' # Bold Green
+WARNING='\033[1;33m' # Bold Yellow
+INFO='\033[1;34m'    # Bold Blue
+CALLOUT='\033[1;35m' # Bold Magenta
+DEBUG='\033[1;36m'   # Bold Cyan
 
-# Clone the PiOSK repo, or (in case it exits) pull from upstream
-git clone https://github.com/debloper/piosk.git || git -C piosk pull
+echo -e "${INFO}Checking superuser privileges...${RESET}"
+if [ "$EUID" -ne 0 ]; then
+  echo -e "${DEBUG}Escalating privileges as superuser...${RESET}"
 
-# Set up wayfire autostart config to start up browser & switcher
-echo "[autostart]" >> $SITE/.config/wayfire.ini
-echo "browser = $SITE/piosk/scripts/browser.sh" >> $SITE/.config/wayfire.ini
-echo "switcher = bash $SITE/piosk/scripts/switcher.sh" >> $SITE/.config/wayfire.ini
+  sudo "$0" "$@" # Re-execute the script as superuser
+  exit $?  # Exit with the status of the sudo command
+fi
 
-# If PiOSK config doesn't exist, try backup or use sample config
-if [ ! -f $SITE/piosk/config.json ]; then
-    if [ -f $SITE/piosk.config.bak ]; then
-        mv piosk.config.bak piosk/config.json
+echo -e "${INFO}Configuring autologin...${RESET}"
+if grep -q "autologin" "/etc/systemd/system/getty@tty1.service.d/autologin.conf" 2>/dev/null; then
+  echo -e "${SUCCESS}\tautologin is already enabled!${RESET}."
+else
+  if command -v raspi-config >/dev/null 2>&1; then
+    echo -e "${DEBUG}Enabling autologin using raspi-config...${RESET}"
+    raspi-config nonint do_boot_behaviour B4
+  else
+    echo -e "${ERROR}Could not enable autologin${RESET}"
+    echo -e "${ERROR}Please configure autologin manually and rerun setup.${RESET}"
+  fi
+  echo -e "${SUCCESS}\tautologin has been enabled!${RESET}"
+fi
+
+echo -e "${INFO}Installing dependencies...${RESET}"
+apt install -y git jq wtype nodejs npm
+
+echo -e "${INFO}Cloning repository...${RESET}"
+git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
+cd "$PIOSK_DIR"
+
+# echo -e "${INFO}Checking out latest release...${RESET}"
+# git checkout devel
+# git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
+
+echo -e "${INFO}Installing npm dependencies...${RESET}"
+npm i
+
+echo -e "${INFO}Restoring configurations...${RESET}"
+if [ ! -f /opt/piosk/config.json ]; then
+    if [ -f /opt/piosk.config.bak ]; then
+        mv /opt/piosk.config.bak /opt/piosk/config.json
     else
-        mv piosk/config.json.sample piosk/config.json
+        mv config.json.sample config.json
     fi
 fi
 
-# Not necessary to change directory; npm does take --prefix path
-cd $SITE/piosk
-# This either goes in active development, or stays as is forever
-# In either of the cases, `npm ci` is less suitable than `npm i`
-npm i
+echo -e "${INFO}Installing PiOSK services...${RESET}"
+PI_USER="$SUDO_USER"
+PI_SUID=$(id -u "$SUDO_USER")
+PI_HOME=$(eval echo ~"$SUDO_USER")
 
-# Add dashboard web server to rc.local to autostart on each boot
-sed -i '/^exit/d' /etc/rc.local
-echo "cd $SITE/piosk/ && node index.js &" >> /etc/rc.local
-echo "exit 0" >> /etc/rc.local
+sed -e "s|PI_HOME|$PI_HOME|g" \
+    -e "s|PI_SUID|$PI_SUID|g" \
+    -e "s|PI_USER|$PI_USER|g" \
+    "$PIOSK_DIR/services/piosk-runner.template" > "/etc/systemd/system/piosk-runner.service"
 
-# Also, start the server without needing to wait for next reboot
-node index.js &
+sed -e "s|PI_HOME|$PI_HOME|g" \
+    -e "s|PI_SUID|$PI_SUID|g" \
+    -e "s|PI_USER|$PI_USER|g" \
+    "$PIOSK_DIR/services/piosk-switcher.template" > "/etc/systemd/system/piosk-switcher.service"
 
-# Report the URL with hostname & IP address for dashboard access
-echo -e "\033[0;35m\nPiOSK is now installed.\033[0m"
+cp "$PIOSK_DIR/services/piosk-dashboard.template" /etc/systemd/system/piosk-dashboard.service
+
+echo -e "${INFO}Reloading systemd daemons...${RESET}"
+systemctl daemon-reload
+
+echo -e "${INFO}Enabling PiOSK daemons...${RESET}"
+systemctl enable piosk-runner
+systemctl enable piosk-switcher
+systemctl enable piosk-dashboard
+
+echo -e "${INFO}Starting PiOSK daemons...${RESET}"
+systemctl start piosk-runner
+systemctl start piosk-switcher
+systemctl start piosk-dashboard
+
+echo -e "${CALLOUT}\nPiOSK is now installed.${RESET}"
 echo -e "Visit either of these links to access PiOSK dashboard:"
-echo -e "\t- \033[0;32mhttp://$(hostname)/\033[0m or, \n\t- \033[0;32mhttp://$(hostname -I | cut -d " " -f1)/\033[0m"
+echo -e "\t- ${INFO}\033[0;32mhttp://$(hostname)/${RESET} or,"
+echo -e "\t- ${INFO}http://$(hostname -I | cut -d " " -f1)/${RESET}"
 echo -e "Configure links to shuffle; then apply changes to reboot."
-echo -e "\033[0;31mThe kiosk mode will start on next startup.\033[0m"
+echo -e "${WARNING}\033[0;31mThe kiosk mode will launch on next startup.${RESET}"

@@ -1,0 +1,16 @@
+[Unit]
+Description=Launch PiOSK runner to start Chromium
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/piosk/scripts/runner.sh
+User=PI_USER
+WorkingDirectory=PI_HOME
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=PI_HOME/.Xauthority
+Environment=XDG_RUNTIME_DIR=/run/user/PI_SUID
+Restart=on-failure
+
+[Install]
+WantedBy=graphical.target
