@@ -83,8 +83,9 @@ systemctl enable piosk-switcher
 systemctl enable piosk-dashboard
 
 echo -e "${INFO}Starting PiOSK daemons...${RESET}"
-systemctl start piosk-runner
-systemctl start piosk-switcher
+# The runner and switcher services are meant to be started after reboot
+# systemctl start piosk-runner
+# systemctl start piosk-switcher
 systemctl start piosk-dashboard
 
 echo -e "${CALLOUT}\nPiOSK is now installed.${RESET}"

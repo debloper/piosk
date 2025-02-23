@@ -24,18 +24,18 @@ echo -e "${INFO}Backing up configuration...${RESET}"
 cp /opt/piosk/config.json /opt/piosk.config.bak
 
 echo -e "${INFO}Stopping PiOSK services...${RESET}"
-systemctl stop piosk-switcher
 systemctl stop piosk-runner
+systemctl stop piosk-switcher
 systemctl stop piosk-dashboard
 
 echo -e "${INFO}Disabling PiOSK services...${RESET}"
-systemctl disable piosk-switcher
 systemctl disable piosk-runner
+systemctl disable piosk-switcher
 systemctl disable piosk-dashboard
 
 echo -e "${INFO}Removing PiOSK services...${RESET}"
-rm /etc/systemd/system/piosk-switcher.service
 rm /etc/systemd/system/piosk-runner.service
+rm /etc/systemd/system/piosk-switcher.service
 rm /etc/systemd/system/piosk-dashboard.service
 
 echo -e "${INFO}Reloading systemd daemons...${RESET}"
