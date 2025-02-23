@@ -41,19 +41,17 @@ echo "Installing npm dependencies..."
 npm i
 
 echo "Installing PiOSK services..."
-
-# Memoizing $SUDO_USER variables
 PI_USER=$SUDO_USER
 PI_SUID=$(id -u $SUDO_USER)
 PI_HOME=$(eval echo ~$SUDO_USER)
 
-sed -e "s|PI_USER_HOME_DIR|$PI_HOME|g" \
-    -e "s|PI_USER_ID|$PI_SUID|g" \
+sed -e "s|PI_HOME|$PI_HOME|g" \
+    -e "s|PI_SUID|$PI_SUID|g" \
     -e "s|PI_USER|$PI_USER|g" \
     $PIOSK_DIR/services/piosk-runner.template > /etc/systemd/system/piosk-runner.service
 
-sed -e "s|PI_USER_HOME_DIR|$PI_HOME|g" \
-    -e "s|PI_USER_ID|$PI_SUID|g" \
+sed -e "s|PI_HOME|$PI_HOME|g" \
+    -e "s|PI_SUID|$PI_SUID|g" \
     -e "s|PI_USER|$PI_USER|g" \
     $PIOSK_DIR/services/piosk-switcher.template > /etc/systemd/system/piosk-switcher.service
 
@@ -63,14 +61,13 @@ echo "${BLUE}Reloading systemd daemons...${RESET}"
 systemctl daemon-reload
 
 echo "${BLUE}Enabling PiOSK daemons...${RESET}"
-systemctl enable piosk-browser
+systemctl enable piosk-runner
 systemctl enable piosk-switcher
-systemctl enable piosk-webserver
+systemctl enable piosk-dashboard
 
-echo "${BLUE}Starting scripts, may take up to 30 seconds...${RESET}"
-#fork the switcher due to the long PreStart sleep, otherwise the setup script will block
-systemctl start piosk-browser
-systemctl start piosk-switcher &
-systemctl start piosk-webserver
+echo "${BLUE}Starting PiOSK daemons...${RESET}"
+systemctl start piosk-runner
+systemctl start piosk-switcher
+systemctl start piosk-dashboard
 
 echo "${GREEN}${BOLD}Installation is complete. PiOSK should be running.${RESET}"
