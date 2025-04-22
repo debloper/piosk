@@ -47,7 +47,7 @@ $(document).ready(() => {
     })
 
     config.settings={}
-    config.settings.page_timeout=$("#page_timeout").val()
+    config.settings.page_timeout=parseInt($("#page_timeout").val())
 
     $.ajax({
       url: '/config',
