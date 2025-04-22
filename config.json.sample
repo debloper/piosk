@@ -21,5 +21,8 @@
         {
             "url": "https://www.google.com/search?q=nasdaq+index"
         }
-    ]
+    ],
+    "settings":{
+        "page_timeout": 10
+    }
 }
