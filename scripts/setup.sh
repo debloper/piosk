@@ -38,7 +38,7 @@ echo -e "${INFO}Installing dependencies...${RESET}"
 apt install -y git jq wtype nodejs npm
 
 echo -e "${INFO}Cloning repository...${RESET}"
-git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
+git clone https://github.com/thomaspcole/piosk.git "$PIOSK_DIR"
 cd "$PIOSK_DIR"
 
 # echo -e "${INFO}Checking out latest release...${RESET}"
