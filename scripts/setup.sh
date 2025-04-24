@@ -88,6 +88,9 @@ echo -e "${INFO}Starting PiOSK daemons...${RESET}"
 # systemctl start piosk-switcher
 systemctl start piosk-dashboard
 
+echo -e "${INFO}Disabling Mouse Cursor...${RESET}"
+mv /usr/share/icons/PiXflat/cursors/left_ptr /usr/share/icons/PiXflat/cursors/left_prt.bak
+
 echo -e "${CALLOUT}\nPiOSK is now installed.${RESET}"
 echo -e "Visit either of these links to access PiOSK dashboard:"
 echo -e "\t- ${INFO}\033[0;32mhttp://$(hostname)/${RESET} or,"
