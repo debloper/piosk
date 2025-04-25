@@ -39,7 +39,7 @@ That's when I realized... maybe there are other people (or future me) who'd also
 Either open terminal on the Raspberry Pi's desktop environment, or remote login to it; and run the following command:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/debloper/piosk/main/scripts/setup.sh | sudo bash -
+curl -sSL https://raw.githubusercontent.com/thomaspcole/piosk/main/scripts/setup.sh | sudo bash -
 ```
 
 That's it[^2].

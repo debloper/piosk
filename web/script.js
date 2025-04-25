@@ -16,6 +16,8 @@ let piosk = {
     $.each(data.urls, (index, item) => {
       piosk.appendUrl(item.url)
     })
+
+    $('#page_timeout').val(data.settings.page_timeout);
   },
   showStatus (xhr) {
     let tmpErr = $('#template-err').contents().clone()
@@ -43,6 +45,9 @@ $(document).ready(() => {
     $('li.list-group-item').each((index, item) => {
       config.urls.push({ url: $(item).find('a').attr('href') })
     })
+
+    config.settings={}
+    config.settings.page_timeout=parseInt($("#page_timeout").val())
 
     $.ajax({
       url: '/config',

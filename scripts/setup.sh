@@ -38,7 +38,7 @@ echo -e "${INFO}Installing dependencies...${RESET}"
 apt install -y git jq wtype nodejs npm
 
 echo -e "${INFO}Cloning repository...${RESET}"
-git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
+git clone https://github.com/thomaspcole/piosk.git "$PIOSK_DIR"
 cd "$PIOSK_DIR"
 
 # echo -e "${INFO}Checking out latest release...${RESET}"
@@ -87,6 +87,9 @@ echo -e "${INFO}Starting PiOSK daemons...${RESET}"
 # systemctl start piosk-runner
 # systemctl start piosk-switcher
 systemctl start piosk-dashboard
+
+echo -e "${INFO}Disabling Mouse Cursor...${RESET}"
+mv /usr/share/icons/PiXflat/cursors/left_ptr /usr/share/icons/PiXflat/cursors/left_prt.bak
 
 echo -e "${CALLOUT}\nPiOSK is now installed.${RESET}"
 echo -e "Visit either of these links to access PiOSK dashboard:"

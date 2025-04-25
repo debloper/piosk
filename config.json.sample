@@ -1,25 +1,10 @@
 {
     "urls": [
         {
-            "url": "https://windy.com/"
-        },
-        {
-            "url": "https://time.is/clock"
-        },
-        {
-            "url": "https://github.com/trending"
-        },
-        {
-            "url": "https://news.ycombinator.com/"
-        },
-        {
-            "url": "https://huggingface.co/papers"
-        },
-        {
-            "url": "https://www.perplexity.ai/discover"
-        },
-        {
-            "url": "https://www.google.com/search?q=nasdaq+index"
+            "url": "http://localhost/setup"
         }
-    ]
+    ],
+    "settings":{
+        "page_timeout": 10
+    }
 }
