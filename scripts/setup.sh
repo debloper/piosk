@@ -35,7 +35,7 @@ else
 fi
 
 echo -e "${INFO}Installing dependencies...${RESET}"
-apt install -y git jq wtype nodejs npm
+apt install -y git jq wtype nodejs npm python3-websockets
 
 echo -e "${INFO}Cloning repository...${RESET}"
 git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"

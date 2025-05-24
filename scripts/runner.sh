@@ -16,4 +16,5 @@ chromium-browser \
   --ignore-gpu-blocklist \
   --kiosk \
   --no-first-run \
-  --noerrdialogs
+  --noerrdialogs \
+  --remote-debugging-port=9222
