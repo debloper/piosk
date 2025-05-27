@@ -11,10 +11,10 @@ chromium-browser \
   --disable-smooth-scrolling \
   --enable-accelerated-video-decode \
   --enable-gpu-rasterization \
-  --enable-low-end-device-mode \
   --enable-oop-rasterization \
   --force-device-scale-factor=1 \
   --ignore-gpu-blocklist \
   --kiosk \
   --no-first-run \
-  --noerrdialogs
+  --noerrdialogs \
+  --remote-debugging-port=9222
