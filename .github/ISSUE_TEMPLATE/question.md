@@ -1,3 +1,11 @@
+---
+name: Question
+about: Ask a question or request clarification about the project
+title: "[Question]: "
+labels: question
+assignees: ""
+---
+
 **What’s your question about?**
 Describe your question (e.g., "How do I auto-launch Chromium in kiosk mode on boot?").
 
