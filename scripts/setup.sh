@@ -35,7 +35,7 @@ else
 fi
 
 echo -e "${INFO}Installing dependencies...${RESET}"
-apt install -y git jq wtype nodejs npm
+apt install -y git jq wtype curl unzip
 
 echo -e "${INFO}Cloning repository...${RESET}"
 git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
@@ -45,8 +45,55 @@ cd "$PIOSK_DIR"
 # git checkout devel
 # git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
 
-echo -e "${INFO}Installing npm dependencies...${RESET}"
-npm i
+echo -e "${INFO}Downloading PiOSK binary...${RESET}"
+# Detect architecture
+ARCH=$(uname -m)
+if [ "$ARCH" = "x86_64" ]; then
+    BINARY_NAME="piosk-linux-x64"
+elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+    BINARY_NAME="piosk-linux-arm64"
+else
+    echo -e "${ERROR}Unsupported architecture: $ARCH${RESET}"
+    echo -e "${INFO}Falling back to source installation with Deno...${RESET}"
+    
+    # Install Deno as fallback
+    curl -fsSL https://deno.land/x/install/install.sh | sh
+    export PATH="$HOME/.deno/bin:$PATH"
+    ln -sf $HOME/.deno/bin/deno /usr/local/bin/deno
+    
+    echo -e "${INFO}Compiling PiOSK with Deno...${RESET}"
+    deno compile --allow-net --allow-read --allow-write --allow-run --allow-env --output piosk index.ts
+else
+    # Download binary from latest release
+    LATEST_RELEASE=$(curl -s https://api.github.com/repos/debloper/piosk/releases/latest | jq -r '.tag_name')
+    if [ "$LATEST_RELEASE" = "null" ] || [ -z "$LATEST_RELEASE" ]; then
+        echo -e "${WARNING}No releases found, falling back to source installation...${RESET}"
+        # Install Deno as fallback
+        curl -fsSL https://deno.land/x/install/install.sh | sh
+        export PATH="$HOME/.deno/bin:$PATH"
+        ln -sf $HOME/.deno/bin/deno /usr/local/bin/deno
+        
+        echo -e "${INFO}Compiling PiOSK with Deno...${RESET}"
+        deno compile --allow-net --allow-read --allow-write --allow-run --allow-env --output piosk index.ts
+    else
+        DOWNLOAD_URL="https://github.com/debloper/piosk/releases/download/$LATEST_RELEASE/$BINARY_NAME.tar.gz"
+        echo -e "${DEBUG}Downloading from: $DOWNLOAD_URL${RESET}"
+        
+        if curl -fsSL "$DOWNLOAD_URL" | tar -xz; then
+            chmod +x "$BINARY_NAME"
+            mv "$BINARY_NAME" piosk
+        else
+            echo -e "${ERROR}Failed to download binary, falling back to source installation...${RESET}"
+            # Install Deno as fallback
+            curl -fsSL https://deno.land/x/install/install.sh | sh
+            export PATH="$HOME/.deno/bin:$PATH"
+            ln -sf $HOME/.deno/bin/deno /usr/local/bin/deno
+            
+            echo -e "${INFO}Compiling PiOSK with Deno...${RESET}"
+            deno compile --allow-net --allow-read --allow-write --allow-run --allow-env --output piosk index.ts
+        fi
+    fi
+fi
 
 echo -e "${INFO}Restoring configurations...${RESET}"
 if [ ! -f /opt/piosk/config.json ]; then

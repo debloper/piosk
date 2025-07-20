@@ -1,0 +1,105 @@
+name: Build and Release PiOSK Binaries
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          # Linux x86_64
+          - os: linux-x64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            output: piosk-linux-x64
+          # Linux ARM64 (Raspberry Pi)
+          - os: linux-arm64
+            runner: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            output: piosk-linux-arm64
+          # Windows x86_64
+          - os: windows-x64
+            runner: windows-latest
+            target: x86_64-pc-windows-msvc
+            output: piosk-windows-x64.exe
+          # macOS x86_64
+          - os: macos-x64
+            runner: macos-13
+            target: x86_64-apple-darwin
+            output: piosk-macos-x64
+          # macOS ARM64 (Apple Silicon)
+          - os: macos-arm64
+            runner: macos-14
+            target: aarch64-apple-darwin
+            output: piosk-macos-arm64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Compile binary
+        run: |
+          deno compile \
+            --allow-net \
+            --allow-read \
+            --allow-write \
+            --allow-run \
+            --allow-env \
+            --target ${{ matrix.target }} \
+            --output ${{ matrix.output }} \
+            index.ts
+
+      - name: Archive binary (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          tar -czf ${{ matrix.output }}.tar.gz ${{ matrix.output }}
+
+      - name: Archive binary (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          7z a ${{ matrix.output }}.zip ${{ matrix.output }}
+
+      - name: Upload binary as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.output }}
+          path: |
+            ${{ matrix.output }}.tar.gz
+            ${{ matrix.output }}.zip
+          if-no-files-found: ignore
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./artifacts/*/*.{tar.gz,zip}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
