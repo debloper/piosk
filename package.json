@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/debloper/piosk#readme",
   "dependencies": {
-    "express": "^5.0.0-beta.3"
+    "express": "^5.1.0"
   }
 }
