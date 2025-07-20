@@ -18,6 +18,12 @@ async function writeConfig(configData: string): Promise<void> {
 
 async function rebootSystem(): Promise<void> {
   try {
+    // In test mode, don't actually reboot
+    if (Deno.env.get("PIOSK_TEST_MODE") === "true") {
+      console.log("Test mode: Would reboot system");
+      return;
+    }
+    
     const command = new Deno.Command("reboot", {
       stdout: "piped",
       stderr: "piped"

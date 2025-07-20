@@ -10,6 +10,9 @@ That's when I realized... maybe there are other people (or future me) who'd also
 > [!NOTE]  
 > And apparently, I wasn't wrong! From GitHub [stars](https://github.com/debloper/piosk/stargazers), [issue](https://github.com/debloper/piosk/issues) reports, to [news articles](https://www.hackster.io/news/fe890d007c32) covering PiOSK - the community acceptance has been far more than I had imagined. So, with the wide range of users, there's a need for stabilizing the repo and consolidating the features. The followup updates will be less frequent, and more thoroughly tested. It's not a feature freeze, but priority would be on the refactor and maintenance.
 
+> [!IMPORTANT]  
+> **Technology Update**: PiOSK has been converted from Node.js to Deno with standalone executable compilation. This eliminates the need to install Node.js runtime and dependency packages on the host system during setup. The setup script now downloads pre-built binaries for your platform (Linux x64/ARM64, Windows, macOS) from GitHub releases, significantly simplifying the installation process.
+
 
 # 1. Set Up Guide
 
@@ -64,7 +67,7 @@ That's it[^2].
 > Try these at your own risk; if you know what you're doing. Misconfiguration(s) may break the setup.
 
 1. The PiOSK repo is cloned to `/opt/piosk`
-2. You can change the dashboard port from `index.js`
+2. You can change the dashboard port by setting the `PORT` environment variable or modifying `index.ts`
 3. You can change the per-page timeout from `scripts/switcher.sh`
 4. You can change browser behavior (e.g. no full screen) from `scripts/runner.sh`
 5. Some changes can be applied without rebooting, but rebooting is simpler
@@ -91,7 +94,7 @@ sudo /opt/piosk/scripts/cleanup.sh
 ```
 
 > [!NOTE]  
-> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. `git`, `jq`, `Node.js`, `wtype`). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.
+> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. `git`, `jq`, `wtype`). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.
 
 # 2. Appendix
 
