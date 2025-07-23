@@ -1,0 +1,416 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// List of supporters, now framed as team members
+const supporters = [
+  {
+    name: 'unclesp1d3r',
+    avatarUrl: 'https://github.com/unclesp1d3r.png',
+    profileUrl: 'https://github.com/unclesp1d3r',
+    role: 'Valued Supporter',
+  },
+  {
+    name: 'tcchester',
+    avatarUrl: 'https://github.com/tcchester.png',
+    profileUrl: 'https://github.com/tcchester',
+    role: 'Valued Supporter',
+  },
+  {
+    name: 'xactai',
+    avatarUrl: 'https://github.com/xactai.png',
+    profileUrl: 'https://github.com/xactai',
+    role: 'Valued Supporter',
+  },
+];
+---
+
+<Layout title="Team - Meet the PiOSK Collaborators">
+  <div class="team-hero">
+    <div class="team-container">
+      <h1 class="team-title">Meet Our Team</h1>
+      <p class="team-subtitle">
+        The developers and supporters who make PiOSK possible. <br>This project thrives on community collaboration and backing.
+      </p>
+    </div>
+  </div>
+
+  <div class="team-members">
+    <div class="team-container">
+      <h2 class="members-title">Core Team & Supporters</h2>
+      <div class="members-grid">
+
+        <!-- Core Maintainer -->
+        <div class="member-card core-member">
+          <div class="member-header">
+            <div class="member-avatar">
+              <img src="https://github.com/debloper.png" alt="Soumya Deb" />
+            </div>
+            <div class="member-info">
+              <h3>Soumya Deb</h3>
+              <p class="member-role">Creative-Developer & Project Lead</p>
+            </div>
+          </div>
+          <div class="member-bio-full">
+            <p>After being a tech-mercenary for hire for over 15 years, in 2024, I've decided to retire & become a creative-developer in the open. It's a hybrid role of a creator and a developer, where I build/make software & hardware that I find interesting & useful, and then share it with the world for people to learn/remix.</p>
+            <p>I'm focusing on topics like audio/video equipment, single-board computers, home labs, custom Linux distros, and streaming media. If you find a project interesting/useful & want to see it grow, please consider sponsoring to show your support.</p>
+          </div>
+          <div class="member-links">
+            <a href="https://github.com/debloper" target="_blank" class="member-link github">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              GitHub
+            </a>
+            <a href="https://twitter.com/debloper" target="_blank" class="member-link twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+              <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+            </svg>
+              X
+            </a>
+          </div>
+          <div class="member-support">
+            <h4>Support My Work</h4>
+            <div class="support-links">
+              <a href="https://github.com/sponsors/debloper" target="_blank" class="support-btn github-btn">Sponsor on GitHub</a>
+              <a href="https://ko-fi.com/debloper" target="_blank" class="support-btn kofi-btn">Buy me a coffee</a>
+              <a href="https://patreon.com/debloper" target="_blank" class="support-btn patreon-btn">Become a Patron</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Supporters -->
+        {supporters.map(supporter => (
+          <div class="member-card supporter-card">
+            <div class="member-header">
+              <div class="member-avatar supporter-avatar">
+                <img src={supporter.avatarUrl} alt={supporter.name} />
+              </div>
+              <div class="member-info">
+                <h3 class="member-uname">{supporter.name}</h3>
+                <p class="member-role supporter-role">{supporter.role}</p>
+              </div>
+            </div>
+            <div class="member-links supporter-links">
+               <a href={supporter.profileUrl} target="_blank" class="member-link github">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                View Profile
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="team-cta">
+    <div class="team-container">
+      <h2>Join Our Community</h2>
+      <p>Want to contribute to PiOSK? We welcome contributors of all skill levels! Whether you're fixing bugs, adding features, improving documentation, or helping with community support, there's a place for you on our team.</p>
+      <div class="cta-buttons">
+        <a href="https://github.com/debloper/piosk" target="_blank" class="cta-btn primary">
+          Start Contributing
+        </a>
+        <a href="https://github.com/debloper/piosk/discussions" target="_blank" class="cta-btn secondary">
+          Join Discussion
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .team-hero {
+    background: linear-gradient(135deg, #ec7063 0%, #d5526a 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+  }
+
+  .team-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .team-title {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .team-subtitle {
+    font-size: 20px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .team-members {
+    padding: 80px 0;
+    background: #f8fafc;
+  }
+
+  .members-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 48px;
+  }
+
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+  }
+
+  .member-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 32px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .member-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+  }
+
+  .member-card.core-member {
+    grid-column: 1 / -1; /* Make the core member card span the full width */
+    max-width: 800px;
+    margin: 0 auto;
+    border-width: 2px;
+    border-color: #dc5649;
+  }
+
+  .member-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .member-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 3px solid #dc5549bd;
+  }
+  
+  .supporter-avatar {
+      width: 64px;
+      height: 64px;
+      border-color: #a7b2f5;
+  }
+
+  .member-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .member-info {
+      flex-grow: 1;
+  }
+
+  .member-info h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 4px;
+    margin-top: 0px;
+  }
+
+  .member-role {
+    color: #dc5649;
+    font-weight: 500;
+    margin-top: auto;
+  }
+  
+  .supporter-role {
+      font-size: 14px;
+      color: #8892b0;
+      margin-top: auto;
+  }
+
+  .member-bio-full {
+      color: #334155;
+      line-height: 1.7;
+      font-size: 16px;
+      margin-bottom: 24px;
+  }
+
+  .member-bio-full p:last-of-type {
+      margin-bottom: 0;
+  }
+
+  .member-links {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .supporter-card .member-links {
+      margin-top: auto; /* Pushes link to the bottom */
+  }
+
+  .core-member .member-links {
+      margin-bottom: 24px;
+  }
+
+  .member-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    background: #f1f5f9;
+    color: #1e293b;
+  }
+
+  .member-link:hover {
+    background: #e2e8f0;
+  }
+
+  .member-link.twitter {
+    background: #2a2a2aff;
+    color: #eaeaeaff;
+  }
+
+  .member-link.twitter:hover {
+    background: #494b4cff;
+  }
+
+  .member-support {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+  }
+
+  .member-support h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 12px;
+  }
+
+  .support-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .support-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    color: white;
+    border: 0;
+  }
+  
+  .github-btn { background: #333; }
+  .github-btn:hover { background: #111; }
+  .kofi-btn { background: #ff5f5f; }
+  .kofi-btn:hover { background: #ff4757; }
+  .patreon-btn { background: #ff424d; }
+  .patreon-btn:hover { background: #f91825; }
+
+  .team-cta {
+    background: linear-gradient(135deg, #f1948a 0%, #ec7063 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+  }
+
+  .team-cta h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  .team-cta p {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .cta-btn.primary {
+    background: white;
+    color: #c44538;
+  }
+
+  .cta-btn.primary:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+  }
+
+  .cta-btn.secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+  }
+
+  .cta-btn.secondary:hover {
+    background: white;
+    color: #c44538;
+  }
+
+  @media (max-width: 900px) {
+      .member-card.core-member {
+          grid-column: auto; /* Revert to default flow on smaller screens */
+      }
+  }
+
+  @media (max-width: 768px) {
+    .team-title { font-size: 32px; }
+    .team-subtitle { font-size: 18px; }
+
+    .member-header {
+      flex-direction: column;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .member-avatar { margin: 0 auto; }
+    
+    .member-links, .support-links {
+        justify-content: center;
+    }
+
+    .cta-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
