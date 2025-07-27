@@ -1,24 +1,77 @@
 #!/bin/bash
 
-# @TODO: fetch the user dynamically or from config
+# Ensure the script runs from the correct directory, where config.json is located.
+cd /opt/piosk
+
+# Note: DISPLAY and XDG_RUNTIME_DIR are set by the systemd service file.
+# They are not needed here but can be useful for manual testing if uncommented.
+# export DISPLAY=:0
 export XDG_RUNTIME_DIR=/run/user/1000
 
-# THIS IS NOT THE BEST WAY TO SWITCH & REFRESH TABS BUT IT WORKS
-# should parameterize cycle count & sleep delay with config.json
+# --- Read Configuration using jq ---
+# Create a Bash array of durations for each URL.
+mapfile -t DURATIONS < <(jq -r '.urls[].duration' ./config.json)
 
-# count the number of URLs, that are configured to cycle through
-URLS=$(jq -r '.urls | length' /opt/piosk/config.json)
+# Create a Bash array of cycle counts before a refresh is triggered.
+mapfile -t CYCLES < <(jq -r '.urls[].cycles' ./config.json)
 
-# swich tabs each 10s, refresh tabs each 10th cycle & then reset
-for ((TURN=1; TURN<=$((10*URLS)); TURN++)) do
-  if [ $TURN -le $((10*URLS)) ]; then
-    wtype -M ctrl -P Tab
-    if [ $TURN -gt $((9*URLS)) ]; then
-      wtype -M ctrl r
-      if [ $TURN -eq $((10*URLS)) ]; then
-        (( TURN=0 ))
-      fi
-    fi
+# Count the total number of URLs to manage.
+URL_COUNT=${#DURATIONS[@]}
+
+# If no URLs are configured, exit gracefully.
+if [ "$URL_COUNT" -eq 0 ]; then
+  echo "No URLs configured. Exiting switcher."
+  exit 0
+fi
+
+# --- Initialize State ---
+# Create and initialize an array to track the display count for each tab.
+REFRESH_COUNTS=()
+for ((i=0; i<URL_COUNT; i++)); do
+  REFRESH_COUNTS+=(0)
+done
+
+CURRENT_TAB_INDEX=0
+
+# Give Chromium a moment to start up on boot before we start sending keys.
+echo "Switcher waiting for browser to initialize..."
+sleep 15
+
+echo "PiOSK switcher started. Managing $URL_COUNT tabs."
+
+# --- Main Loop ---
+while true; do
+  # --- Get Settings for the Current Tab ---
+  duration=${DURATIONS[$CURRENT_TAB_INDEX]}
+  cycle_target=${CYCLES[$CURRENT_TAB_INDEX]}
+
+  # --- Handle Refresh Logic ---
+  # Increment the display counter for the current tab.
+  ((REFRESH_COUNTS[$CURRENT_TAB_INDEX]++))
+  echo "Tab $((CURRENT_TAB_INDEX + 1)): Display cycle ${REFRESH_COUNTS[$CURRENT_TAB_INDEX]} of $cycle_target."
+
+  # Check if it's time to refresh this specific tab.
+  if [ "${REFRESH_COUNTS[$CURRENT_TAB_INDEX]}" -ge "$cycle_target" ]; then
+    echo "Refreshing Tab $((CURRENT_TAB_INDEX + 1))."
+    
+    # Send Ctrl+r to refresh the current tab using wtype.
+    wtype -M ctrl r -m ctrl
+    
+    # Reset the counter for this tab.
+    REFRESH_COUNTS[$CURRENT_TAB_INDEX]=0
   fi
-  sleep 10
+  
+  # --- Wait for the specified duration ---
+  echo "Waiting for $duration seconds."
+  sleep "$duration"
+
+  # --- Switch to the Next Tab ---
+  echo "Switching to next tab."
+  # Send Ctrl+Tab to switch to the next tab using wtype.
+  wtype -M ctrl -P Tab -m ctrl
+
+  # --- Update Tab Index ---
+  # Move to the next index, wrapping around to 0 if at the end.
+  CURRENT_TAB_INDEX=$(( (CURRENT_TAB_INDEX + 1) % URL_COUNT ))
+
 done

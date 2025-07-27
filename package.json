@@ -4,7 +4,8 @@
   "description": "One-shot set up Raspberry Pi in kiosk mode as a webpage shuffler, with a web interface for management.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "node build.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,9 @@
   },
   "homepage": "https://github.com/debloper/piosk#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.0.0-beta.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0"
   }
 }

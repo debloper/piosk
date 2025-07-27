@@ -1,3 +1,9 @@
 config.json
 node_modules/
 package-lock.json
+
+# Build artifacts
+/dist
+/piosk
+/piosk.blob
+/sea-config.json
