@@ -1,0 +1,119 @@
+name: Build and Release PiOSK Binaries
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os_name }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - os_name: linux-x64
+            runner: ubuntu-latest
+            node_dist: "node-v22.5.0-linux-x64"
+            output: piosk-linux-x64
+          - os_name: linux-arm64
+            runner: ubuntu-latest
+            node_dist: "node-v22.5.0-linux-arm64"
+            output: piosk-linux-arm64
+          - os_name: linux-armv7
+            runner: ubuntu-latest
+            node_dist: "node-v22.5.0-linux-armv7l"
+            output: piosk-linux-armv7
+          - os_name: windows-x64
+            runner: windows-latest
+            node_dist: "node-v22.5.0-win-x64"
+            output: piosk-windows-x64.exe
+          - os_name: macos-x64
+            runner: macos-13
+            node_dist: "node-v22.5.0-darwin-x64"
+            output: piosk-macos-x64
+          - os_name: macos-arm64
+            runner: macos-14
+            node_dist: "node-v22.5.0-darwin-arm64"
+            output: piosk-macos-arm64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application bundle
+        run: npm run build
+
+      - name: Create SEA blob
+        run: node --experimental-sea-config sea-config.json
+
+      - name: Download Node.js binary for target
+        shell: bash
+        run: |
+          NODE_VERSION="v22.5.0"
+          if [[ "${{ matrix.os_name }}" == "windows-x64" ]]; then
+            curl -L "https://nodejs.org/dist/$NODE_VERSION/${{ matrix.node_dist }}.zip" -o node.zip
+            unzip node.zip
+            cp "${{ matrix.node_dist }}/node.exe" "${{ matrix.output }}"
+          else
+            curl -L "https://nodejs.org/dist/$NODE_VERSION/${{ matrix.node_dist }}.tar.gz" | tar xz
+            cp "${{ matrix.node_dist }}/bin/node" "${{ matrix.output }}"
+          fi
+
+      - name: Inject blob into binary
+        shell: bash
+        run: |
+          MACHO_ARG=""
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
+            MACHO_ARG="--macho-segment-name NODE_SEA"
+          fi
+          npx postject "${{ matrix.output }}" NODE_SEA_BLOB dist/piosk.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 $MACHO_ARG
+
+      - name: Package release assets
+        shell: bash
+        run: |
+          # Create a directory to hold all assets for packaging
+          mkdir -p release_package
+          mv "${{ matrix.output }}" "release_package/piosk"
+          cp -r scripts release_package/
+          cp -r services release_package/
+          cp config.json.sample release_package/
+          
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            7z a "${{ matrix.os_name }}.zip" ./release_package/*
+            echo "ASSET_PATH=${{ matrix.os_name }}.zip" >> $GITHUB_ENV
+          else
+            tar -czf "${{ matrix.os_name }}.tar.gz" -C release_package .
+            echo "ASSET_PATH=${{ matrix.os_name }}.tar.gz" >> $GITHUB_ENV
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: piosk-build-${{ matrix.os_name }}
+          path: ${{ env.ASSET_PATH }}
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./artifacts/*/*.{tar.gz,zip}
+          generate_release_notes: true

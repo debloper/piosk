@@ -7,13 +7,26 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <title>PiOSK</title>
+    <style>
+      .input-changed {
+        background-color: rgba(255, 193, 7, 0.2) !important;
+        border-color: #ffc107 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25) !important;
+        transition: all 0.3s ease;
+      }
+      .input-changed:focus {
+        background-color: rgba(255, 193, 7, 0.3) !important;
+        border-color: #ffc107 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5) !important;
+      }
+    </style>
   </head>
   <body>
     <nav id="navs" class="navbar bg-body-tertiary">
       <div class="container-md d-flex justify-content-between">
         <h1 class="my-1">Pi<span class="bg-danger mx-1 px-1 rounded">OSK</span></h1>
         <div class="input-group w-75">
-          <input  id="new-url" type="text"   class="form-control form-control-lg" placeholder="...add URLs of webpages as screens">
+          <input  id="new-url" type="text" class="form-control form-control-lg" placeholder="...add URLs of webpages as screens">
           <button id="add-url" type="button" class="btn btn-secondary">ADD</button>
           <button id="execute" type="button" class="btn btn-danger">APPLY <span class="align-text-bottom">⏻</span></button>
         </div>
@@ -33,9 +46,24 @@
     </footer>
 
     <template id="template-url">
-      <li class="list-group-item text-truncate fs-3">
-        <button type="button" class="btn btn-close mx-3" aria-label="Remove"></button>
-        <a class="link-underline-dark"></a>
+      <li class="list-group-item fs-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center flex-grow-1">
+            <button type="button" class="btn btn-close mx-3" aria-label="Remove"></button>
+            <a class="link-underline-dark text-truncate"></a>
+          </div>
+          <div class="d-flex align-items-center gap-2 ms-3">
+            <div class="input-group input-group-sm" style="width: 145px;">
+              <span class="input-group-text">Duration</span>
+              <input type="number" class="form-control duration-input" min="1" max="300" value="10">
+              <span class="input-group-text">s</span>
+            </div>
+            <div class="input-group input-group-sm" style="width: 120px;">
+              <span class="input-group-text">Cycles</span>
+              <input type="number" class="form-control cycles-input" min="1" max="100" value="10">
+            </div>
+          </div>
+        </div>
       </li>
     </template>
 
@@ -45,6 +73,22 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script>
+      $(document).ready(function() {
+        // Use event delegation to highlight inputs when they are changed.
+        $('#urls').on('change', '.duration-input, .cycles-input', function() {
+          $(this).addClass('input-changed');
+        });
+
+        // Add a separate click listener to the Apply button just to remove the highlight.
+        // This will fire alongside the listener in script.js that saves the data.
+        $('#execute').on('click', function() {
+          $('.input-changed').removeClass('input-changed');
+        });
+      });
+    </script>
+
     <script src="script.js"></script>
   </body>
 </html>
