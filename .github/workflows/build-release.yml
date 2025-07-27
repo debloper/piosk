@@ -6,6 +6,10 @@ on:
       - 'v*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   build:
     name: Build for ${{ matrix.os }}
@@ -38,11 +42,6 @@ jobs:
             runner: macos-14
             target: aarch64-apple-darwin
             output: piosk-macos-arm64
-          # Linux ARM32 (Raspberry Pi)
-          - os: linux-arm32
-            runner: ubuntu-latest
-            target: armv7-unknown-linux-gnueabihf
-            output: piosk-linux-arm32
 
     steps:
       - name: Checkout code
@@ -100,7 +99,7 @@ jobs:
           path: ./artifacts
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: ./artifacts/*/*.{tar.gz,zip}
           draft: false
