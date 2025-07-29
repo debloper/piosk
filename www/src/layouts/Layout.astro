@@ -6,8 +6,12 @@ export interface Props {
 
 const { title, description = "One-shot set up Raspberry Pi in kiosk mode as a webpage shuffler, with a web interface for management." } = Astro.props;
 
+// Get the base path from your astro.config.mjs
+const base = import.meta.env.BASE_URL;
+
 // Get current page path for active navigation highlighting
 const currentPath = Astro.url.pathname;
+console.log("Current Path Is:", currentPath); 
 ---
 
 <!doctype html>
@@ -22,13 +26,13 @@ const currentPath = Astro.url.pathname;
   <body>
     <nav class="navbar">
       <div class="nav-container">
-        <a href="/" class="nav-logo">
+        <a href={base} class="nav-logo">
           <span class="logo-text">Pi<span class="logo-text-red">OSK</span></span>
         </a>
         <div class="nav-links">
-          <a href="/piosk/" class={currentPath === '/' ? 'active' : ''}>Home</a>
-          <a href="/piosk/docs" class={currentPath === '/docs' || currentPath === '/docs/' ? 'active' : ''}>Docs</a>
-          <a href="/piosk/team" class={currentPath === '/sponsor' || currentPath === '/sponsor/' ? 'active' : ''}>Team</a>
+          <a href={base} class={currentPath === `${base}/` ? 'active' : ''}>Home</a>
+          <a href={`${base}/docs`} class={currentPath.startsWith(`${base}/docs`) ? 'active' : ''}>Docs</a>
+          <a href={`${base}/team`} class={currentPath.startsWith(`${base}/team`) ? 'active' : ''}>Team</a>
         </div>
       </div>
     </nav>
@@ -41,7 +45,7 @@ const currentPath = Astro.url.pathname;
       <div class="footer-container">
         <div class="footer-content">
           <div class="footer-brand">
-            <a href="/piosk" class="footer-logo">
+            <a href={base} class="footer-logo">
               <div class="footer-logo-icon">Pi</div>
               <span class="footer-logo-text">PiOSK</span>
             </a>
@@ -83,7 +87,7 @@ const currentPath = Astro.url.pathname;
           <div class="footer-section">
             <h4>Resources</h4>
             <ul>
-              <li><a href="/piosk/docs">Documentation</a></li>
+              <li><a href={`${base}/docs`}>Documentation</a></li>
               <li><a href="https://github.com/sponsors/debloper">Support Project</a></li>
               <li>
                 <a href="https://github.com/debloper/piosk/discussions" target="_blank">
