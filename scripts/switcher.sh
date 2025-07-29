@@ -12,9 +12,9 @@ URLS=$(jq -r '.urls | length' /opt/piosk/config.json)
 # swich tabs each 10s, refresh tabs each 10th cycle & then reset
 for ((TURN=1; TURN<=$((10*URLS)); TURN++)) do
   if [ $TURN -le $((10*URLS)) ]; then
-    wtype -M ctrl -P Tab
+    /opt/piosk/scripts/chromium-next-tab.sh
     if [ $TURN -gt $((9*URLS)) ]; then
-      wtype -M ctrl r
+      /opt/piosk/scripts/chromium-reload-tab.py
       if [ $TURN -eq $((10*URLS)) ]; then
         (( TURN=0 ))
       fi
