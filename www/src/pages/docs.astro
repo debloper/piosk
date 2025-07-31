@@ -1,0 +1,522 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="PiOSK Documentation - Setup Guide & Instructions">
+  <div class="docs-layout">
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <h3>Documentation</h3>
+        <ul>
+          <li><a href="#foreword" class="nav-link" data-section="foreword">Foreword</a></li>
+          <li><a href="#setup-guide" class="nav-link" data-section="setup-guide">Setup Guide</a></li>
+          <li><a href="#preparation" class="nav-link" data-section="preparation">Preparation</a></li>
+          <li><a href="#installation" class="nav-link" data-section="installation">Installation</a></li>
+          <li><a href="#configuration" class="nav-link" data-section="configuration">Configuration</a></li>
+          <li><a href="#updating" class="nav-link" data-section="updating">Updating</a></li>
+          <li><a href="#uninstallation" class="nav-link" data-section="uninstallation">Uninstallation</a></li>
+          <li><a href="#appendix" class="nav-link" data-section="appendix">Appendix</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="docs-content">
+      <div class="docs-container">
+        <h1 class="docs-title">PiOSK Documentation</h1>
+        
+        <section id="foreword" class="docs-section">
+          <h2>Foreword</h2>
+          <p>This started as a simple automation script — a wrapper of the <a href="https://www.raspberrypi.com/tutorials/how-to-use-a-raspberry-pi-in-kiosk-mode/" target="_blank">official Raspberry Pi kiosk mode tutorial</a> for personal use. Then one thing lead to the other and I found myself installing nodejs & writing systemd unit files...</p>
+          <p>That's when I realized... maybe there are other people (or future me) who'd also find this "single script setup" useful.</p>
+          <div class="note">
+            <p><strong>Note:</strong> And apparently, I wasn't wrong! From GitHub stars, issue reports, to news articles covering PiOSK - the community acceptance has been far more than I had imagined. So, with the wide range of users, there's a need for stabilizing the repo and consolidating the features.</p>
+          </div>
+        </section>
+
+        <section id="setup-guide" class="docs-section">
+          <h2>Setup Guide</h2>
+          <div class="video-embed">
+            <iframe 
+              src="https://www.youtube.com/embed/CrQjc6P-g1A" 
+              title="PiOSK Setup Video Walkthrough"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <p class="video-caption"><strong>PiOSK Setup Video Walkthrough</strong></p>
+          <div class="important">
+            <p><strong>Important:</strong> PiOSK <strong>assumes</strong> a few things to keep itself lean and just focuses on the essentials. It should still work even if some of those assumptions aren't met, but it may require some tinkering & manual overrides.</p>
+          </div>
+        </section>
+
+        <section id="preparation" class="docs-section">
+          <h2>1.1 Preparation</h2>
+          <ol>
+            <li>Boot into Raspberry Pi desktop<sup>1</sup></li>
+            <li>Ensure username, hostname etc. are configured</li>
+            <li>Check ethernet/WiFi works & has internet access</li>
+            <li>Enable <a href="https://www.raspberrypi.com/documentation/computers/configuration.html#boot-options" target="_blank">desktop auto login</a> (set by default on RPi OS)</li>
+          </ol>
+          <div class="footnote">
+            <p><sup>1</sup> That is to say... boot into <code>runlevel 5</code> or <code>graphical.target</code> and not in console mode — it's <strong>NOT</strong> a recommendation to use the 3.4GB boot image named Raspberry Pi OS Desktop</p>
+          </div>
+          <div class="note">
+            <p><strong>Note:</strong> Check <a href="#recommendations">recommendations section</a> for more detailed explanations.</p>
+          </div>
+        </section>
+
+        <section id="installation" class="docs-section">
+          <h2>1.2 Installation</h2>
+          <p>Either open terminal on the Raspberry Pi's desktop environment, or remote login to it; and run the following command:</p>
+          <div class="code-block" data-code="curl -sSL https://raw.githubusercontent.com/debloper/piosk/main/scripts/setup.sh | sudo bash -">
+            <div class="code-header">
+              <span class="code-language">bash</span>
+              <button class="copy-button" onclick="copyCode(this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <code>curl -sSL https://raw.githubusercontent.com/debloper/piosk/main/scripts/setup.sh | sudo bash -</code>
+          </div>
+          <p>That's it<sup>2</sup>.</p>
+          <div class="footnote">
+            <p><sup>2</sup> For some reason, if that's <strong>NOT</strong> it, and you hit a snag... please report an issue & give us some context to replicate & debug it.</p>
+          </div>
+        </section>
+
+        <section id="configuration" class="docs-section">
+          <h2>1.3 Configuration</h2>
+          
+          <h3>1.3.1 Basic</h3>
+          <ol>
+            <li>Visit <code>http://&lt;pi's IP address&gt;/</code><sup>3</sup> from a different device on the network</li>
+            <li>You should see the PiOSK dashboard with a list of sample URLs as kiosk mode screens</li>
+            <li>Feel free to add & remove links as necessary (at least 1 link is necessary for it to work)</li>
+            <li>The URLs don't have to be of remote domains. You can use localhost or even <code>file:///path</code></li>
+            <li>Once you're happy with the list, press <code>APPLY ⏻</code> button to apply changes and reboot PiOSK</li>
+            <li>When rebooted, wait for the kiosk mode to start & flip through the pages in fullscreen mode</li>
+          </ol>
+          
+          <h3>1.3.2 Advanced</h3>
+          <div class="warning">
+            <p><strong>Warning:</strong> Try these at your own risk; if you know what you're doing. Misconfiguration(s) may break the setup.</p>
+          </div>
+          <ol>
+            <li>The PiOSK repo is cloned to <code>/opt/piosk</code></li>
+            <li>You can change the dashboard port from <code>index.js</code></li>
+            <li>You can change the per-page timeout from <code>scripts/switcher.sh</code></li>
+            <li>You can change browser behavior (e.g. no full screen) from <code>scripts/runner.sh</code></li>
+            <li>Some changes can be applied without rebooting, but rebooting is simpler</li>
+          </ol>
+          
+          <div class="footnote">
+            <p><sup>3</sup> PiOSK uses port 80 on the Pi to serve the web dashboard. If you're planning to use the Pi for other purposes, make sure to avoid port collision.</p>
+          </div>
+        </section>
+
+        <section id="updating" class="docs-section">
+          <h2>1.4 Updating</h2>
+          <p>For now, there's no direct way to update the setup. This will change.</p>
+          <p>You should uninstall old version and then reinstall the new version. As long as you don't delete the backup config file (created during uninstallation), it should be picked up and reinstated by the reinstallation process.</p>
+          <p>Look into the Uninstallation section for the next steps.</p>
+        </section>
+
+        <section id="uninstallation" class="docs-section">
+          <h2>1.5 Uninstallation</h2>
+          <p>In order to uninstall/remove PiOSK from your system, run the <code>cleanup.sh</code> script:</p>
+          <div class="code-block" data-code="sudo /opt/piosk/scripts/cleanup.sh">
+            <div class="code-header">
+              <span class="code-language">bash</span>
+              <button class="copy-button" onclick="copyCode(this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <code>sudo /opt/piosk/scripts/cleanup.sh</code>
+          </div>
+          <div class="note">
+            <p><strong>Note:</strong> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. <code>git</code>, <code>jq</code>, <code>Node.js</code>, <code>wtype</code>). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.</p>
+          </div>
+        </section>
+
+        <section id="appendix" class="docs-section">
+          <h2>2. Appendix</h2>
+          
+          <h3 id="assumptions">2.1 Assumptions</h3>
+          <ol start="0">
+            <li>You're using a Raspberry Pi (other SBCs may work, not tested)</li>
+            <li>You're using "Raspberry Pi OS with desktop (32bit)" (other distros may work, not tested)</li>
+            <li>You've applied proper OS customizations & the Pi is able to access the internet (required for setup)</li>
+            <li>You're not using port 80 on the Pi to run some other web server (apart from PiOSK dashboard)</li>
+          </ol>
+          
+          <h3 id="recommendations">2.2 Recommendations</h3>
+          <h4>Choose the right device and OS</h4>
+          <ul>
+            <li>If your Pi has 4GB or less memory, choose 32bit image</li>
+            <li>Raspberry Pi Zeros struggle running Chromium due to low memory</li>
+            <li>Raspberry Pi4 or Pi5 (or their compute modules) are ideal for PiOSK</li>
+            <li>Apply the necessary customizations (user account, WiFi credentials, SSH access etc)</li>
+          </ul>
+          
+          <h4>Choose the right display/screen</h4>
+          <ul>
+            <li>Browser content window resolutions smaller than 1024px*600px may not be ideal</li>
+            <li>Different websites have different responsive rules & handle small screens differently</li>
+            <li>Also be mindful of LCD burn-in if displaying very limited number of static pages</li>
+            <li>DSI displays are more discreet, but they may require driver setup to work properly</li>
+          </ul>
+          
+          <h4>Take necessary steps to harden security</h4>
+          <ul>
+            <li>Disable touchscreen unless required</li>
+            <li>Disable ports that aren't required</li>
+            <li>Disable unused network interfaces, remote SSH</li>
+            <li>Enable OverlayFS to write protect storage</li>
+          </ul>
+          
+          <h4>Discover the Pi on the network</h4>
+          <ul>
+            <li>Set hostname (e.g. <code>piosk</code>) so you can call it by hostname without needing to hunt for IP</li>
+            <li>The dashboard's URL with the hostname & IP address is shown at the end of the install script</li>
+            <li>Or, run angry IP scanner or login to router/switch to discover the Pi's IP the hard way</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Copy code functionality
+    window.copyCode = function(button) {
+      const codeBlock = button.closest('.code-block');
+      const code = codeBlock.getAttribute('data-code');
+      
+      navigator.clipboard.writeText(code).then(() => {
+        const originalText = button.innerHTML;
+        button.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20,6 9,17 4,12"></polyline>
+          </svg>
+          Copied!
+        `;
+        button.style.color = '#059669';
+        
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.style.color = '';
+        }, 2000);
+      });
+    }
+
+    // Active section highlighting
+    function updateActiveSection() {
+      const sections = document.querySelectorAll('.docs-section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      let currentSection = '';
+      
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          currentSection = section.id;
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-section') === currentSection) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Update active section on scroll
+    window.addEventListener('scroll', updateActiveSection);
+    
+    // Update active section on page load
+    document.addEventListener('DOMContentLoaded', updateActiveSection);
+  </script>
+</Layout>
+
+<style>
+  .docs-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: calc(100vh - 64px);
+  }
+
+  .sidebar {
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    padding: 24px;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+
+  .sidebar-nav h3 {
+    color: #1e293b;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .sidebar-nav ul {
+    list-style: none;
+  }
+
+  .sidebar-nav li {
+    margin-bottom: 8px;
+  }
+
+  .sidebar-nav a {
+    color: #64748b;
+    text-decoration: none;
+    padding: 8px 0;
+    display: block;
+    transition: color 0.2s ease;
+    font-size: 14px;
+  }
+
+  .sidebar-nav a:hover {
+    color: #c44538;
+  }
+
+  .sidebar-nav a.active {
+    color: #8b5f5f;
+    font-weight: 600;
+    background: #8b5f5f1e;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 0 -12px;
+  }
+
+  .docs-content {
+    padding: 32px;
+  }
+
+  .docs-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .docs-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 32px;
+  }
+
+  .docs-section {
+    margin-bottom: 48px;
+  }
+
+  .docs-section h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+  }
+
+  .docs-section h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #374151;
+    margin: 24px 0 12px 0;
+  }
+
+  .docs-section h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #4b5563;
+    margin: 20px 0 12px 0;
+  }
+
+  .docs-section p {
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+
+  .docs-section ol,
+  .docs-section ul {
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+
+  .docs-section li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+
+  .docs-section a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+
+  .docs-section a:hover {
+    text-decoration: underline;
+  }
+
+  .code-block {
+    background: #0f172a;
+    border-radius: 8px;
+    margin: 16px 0;
+    overflow-x: auto;
+    border: 1px solid #334155;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+  }
+
+  .code-language {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .copy-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid #475569;
+    color: #94a3b8;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .copy-button:hover {
+    background: #334155;
+    color: #e2e8f0;
+    border-color: #64748b;
+  }
+
+  .code-block code {
+    display: block;
+    padding: 16px;
+    font-family: 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  code {
+    background: #dbeafe;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 14px;
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
+  }
+
+  .note {
+    background: #dbeafe;
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+  }
+
+  .warning {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+  }
+
+  .important {
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+  }
+
+  .footnote {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 16px 0;
+    padding: 8px;
+    background: #f9fafb;
+    border-radius: 4px;
+  }
+
+  .video-embed {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    margin: 24px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .video-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .video-caption {
+    text-align: center;
+    font-style: italic;
+    color: #6b7280;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .docs-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+      position: static;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .docs-content {
+      padding: 16px;
+    }
+
+    .docs-title {
+      font-size: 28px;
+    }
+
+    .docs-section h2 {
+      font-size: 20px;
+    }
+
+    .code-block {
+      font-size: 12px;
+    }
+  }
+</style>

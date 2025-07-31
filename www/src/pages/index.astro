@@ -1,0 +1,613 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="PiOSK - Raspberry Pi Kiosk Mode Made Simple">
+  <div class="hero-section">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-text">🚀 Open Source</span>
+        </div>
+        <h1 class="hero-title">
+          Raspberry Pi Kiosk Mode
+          <span class="hero-accent">Made Simple</span>
+        </h1>
+        <p class="hero-subtitle">
+          One-shot setup for Raspberry Pi in kiosk mode as a webpage shuffler, with a web interface for management.
+        </p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Command Setup</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">5</div>
+            <div class="stat-label">Minutes Install</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Possibilities</div>
+          </div>
+        </div>
+        <div class="hero-buttons">
+          <a href="/piosk/docs" class="btn btn-primary">Explore Docs</a>
+          <a href="/piosk/team" class="btn btn-secondary">Team</a>
+        </div>
+      </div>
+      <div class="hero-video">
+        <div class="video-container">
+          <iframe 
+            src="https://www.youtube.com/embed/CrQjc6P-g1A" 
+            title="PiOSK Setup Video Walkthrough"
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust-section">
+    <div class="trust-container">
+      <p class="trust-text">Trusted by developers worldwide</p>
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span>Open Source</span>
+        </div>
+        <div class="trust-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>Community Driven</span>
+        </div>
+        <div class="trust-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>Production Ready</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="features-section">
+    <div class="features-container">
+      <h2 class="section-title">Why Choose PiOSK?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+          </div>
+          <h3>One-Shot Setup</h3>
+          <p>Single command installation that handles everything from dependencies to configuration automatically.</p>
+          <div class="feature-highlight">
+            <code>curl -sSL script | sudo bash</code>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+            </svg>
+          </div>
+          <h3>Web Management</h3>
+          <p>Easy-to-use web interface for managing your kiosk URLs and configurations from any device on the network.</p>
+          <div class="feature-highlight">
+            <span class="highlight-text">Remote Control</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" />
+            </svg>
+          </div>
+          <h3>Auto Page Cycling</h3>
+          <p>Intelligent webpage shuffling with customizable timeout settings for seamless content rotation.</p>
+          <div class="feature-highlight">
+            <span class="highlight-text">Smart Rotation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="cta-section">
+    <div class="cta-container">
+      <h2>Ready to Get Started?</h2>
+      <p>Transform your Raspberry Pi into a powerful kiosk display in minutes, not hours.</p>
+      <div class="cta-buttons">
+        <a href="/piosk/docs" class="btn btn-primary btn-large">Get Started Now</a>
+        <a href="https://github.com/debloper/piosk" class="btn btn-outline btn-large" target="_blank">View on GitHub</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Your existing CSS for .hero-badge, .badge-text, etc. remains the same */
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(220, 86, 73, 0.1);
+    border: 1px solid rgba(220, 86, 73, 0.2);
+    border-radius: 20px;
+    padding: 6px 16px;
+    margin-bottom: 24px;
+  }
+
+  .badge-text {
+    color: #dc5649;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .hero-section {
+    height: 60vh;
+    background: linear-gradient(135deg, #fef9f8 0%, #fde8e6 100%);
+    padding: 80px 0;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23dc5649' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    z-index: 0;
+  }
+
+  .hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin: 32px 0;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #d94343;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: #8b5f5f;
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  .hero-title {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #4a2c2c;
+    margin-bottom: 16px;
+  }
+
+  .hero-accent {
+    background: linear-gradient(135deg, #dc5649 0%, #c44538 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 20px;
+    color: #8b5f5f;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+  }
+
+  .video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(220, 86, 73, 0.25);
+    transition: transform 0.3s ease;
+  }
+
+  .video-container:hover {
+    transform: scale(1.02);
+  }
+
+  .video-container:hover .video-overlay {
+    opacity: 1;
+  }
+
+  .play-button {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #dc5649;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+  }
+
+  .video-container:hover .play-button {
+    transform: scale(1);
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .trust-section {
+    background: #ffffff;
+    padding: 32px 0;
+    border-bottom: 1px solid #f4d4d0;
+  }
+
+  .trust-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .trust-text {
+    color: #8b5f5f;
+    font-size: 14px;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .trust-badges {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #8b5f5f;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .trust-badge svg {
+    color: #dc5649;
+  }
+
+  .features-section {
+    padding: 80px 0;
+    background: #ffffff;
+  }
+
+  .features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #4a2c2c;
+    margin-bottom: 48px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 32px;
+  }
+
+  .feature-card {
+    background: #ffffff;
+    border: 1px solid #f4d4d0;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #dc5649 0%, #c44538 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px -12px rgba(220, 86, 73, 0.15);
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-icon {
+    /* Standardizing the size and color for the feature icons */
+    width: 60px; /* Container size for the icon */
+    height: 60px; /* Container size for the icon */
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feature-icon svg {
+    width: 48px; /* Actual SVG icon size */
+    height: 48px; /* Actual SVG icon size */
+    color: #dc5649; /* Icon color */
+  }
+
+  .feature-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #4a2c2c;
+    margin-bottom: 12px;
+  }
+
+  .feature-card p {
+    color: #8b5f5f;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .feature-highlight {
+    margin-top: 16px;
+  }
+
+  .feature-highlight code {
+    background: #fef9f8;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 12px;
+    color: #dc5649;
+  }
+
+  .highlight-text {
+    background: linear-gradient(135deg, #dc5649 0%, #c44538 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .cta-section {
+    background: linear-gradient(135deg, #d94343 0%, #c44538 100%);
+    padding: 80px 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z'/%3E%3C/g%3E%3C/svg%3E") repeat;
+    z-index: 0;
+  }
+
+  .cta-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #ffffff 0%, #fdf2f1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cta-section p {
+    font-size: 20px;
+    margin-bottom: 40px;
+    opacity: 0.95;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 16px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    font-size: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn:hover::before {
+    left: 100%;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ffffff 0%, #fef9f8 100%);
+    color: #d94343;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #fef9f8 0%, #fde8e6 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+  }
+
+  .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: #dc5649;
+    border: 2px solid #dc5649;
+  }
+
+  .btn-secondary:hover {
+    background: #dc5649;
+    color: white;
+  }
+
+  .btn-large {
+    padding: 20px 40px;
+    font-size: 16px;
+    border-radius: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-container {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 36px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+    }
+
+    .hero-buttons {
+      justify-content: center;
+    }
+
+    .hero-stats {
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .trust-badges {
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-buttons {
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cta-section h2 {
+      font-size: 32px;
+    }
+
+    .cta-section p {
+      font-size: 18px;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+</style>
