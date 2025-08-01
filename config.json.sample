@@ -1,25 +1,39 @@
 {
-    "urls": [
-        {
-            "url": "https://windy.com/"
-        },
-        {
-            "url": "https://time.is/clock"
-        },
-        {
-            "url": "https://github.com/trending"
-        },
-        {
-            "url": "https://news.ycombinator.com/"
-        },
-        {
-            "url": "https://huggingface.co/papers"
-        },
-        {
-            "url": "https://www.perplexity.ai/discover"
-        },
-        {
-            "url": "https://www.google.com/search?q=nasdaq+index"
-        }
-    ]
+  "urls": [
+    {
+      "url": "https://windy.com/",
+      "duration": 10,
+      "cycles": 10
+    },
+    {
+      "url": "https://time.is/clock",
+      "duration": 10,
+      "cycles": 10
+    },
+    {
+      "url": "https://github.com/trending",
+      "duration": 10,
+      "cycles": 10
+    },
+    {
+      "url": "https://news.ycombinator.com/",
+      "duration": 10,
+      "cycles": 10
+    },
+    {
+      "url": "https://huggingface.co/papers",
+      "duration": 10,
+      "cycles": 10
+    },
+    {
+      "url": "https://www.perplexity.ai/discover",
+      "duration": 10,
+      "cycles": 10
+    },
+    {
+      "url": "https://www.google.com/search?q=nasdaq+index",
+      "duration": 10,
+      "cycles": 10
+    }
+  ]
 }
