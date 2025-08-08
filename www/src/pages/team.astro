@@ -1,25 +1,89 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// List of supporters, now framed as team members
-const supporters = [
+const contributors = [
+  {
+    name: 'debloper',
+    avatarUrl: 'https://github.com/debloper.png',
+    githubUrl: 'https://github.com/debloper',
+    xUrl: 'https://x.com/debloper',
+    role: 'Project Lead & Main Contributor',
+  },
+  {
+    name: 'parthsidpara',
+    avatarUrl: 'https://github.com/parthsidpara.png',
+    githubUrl: 'https://github.com/parthsidpara',
+    xUrl: 'https://x.com/ParthTw',
+    role: 'Contributor',
+  },
+  {
+    name: 'SpiraMirabilis',
+    avatarUrl: 'https://github.com/SpiraMirabilis.png',
+    githubUrl: 'https://github.com/SpiraMirabilis',
+    xUrl: null,
+    role: 'Contributor',
+  },
+];
+
+// List of members 
+const members = [
+  {
+    name: 'andiohn',
+    avatarUrl: 'https://github.com/andiohn.png',
+    profileUrl: 'https://github.com/andiohn',
+    role: 'Community Member',
+  },
+  {
+    name: 'parthsidpara',
+    avatarUrl: 'https://github.com/parthsidpara.png',
+    profileUrl: 'https://github.com/parthsidpara',
+    role: 'Community Member',
+  },
+  {
+    name: 'adcurtin',
+    avatarUrl: 'https://github.com/adcurtin.png',
+    profileUrl: 'https://github.com/adcurtin',
+    role: 'Community Member',
+  },
+  {
+    name: 'pwillard',
+    avatarUrl: 'https://github.com/pwillard.png',
+    profileUrl: 'https://github.com/pwillard',
+    role: 'Community Member',
+  },
+  {
+    name: 'creative0100',
+    avatarUrl: 'https://github.com/creative0100.png',
+    profileUrl: 'https://github.com/creative0100',
+    role: 'Community Member',
+  },
+  {
+    name: 'mehdicopter',
+    avatarUrl: 'https://github.com/mehdicopter.png',
+    profileUrl: 'https://github.com/mehdicopter',
+    role: 'Community Member',
+  },
+];
+
+// List of sponsors
+const sponsors = [
   {
     name: 'unclesp1d3r',
     avatarUrl: 'https://github.com/unclesp1d3r.png',
     profileUrl: 'https://github.com/unclesp1d3r',
-    role: 'Valued Supporter',
+    role: 'Sponsor',
   },
   {
     name: 'tcchester',
     avatarUrl: 'https://github.com/tcchester.png',
     profileUrl: 'https://github.com/tcchester',
-    role: 'Valued Supporter',
+    role: 'Sponsor',
   },
   {
     name: 'xactai',
     avatarUrl: 'https://github.com/xactai.png',
     profileUrl: 'https://github.com/xactai',
-    role: 'Valued Supporter',
+    role: 'Sponsor',
   },
 ];
 ---
@@ -36,10 +100,9 @@ const supporters = [
 
   <div class="team-members">
     <div class="team-container">
-      <h2 class="members-title">Core Team & Supporters</h2>
-      <div class="members-grid">
-
-        <!-- Core Maintainer -->
+      <!-- Core Maintainer -->
+      <h2 class="members-title">Core Team</h2>
+      <div class="members-grid single-member">
         <div class="member-card core-member">
           <div class="member-header">
             <div class="member-avatar">
@@ -75,21 +138,83 @@ const supporters = [
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Supporters -->
-        {supporters.map(supporter => (
-          <div class="member-card supporter-card">
+      <!-- Contributors -->
+      <h2 class="members-title">Contributors</h2>
+      <p class="section-subtitle">Developers who have committed code to the project</p>
+      <div class="members-grid">
+        {contributors.map(contributor => (
+          <div class="member-card contributor-card">
             <div class="member-header">
-              <div class="member-avatar supporter-avatar">
-                <img src={supporter.avatarUrl} alt={supporter.name} />
+              <div class="member-avatar contributor-avatar">
+                <img src={contributor.avatarUrl} alt={contributor.name} />
               </div>
               <div class="member-info">
-                <h3 class="member-uname">{supporter.name}</h3>
-                <p class="member-role supporter-role">{supporter.role}</p>
+                <h3 class="member-uname">{contributor.name}</h3>
+                <p class="member-role contributor-role">{contributor.role}</p>
               </div>
             </div>
-            <div class="member-links supporter-links">
-               <a href={supporter.profileUrl} target="_blank" class="member-link github">
+            <div class="member-links contributor-links">
+              <a href={contributor.githubUrl} target="_blank" class="member-link github">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+              </a>
+              {contributor.xUrl && (
+                <a href={contributor.xUrl} target="_blank" class="member-link twitter">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+                    <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+                  </svg>
+                  X
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Members -->
+      <h2 class="members-title">Community Members</h2>
+      <p class="section-subtitle">Participants in discussions, issues, and community support</p>
+      <div class="members-grid">
+        {members.map(member => (
+          <div class="member-card member-card-item">
+            <div class="member-header">
+              <div class="member-avatar member-avatar-item">
+                <img src={member.avatarUrl} alt={member.name} />
+              </div>
+              <div class="member-info">
+                <h3 class="member-uname">{member.name}</h3>
+                <p class="member-role member-role-item">{member.role}</p>
+              </div>
+            </div>
+            <div class="member-links member-links-item">
+               <a href={member.profileUrl} target="_blank" class="member-link github">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                View Profile
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Sponsors -->
+      <h2 class="members-title">Sponsors</h2>
+      <p class="section-subtitle">Financial supporters who help keep the project alive and growing</p>
+      <div class="members-grid">
+        {sponsors.map(sponsor => (
+          <div class="member-card sponsor-card">
+            <div class="member-header">
+              <div class="member-avatar sponsor-avatar">
+                <img src={sponsor.avatarUrl} alt={sponsor.name} />
+              </div>
+              <div class="member-info">
+                <h3 class="member-uname">{sponsor.name}</h3>
+                <p class="member-role sponsor-role">{sponsor.role}</p>
+              </div>
+            </div>
+            <div class="member-links sponsor-links">
+               <a href={sponsor.profileUrl} target="_blank" class="member-link github">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 View Profile
               </a>
@@ -155,6 +280,22 @@ const supporters = [
     font-size: 32px;
     font-weight: 700;
     color: #1e293b;
+    margin-bottom: 16px;
+    margin-top: 64px;
+  }
+
+  .members-title:first-of-type {
+    margin-top: 0;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 48px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 48px;
   }
 
@@ -162,6 +303,11 @@ const supporters = [
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  .single-member {
+    justify-items: center;
   }
 
   .member-card {
@@ -180,11 +326,17 @@ const supporters = [
   }
 
   .member-card.core-member {
-    grid-column: 1 / -1; /* Make the core member card span the full width */
     max-width: 800px;
-    margin: 0 auto;
     border-width: 2px;
     border-color: #dc5649;
+  }
+
+  .contributor-card {
+    border-color: #e2e8f0;
+  }
+
+  .sponsor-card {
+    border-color: #e2e8f0;
   }
 
   .member-header {
@@ -200,13 +352,22 @@ const supporters = [
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
-    border: 3px solid #dc5549bd;
   }
   
-  .supporter-avatar {
-      width: 64px;
-      height: 64px;
-      border-color: #a7b2f5;
+  .contributor-avatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .member-avatar-item {
+    width: 64px;
+    height: 64px;
+    border-color: #dc5549bd;
+  }
+
+  .sponsor-avatar {
+    width: 64px;
+    height: 64px;
   }
 
   .member-avatar img {
@@ -233,10 +394,22 @@ const supporters = [
     margin-top: auto;
   }
   
-  .supporter-role {
-      font-size: 14px;
-      color: #8892b0;
-      margin-top: auto;
+  .contributor-role {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: auto;
+  }
+
+  .member-role-item {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: auto;
+  }
+
+  .sponsor-role {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: auto;
   }
 
   .member-bio-full {
@@ -255,7 +428,7 @@ const supporters = [
     gap: 12px;
   }
   
-  .supporter-card .member-links {
+  .contributor-links, .member-links-item, .sponsor-links {
       margin-top: auto; /* Pushes link to the bottom */
   }
 
@@ -386,12 +559,6 @@ const supporters = [
     color: #c44538;
   }
 
-  @media (max-width: 900px) {
-      .member-card.core-member {
-          grid-column: auto; /* Revert to default flow on smaller screens */
-      }
-  }
-
   @media (max-width: 768px) {
     .team-title { font-size: 32px; }
     .team-subtitle { font-size: 18px; }
@@ -402,9 +569,11 @@ const supporters = [
       gap: 16px;
     }
 
-    .member-avatar { margin: 0 auto; }
+    .member-avatar, .contributor-avatar, .member-avatar-item, .sponsor-avatar { 
+      margin: 0 auto; 
+    }
     
-    .member-links, .support-links {
+    .member-links, .contributor-links, .member-links-item, .sponsor-links, .support-links {
         justify-content: center;
     }
 
