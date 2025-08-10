@@ -23,6 +23,7 @@ jobs:
         uses: withastro/action@v4
         with:
           path: www
+          package-manager: npm
 
   deploy:
     name: Deploy

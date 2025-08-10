@@ -41,6 +41,8 @@ echo -e "${INFO}Cloning repository...${RESET}"
 git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
 cd "$PIOSK_DIR"
 
+git checkout "d586dfa833187df34de8e8345b85c8d27be8bdc9"
+
 # echo -e "${INFO}Checking out latest release...${RESET}"
 # git checkout devel
 # git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
