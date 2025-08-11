@@ -9,8 +9,8 @@
     <title>PiOSK</title>
   </head>
   <body>
-    <nav id="navs" class="navbar bg-body-tertiary">
-      <div class="container-md d-flex justify-content-between">
+    <nav id="navs" class="bg-body-tertiary navbar">
+      <div class="d-flex justify-content-between container-md">
         <h1 class="my-1">Pi<span class="bg-danger mx-1 px-1 rounded">OSK</span></h1>
         <div class="input-group w-75">
           <input  id="new-url" type="text"   class="form-control form-control-lg" placeholder="...add URLs of webpages as screens">
@@ -20,11 +20,18 @@
       </div>
     </nav>
 
-    <div id="urls" class="container-md my-5">
+    <div id="settings" class="my-5 container-md">
+      <div class="input-group">
+        <span class="input-group-text">Page Timeout (Seconds)</span>
+        <input type="number" id="page_timeout" class="form-control form-control-lg">
+      </div>
+    </div>
+
+    <div id="urls" class="my-5 container-md">
       <ul class="list-group list-group-flush"></ul>
     </div>
 
-    <footer id="colophon" class="container-md text-center fs-4 my-5">
+    <footer id="colophon" class="my-5 text-center container-md fs-4">
       <kbd><a class="text-decoration-none" href="https://github.com/debloper/piosk" target="_blank">{}</a></kbd>
       w/
       <kbd><a class="text-decoration-none" href="https://youtube.com/@BreakerSpace" target="_blank"><3</a></kbd>
@@ -34,13 +41,13 @@
 
     <template id="template-url">
       <li class="list-group-item text-truncate fs-3">
-        <button type="button" class="btn btn-close mx-3" aria-label="Remove"></button>
+        <button type="button" class="mx-3 btn btn-close" aria-label="Remove"></button>
         <a class="link-underline-dark"></a>
       </li>
     </template>
 
     <template id="template-err">
-      <div class="alert alert-danger m-4" role="alert"></div>
+      <div class="m-4 alert alert-danger" role="alert"></div>
     </template>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

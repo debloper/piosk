@@ -8,6 +8,7 @@ export XDG_RUNTIME_DIR=/run/user/1000
 
 # count the number of URLs, that are configured to cycle through
 URLS=$(jq -r '.urls | length' /opt/piosk/config.json)
+TIMEOUT=$(jq '.settings.page_timeout' /opt/piosk/config.json)
 
 # swich tabs each 10s, refresh tabs each 10th cycle & then reset
 for ((TURN=1; TURN<=$((10*URLS)); TURN++)) do
@@ -20,5 +21,5 @@ for ((TURN=1; TURN<=$((10*URLS)); TURN++)) do
       fi
     fi
   fi
-  sleep 10
+  sleep $TIMEOUT
 done

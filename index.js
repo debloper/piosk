@@ -1,6 +1,7 @@
 const exp = require('express')
 const exe = require('child_process').exec
 const nfs = require('fs')
+const os = require('os')
 
 const app = exp()
 
@@ -24,6 +25,17 @@ app.post('/config', (req, res) => {
       }
       res.status(200).send('New config applied; rebooting for changes to take effect...')
     })
+  })
+})
+
+app.get('/setup', (req, res) => {
+  res.sendFile(__dirname + '/web/setup.html')
+}) 
+
+app.get('/sysinfo', (req, res) => {
+  res.json({
+    hostname: os.hostname(),
+    ip: os.networkInterfaces(),
   })
 })
 
