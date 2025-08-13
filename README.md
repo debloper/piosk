@@ -64,7 +64,7 @@ That's it[^2].
 > Try these at your own risk; if you know what you're doing. Misconfiguration(s) may break the setup.
 
 1. The PiOSK repo is cloned to `/opt/piosk`
-2. You can change the dashboard port by setting the `PORT` environment variable or modifying `index.ts`
+2. You can change the dashboard port by setting the `PORT` from `index.js`
 3. You can change the per-page timeout from `scripts/switcher.sh`
 4. You can change browser behavior (e.g. no full screen) from `scripts/runner.sh`
 5. Some changes can be applied without rebooting, but rebooting is simpler
@@ -91,7 +91,7 @@ sudo /opt/piosk/scripts/cleanup.sh
 ```
 
 > [!NOTE]  
-> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. `git`, `jq`, `wtype`). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.
+> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. `git`, `jq`, `Node.js`, `wtype`). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.
 
 # 2. Appendix
 
