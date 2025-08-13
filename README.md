@@ -39,7 +39,7 @@ That's when I realized... maybe there are other people (or future me) who'd also
 Either open terminal on the Raspberry Pi's desktop environment, or remote login to it; and run the following command:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/debloper/piosk/main/scripts/setup.sh | sudo bash -
+curl -sSL https://raw.githubusercontent.com/debloper/piosk/d586dfa833187df34de8e8345b85c8d27be8bdc9/scripts/setup.sh | sudo bash -
 ```
 
 That's it[^2].
@@ -64,7 +64,7 @@ That's it[^2].
 > Try these at your own risk; if you know what you're doing. Misconfiguration(s) may break the setup.
 
 1. The PiOSK repo is cloned to `/opt/piosk`
-2. You can change the dashboard port from `index.js`
+2. You can change the dashboard port by setting the `PORT` from `index.js`
 3. You can change the per-page timeout from `scripts/switcher.sh`
 4. You can change browser behavior (e.g. no full screen) from `scripts/runner.sh`
 5. Some changes can be applied without rebooting, but rebooting is simpler
