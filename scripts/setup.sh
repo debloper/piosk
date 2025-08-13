@@ -57,8 +57,6 @@ rm -rf "$PIOSK_DIR"
 git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
 cd "$PIOSK_DIR"
 
-git checkout "d586dfa833187df34de8e8345b85c8d27be8bdc9"
-
 # --- Binary Download ---
 echo -e "${INFO}Downloading PiOSK binary...${RESET}"
 ARCH=$(uname -m)
