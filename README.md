@@ -10,9 +10,6 @@ That's when I realized... maybe there are other people (or future me) who'd also
 > [!NOTE]  
 > And apparently, I wasn't wrong! From GitHub [stars](https://github.com/debloper/piosk/stargazers), [issue](https://github.com/debloper/piosk/issues) reports, to [news articles](https://www.hackster.io/news/fe890d007c32) covering PiOSK - the community acceptance has been far more than I had imagined. So, with the wide range of users, there's a need for stabilizing the repo and consolidating the features. The followup updates will be less frequent, and more thoroughly tested. It's not a feature freeze, but priority would be on the refactor and maintenance.
 
-> [!IMPORTANT]  
-> **Technology Update**: PiOSK has been converted from Node.js to Deno with standalone executable compilation. This eliminates the need to install Node.js runtime and dependency packages on the host system during setup. The setup script now downloads pre-built binaries for your platform (Linux x64/ARM64, Windows, macOS) from GitHub releases, significantly simplifying the installation process.
-
 
 # 1. Set Up Guide
 
