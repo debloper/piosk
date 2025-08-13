@@ -46,6 +46,13 @@ apt update && apt install -y git jq wtype curl unzip
 
 # --- Repo Cloning ---
 echo -e "${INFO}Cloning repository...${RESET}"
+
+# Before deleting the directory, check if a config file exists and back it up.
+if [ -f "$PIOSK_DIR/config.json" ]; then
+    echo -e "${DEBUG}Found existing installation. Backing up config.json...${RESET}"
+    cp "$PIOSK_DIR/config.json" /opt/piosk.config.bak
+fi
+
 rm -rf "$PIOSK_DIR"
 git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
 cd "$PIOSK_DIR"
