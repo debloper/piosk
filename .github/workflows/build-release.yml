@@ -27,21 +27,6 @@ jobs:
             runner: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             output: piosk-linux-arm64
-          # Windows x86_64
-          - os: windows-x64
-            runner: windows-latest
-            target: x86_64-pc-windows-msvc
-            output: piosk-windows-x64.exe
-          # macOS x86_64
-          - os: macos-x64
-            runner: macos-13
-            target: x86_64-apple-darwin
-            output: piosk-macos-x64
-          # macOS ARM64 (Apple Silicon)
-          - os: macos-arm64
-            runner: macos-14
-            target: aarch64-apple-darwin
-            output: piosk-macos-arm64
 
     steps:
       - name: Checkout code
