@@ -22,7 +22,7 @@ jobs:
             runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             output: piosk-linux-x64
-          # Linux ARM64 (Raspberry Pi)
+          # Linux ARM64
           - os: linux-arm64
             runner: ubuntu-latest
             target: aarch64-unknown-linux-gnu
@@ -49,23 +49,14 @@ jobs:
             --output ${{ matrix.output }} \
             index.ts
 
-      - name: Archive binary (Unix)
-        if: runner.os != 'Windows'
-        run: |
-          tar -czf ${{ matrix.output }}.tar.gz ${{ matrix.output }}
-
-      - name: Archive binary (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          7z a ${{ matrix.output }}.zip ${{ matrix.output }}
+      - name: Archive binary
+        run: tar -czf ${{ matrix.output }}.tar.gz ${{ matrix.output }}
 
       - name: Upload binary as artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.output }}
-          path: |
-            ${{ matrix.output }}.tar.gz
-            ${{ matrix.output }}.zip
+          path: ${{ matrix.output }}.tar.gz
           if-no-files-found: ignore
 
   release:
@@ -86,9 +77,9 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ./artifacts/*/*.{tar.gz,zip}
+          files: ./artifacts/*/*.tar.gz
           draft: false
-          prerelease: false
+          prerelease: true
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
