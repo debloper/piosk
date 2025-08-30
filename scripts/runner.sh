@@ -1,4 +1,19 @@
 #!/bin/bash
+
+# export essential GUI variables for systemd services
+export DISPLAY=:0
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+# give the desktop a moment to settle
+sleep 5
+
+# check to ensure URLs are there to load
+URLS_TO_LOAD=$(jq -r '.urls | map(.url) | join(" ")' /opt/piosk/config.json)
+if [ -z "$URLS_TO_LOAD" ]; then
+    echo "No URLs found in config.json. Exiting runner."
+    exit 0
+fi
+
 chromium-browser \
   $(jq -r '.urls | map(.url) | join(" ")' /opt/piosk/config.json) \
   --disable-component-update \

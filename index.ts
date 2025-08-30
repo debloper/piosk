@@ -24,7 +24,8 @@ async function rebootSystem(): Promise<void> {
       return;
     }
     
-    const command = new Deno.Command("reboot", {
+    // Use absolute path to the reboot command
+    const command = new Deno.Command("/sbin/reboot", {
       stdout: "piped",
       stderr: "piped"
     });
