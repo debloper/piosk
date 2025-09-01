@@ -159,8 +159,9 @@
         $urlList.on("dragstart", ".drag-handle", function (e) {
           draggingItem = $(this).closest("li")[0];
           draggingItem.classList.add("dragging");
-          e.originalEvent.dataTransfer.effectAllowed = "move";
-          e.originalEvent.dataTransfer.setData("text/plain", "");
+          const dataTransfer = e.originalEvent.dataTransfer;
+          dataTransfer.effectAllowed = "move";
+          dataTransfer.setData("text/plain", "");
         });
 
         // End dragging
