@@ -8,14 +8,14 @@ export XDG_RUNTIME_DIR=/run/user/$(id -u)
 sleep 5
 
 # check to ensure URLs are there to load
-URLS_TO_LOAD=$(jq -r '.urls | map(.url) | join(" ")' /opt/piosk/config.json)
-if [ -z "$URLS_TO_LOAD" ]; then
+URLS=$(jq -r '.urls | map(.url) | join(" ")' /opt/piosk/config.json)
+if [ -z "$URLS" ]; then
     echo "No URLs found in config.json. Exiting runner."
     exit 0
 fi
 
 chromium-browser \
-  $(jq -r '.urls | map(.url) | join(" ")' /opt/piosk/config.json) \
+  $URLS \
   --disable-component-update \
   --disable-composited-antialiasing \
   --disable-gpu-driver-bug-workarounds \
