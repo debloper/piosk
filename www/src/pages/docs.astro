@@ -69,7 +69,7 @@ import Layout from '../layouts/Layout.astro';
         <section id="installation" class="docs-section">
           <h2>1.2 Installation</h2>
           <p>Either open terminal on the Raspberry Pi's desktop environment, or remote login to it; and run the following command:</p>
-          <div class="code-block" data-code="curl -sSL https://raw.githubusercontent.com/debloper/piosk/d586dfa833187df34de8e8345b85c8d27be8bdc9/scripts/setup.sh | sudo bash -">
+          <div class="code-block" data-code="curl -sSL https://raw.githubusercontent.com/debloper/piosk/v4.0.0/scripts/setup.sh | sudo bash -">
             <div class="code-header">
               <span class="code-language">bash</span>
               <button class="copy-button" onclick="copyCode(this)">
@@ -80,7 +80,7 @@ import Layout from '../layouts/Layout.astro';
                 Copy
               </button>
             </div>
-            <code>curl -sSL https://raw.githubusercontent.com/debloper/piosk/main/scripts/setup.sh | sudo bash -</code>
+            <code>curl -sSL https://raw.githubusercontent.com/debloper/piosk/v4.0.0/scripts/setup.sh | sudo bash -</code>
           </div>
           <p>That's it<sup>2</sup>.</p>
           <div class="footnote">
@@ -108,7 +108,6 @@ import Layout from '../layouts/Layout.astro';
           <ol>
             <li>The PiOSK repo is cloned to <code>/opt/piosk</code></li>
             <li>You can change the dashboard port from <code>index.js</code></li>
-            <li>You can change the per-page timeout from <code>scripts/switcher.sh</code></li>
             <li>You can change browser behavior (e.g. no full screen) from <code>scripts/runner.sh</code></li>
             <li>Some changes can be applied without rebooting, but rebooting is simpler</li>
           </ol>
@@ -142,7 +141,7 @@ import Layout from '../layouts/Layout.astro';
             <code>sudo /opt/piosk/scripts/cleanup.sh</code>
           </div>
           <div class="note">
-            <p><strong>Note:</strong> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. <code>git</code>, <code>jq</code>, <code>Node.js</code>, <code>wtype</code>). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.</p>
+            <p><strong>Note:</strong> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. <code>git</code>, <code>jq</code>, <code>wtype</code>). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.</p>
           </div>
         </section>
 
@@ -152,7 +151,7 @@ import Layout from '../layouts/Layout.astro';
           <h3 id="assumptions">2.1 Assumptions</h3>
           <ol start="0">
             <li>You're using a Raspberry Pi (other SBCs may work, not tested)</li>
-            <li>You're using "Raspberry Pi OS with desktop (32bit)" (other distros may work, not tested)</li>
+            <li>You're using "Raspberry Pi OS (64bit)" (This is a mandatory requirement for PiOSK (version 4.0.0 and newer). PiOSK now uses the Deno runtime, which does not provide official binaries for 32-bit ARM systems. This change allows PiOSK to be a standalone executable, simplifying installation by removing the need for a separate Node.js runtime.)</li>
             <li>You've applied proper OS customizations & the Pi is able to access the internet (required for setup)</li>
             <li>You're not using port 80 on the Pi to run some other web server (apart from PiOSK dashboard)</li>
           </ol>
@@ -160,7 +159,6 @@ import Layout from '../layouts/Layout.astro';
           <h3 id="recommendations">2.2 Recommendations</h3>
           <h4>Choose the right device and OS</h4>
           <ul>
-            <li>If your Pi has 4GB or less memory, choose 32bit image</li>
             <li>Raspberry Pi Zeros struggle running Chromium due to low memory</li>
             <li>Raspberry Pi4 or Pi5 (or their compute modules) are ideal for PiOSK</li>
             <li>Apply the necessary customizations (user account, WiFi credentials, SSH access etc)</li>

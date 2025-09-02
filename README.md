@@ -39,7 +39,7 @@ That's when I realized... maybe there are other people (or future me) who'd also
 Either open terminal on the Raspberry Pi's desktop environment, or remote login to it; and run the following command:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/debloper/piosk/45397876cf82a8113da55e84aa3c8da74a1ef5df/scripts/setup.sh | sudo bash -
+curl -sSL https://raw.githubusercontent.com/debloper/piosk/v4.0.0/scripts/setup.sh | sudo bash -
 ```
 
 That's it[^2].
@@ -65,9 +65,8 @@ That's it[^2].
 
 1. The PiOSK repo is cloned to `/opt/piosk`
 2. You can change the dashboard port by setting the `PORT` from `index.js`
-3. You can change the per-page timeout from `scripts/switcher.sh`
-4. You can change browser behavior (e.g. no full screen) from `scripts/runner.sh`
-5. Some changes can be applied without rebooting, but rebooting is simpler
+3. You can change browser behavior (e.g. no full screen) from `scripts/runner.sh`
+4. Some changes can be applied without rebooting, but rebooting is simpler
 
 [^3]: PiOSK uses port 80 on the Pi to serve the web dashboard. If you're planning to use the Pi for other purposes, make sure to avoid port collision.
 
@@ -91,21 +90,23 @@ sudo /opt/piosk/scripts/cleanup.sh
 ```
 
 > [!NOTE]  
-> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. `git`, `jq`, `Node.js`, `wtype`). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.
+> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. `git`, `jq`, `wtype`). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.
 
 # 2. Appendix
 
 ## 2.1 Assumptions
 
 0. You're using a Raspberry Pi (other SBCs may work, not tested)
-1. You're using "[Raspberry Pi OS with desktop (32bit)](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-32-bit)" (other distros may work, not tested)
+1. You're using "[Raspberry Pi OS (64bit)](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit)" (required for PiOSK 4.0.0+)
 2. You've applied proper [OS customizations](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options) & the Pi is able to access the internet (required for setup)
 3. You're not using port 80 on the Pi to run some other web server (apart from PiOSK dashboard)
 
+> [!NOTE]
+> **Why 64-bit OS is required:**  
+> PiOSK (version 4.0.0 and newer) now uses the Deno runtime, which does not provide official binaries for 32-bit ARM systems. This change allows PiOSK to be a standalone executable, simplifying installation by removing the need for a separate Node.js runtime.
 ## 2.2 Recommendations
 
 - Choose the right device and OS
-  - If your Pi has 4GB or less memory, choose 32bit image
   - Raspberry Pi Zeros struggle running Chromium due to low memory
   - Raspberry Pi4 or Pi5 (or their compute modules) are ideal for PiOSK
   - Apply the necessary customizations (user account, WiFi credentials, SSH access etc)
