@@ -97,10 +97,13 @@ sudo /opt/piosk/scripts/cleanup.sh
 ## 2.1 Assumptions
 
 0. You're using a Raspberry Pi (other SBCs may work, not tested)
-1. You're using "[Raspberry Pi OS (64bit)](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit)" (This is a mandatory requirement for PiOSK (version 4.0.0 and newer). PiOSK now uses the Deno runtime, which does not provide official binaries for 32-bit ARM systems. This change allows PiOSK to be a standalone executable, simplifying installation by removing the need for a separate Node.js runtime.)
+1. You're using "[Raspberry Pi OS (64bit)](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit)" (required for PiOSK 4.0.0+)
 2. You've applied proper [OS customizations](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options) & the Pi is able to access the internet (required for setup)
 3. You're not using port 80 on the Pi to run some other web server (apart from PiOSK dashboard)
 
+> [!NOTE]
+> **Why 64-bit OS is required:**  
+> PiOSK (version 4.0.0 and newer) now uses the Deno runtime, which does not provide official binaries for 32-bit ARM systems. This change allows PiOSK to be a standalone executable, simplifying installation by removing the need for a separate Node.js runtime.
 ## 2.2 Recommendations
 
 - Choose the right device and OS
