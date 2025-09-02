@@ -44,7 +44,19 @@ fi
 echo -e "${INFO}Installing dependencies...${RESET}"
 apt update && apt install -y git jq wtype curl unzip
 
-# --- Repo Cloning ---
+# --- Get Latest Release Info ---
+# Fetched early to be used for both git checkout and binary download.
+echo -e "${INFO}Finding latest stable release...${RESET}"
+LATEST_RELEASE=$(curl -s https://api.github.com/repos/debloper/piosk/releases/latest | jq -r '.tag_name')
+
+if [ -z "$LATEST_RELEASE" ] || [ "$LATEST_RELEASE" = "null" ]; then
+  echo -e "${ERROR}Could not find any releases on the GitHub repository.${RESET}"
+  exit 1
+fi
+echo -e "${SUCCESS}Latest release is ${LATEST_RELEASE}.${RESET}"
+
+
+# --- Repo Cloning and Checkout ---
 echo -e "${INFO}Cloning repository...${RESET}"
 
 # Before deleting the directory, check if a config file exists and back it up.
@@ -56,6 +68,10 @@ fi
 rm -rf "$PIOSK_DIR"
 git clone https://github.com/debloper/piosk.git "$PIOSK_DIR"
 cd "$PIOSK_DIR"
+
+# Checkout the latest stable release to ensure code matches the binary
+echo -e "${INFO}Checking out release ${LATEST_RELEASE}...${RESET}"
+git checkout "$LATEST_RELEASE"
 
 # --- Binary Download ---
 echo -e "${INFO}Downloading PiOSK binary...${RESET}"
@@ -78,12 +94,6 @@ esac
 
 echo -e "${DEBUG}Architecture: '$ARCH', Binary: '$BINARY_NAME'${RESET}"
 
-LATEST_RELEASE=$(curl -s https://api.github.com/repos/debloper/piosk/releases/latest | jq -r '.tag_name')
-
-if [ -z "$LATEST_RELEASE" ] || [ "$LATEST_RELEASE" = "null" ]; then
-  echo -e "${ERROR}Could not find any releases on the GitHub repository.${RESET}"
-  exit 1
-fi
 
 DOWNLOAD_URL="https://github.com/debloper/piosk/releases/download/$LATEST_RELEASE/$BINARY_NAME.tar.gz"
 echo -e "${INFO}Downloading from: $DOWNLOAD_URL${RESET}"
