@@ -24,11 +24,11 @@ async function rebootSystem(): Promise<void> {
       return;
     }
     
-    const command = new Deno.Command("reboot", {
-      stdout: "piped",
-      stderr: "piped"
-    });
-    await command.output();
+    // Use absolute path to the reboot command
+    const command = new Deno.Command("/sbin/reboot"); 
+
+    // Spawn the process to run in the background and DO NOT await it. 
+    command.spawn();
   } catch (error) {
     console.error("Reboot command failed:", error);
     throw error;
