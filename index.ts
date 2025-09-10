@@ -39,10 +39,10 @@ async function serveStaticFile(pathname: string): Promise<Response> {
   let filePath: string;
   
   if (pathname === "/" || pathname === "/index.html") {
-    filePath = "./web/index.html";
+    filePath = "./dashboard/index.html";
   } else {
     // Remove leading slash and serve from web directory
-    filePath = `./web${pathname}`;
+    filePath = `./dashboard${pathname}`;
   }
   
   try {
