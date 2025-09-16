@@ -94,7 +94,6 @@ esac
 
 echo -e "${DEBUG}Architecture: '$ARCH', Binary: '$BINARY_NAME'${RESET}"
 
-
 DOWNLOAD_URL="https://github.com/debloper/piosk/releases/download/$LATEST_RELEASE/$BINARY_NAME.tar.gz"
 echo -e "${INFO}Downloading from: $DOWNLOAD_URL${RESET}"
 
@@ -106,6 +105,27 @@ fi
 chmod +x "$BINARY_NAME"
 mv "$BINARY_NAME" piosk
 echo -e "${SUCCESS}PiOSK binary downloaded successfully.${RESET}"
+
+# --- JS/CSS Download ---
+
+FILES=(
+  "jquery-3.7.1.min.js|https://code.jquery.com/"
+  "bootstrap.bundle.min.js|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/"
+  "bootstrap.min.css|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/"
+)
+
+for entry in "${FILES[@]}"; do
+  FILE="${entry%%|*}"
+  URL="${entry#*|}${FILE}"
+  echo -e "${INFO}Downloading from: $URL${RESET}"
+
+  if ! curl -fL --progress-bar "$URL" -o "$PIOSK_DIR/web/$FILE"; then
+    echo -e "${ERROR}Failed to download $URL.${RESET}"
+    exit 1
+  fi
+done
+
+echo -e "${SUCCESS}external scripts downloaded successfully.${RESET}"
 
 # --- Configuration Setup ---
 echo -e "${INFO}Restoring configurations...${RESET}"
