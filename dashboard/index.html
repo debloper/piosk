@@ -5,74 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="style.css">
     <title>PiOSK</title>
-    <style>
-      .input-changed {
-        background-color: rgba(255, 193, 7, 0.2) !important;
-        border-color: #ffc107 !important;
-        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25) !important;
-        transition: all 0.3s ease;
-      }
-      .input-changed:focus {
-        background-color: rgba(255, 193, 7, 0.3) !important;
-        border-color: #ffc107 !important;
-        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5) !important;
-      }
-      
-      /* --- Drag & Drop Styles --- */
-      .drag-handle {
-        cursor: grab;
-        user-select: none;
-        display: flex;
-        align-items: center;
-        padding: 0 0.75rem 0 0;
-        color: #6c757d; 
-      }
-      .drag-handle:active {
-        cursor: grabbing;
-      }
-      .drag-handle svg {
-        width: 18px;
-        height: 18px;
-        fill: currentColor;
-      }
-
-      #urls ul.list-group {
-        user-select: none;
-        position: relative;
-      }
-      #urls li.list-group-item {
-        cursor: default;
-        transition: background 0.2s, transform 0.2s;
-        position: relative;
-        display: flex;
-        align-items: center;
-      }
-      #urls li.list-group-item:hover {
-        background-color: rgba(220, 53, 69, 0.1); 
-      }
-      #urls li.list-group-item.dragging {
-        opacity: 0.6;
-        transform: scale(0.95);
-        cursor: grabbing;
-        z-index: 1000;
-        background-color: rgba(220, 53, 69, 0.15);
-      }
-      #urls li.list-group-item.over::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 12px;
-        right: 12px;
-        height: 3px;
-        background-color: #dc3545;
-        border-radius: 2px;
-      }
-      #urls li.list-group-item a {
-        user-select: text;
-      }
-    </style>
   </head>
   <body>
     <nav id="navs" class="navbar bg-body-tertiary">
@@ -137,78 +71,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    <script>
-      $(document).ready(function() {
-        const $urlList = $("#urls ul.list-group");
-
-        // Use event delegation to highlight inputs when they are changed.
-        $('#urls').on('change', '.duration-input, .cycles-input', function() {
-          $(this).addClass('input-changed');
-        });
-
-        // Add a separate click listener to the Apply button just to remove the highlight.
-        // This will fire alongside the listener in script.js that saves the data.
-        $('#execute').on('click', function() {
-          $('.input-changed').removeClass('input-changed');
-        });
-
-        // --- DRAG & DROP REORDER LOGIC ---
-        let draggingItem = null;
-
-        // Start dragging from the handle
-        $urlList.on("dragstart", ".drag-handle", function (e) {
-          draggingItem = $(this).closest("li")[0];
-          draggingItem.classList.add("dragging");
-          const dataTransfer = e.originalEvent.dataTransfer;
-          dataTransfer.effectAllowed = "move";
-          dataTransfer.setData("text/plain", "");
-        });
-
-        // End dragging
-        $urlList.on("dragend", ".drag-handle", function () {
-          if (draggingItem) {
-            draggingItem.classList.remove("dragging");
-          }
-          $urlList.find("li.list-group-item").removeClass("over");
-          draggingItem = null;
-        });
-
-        // Handle dragging over the list
-        $urlList.on("dragover", function (e) {
-          e.preventDefault();
-          if (!draggingItem) return;
-
-          const afterElement = getDragAfterElement(this, e.clientY);
-          $urlList.find("li.list-group-item").removeClass("over");
-
-          if (afterElement) {
-            $(afterElement).addClass("over");
-            this.insertBefore(draggingItem, afterElement);
-          } else {
-            this.appendChild(draggingItem);
-          }
-        });
-        
-        // Helper function to find the element to drop before
-        function getDragAfterElement(container, y) {
-          const draggableElements = [...container.querySelectorAll("li.list-group-item:not(.dragging)")];
-
-          return draggableElements.reduce(
-            (closest, child) => {
-              const box = child.getBoundingClientRect();
-              const offset = y - box.top - box.height / 2;
-              if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-              } else {
-                return closest;
-              }
-            },
-            { offset: Number.NEGATIVE_INFINITY }
-          ).element;
-        }
-      });
-    </script>
-
     <script src="script.js"></script>
+    <script src="ui.js"></script>
   </body>
 </html>
