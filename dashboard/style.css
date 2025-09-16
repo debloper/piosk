@@ -1,0 +1,72 @@
+.input-changed {
+    background-color: rgba(255, 193, 7, 0.2) !important;
+    border-color: #ffc107 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25) !important;
+    transition: all 0.3s ease;
+}
+
+.input-changed:focus {
+    background-color: rgba(255, 193, 7, 0.3) !important;
+    border-color: #ffc107 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5) !important;
+}
+
+/* --- Drag & Drop Styles --- */
+.drag-handle {
+    cursor: grab;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    padding: 0 0.75rem 0 0;
+    color: #6c757d;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.drag-handle svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+#urls ul.list-group {
+    user-select: none;
+    position: relative;
+}
+
+#urls li.list-group-item {
+    cursor: default;
+    transition: background 0.2s, transform 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#urls li.list-group-item:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+#urls li.list-group-item.dragging {
+    opacity: 0.6;
+    transform: scale(0.95);
+    cursor: grabbing;
+    z-index: 1000;
+    background-color: rgba(220, 53, 69, 0.15);
+}
+
+#urls li.list-group-item.over::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 12px;
+    right: 12px;
+    height: 3px;
+    background-color: #dc3545;
+    border-radius: 2px;
+}
+
+#urls li.list-group-item a {
+    user-select: text;
+}
