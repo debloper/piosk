@@ -3,6 +3,8 @@ name: Deploy Astro site to Pages
 on:
   push:
     branches: ["main"]
+    paths:
+      - "www/**"
 
   workflow_dispatch:
 
