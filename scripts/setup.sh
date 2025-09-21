@@ -114,12 +114,14 @@ FILES=(
   "bootstrap.min.css|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/"
 )
 
+mkdir -p "$PIOSK_DIR/dashboard/libs"
+
 for entry in "${FILES[@]}"; do
   FILE="${entry%%|*}"
   URL="${entry#*|}${FILE}"
   echo -e "${INFO}Downloading from: $URL${RESET}"
 
-  if ! curl -fL --progress-bar "$URL" -o "$PIOSK_DIR/web/$FILE"; then
+  if ! curl -fL --progress-bar "$URL" -o "$PIOSK_DIR/dashboard/libs/$FILE"; then
     echo -e "${ERROR}Failed to download $URL.${RESET}"
     exit 1
   fi
