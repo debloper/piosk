@@ -1,4 +1,4 @@
-![PiOSK Banner](assets/banner.png)
+![PiOSK Banner](www/src/assets/banner.png)
 **One-shot set up Raspberry Pi in kiosk mode as a webpage shuffler, with a web interface for management.**
 
 # 0. Foreword
@@ -70,7 +70,7 @@ That's it[^2].
 
 [^3]: PiOSK uses port 80 on the Pi to serve the web dashboard. If you're planning to use the Pi for other purposes, make sure to avoid port collision.
 
-![PiOSK Dashboard Web GUI](assets/dashboard.png)
+![PiOSK Dashboard Web GUI](www/src/assets/dashboard.png)
 
 ## 1.4 Updating
 
