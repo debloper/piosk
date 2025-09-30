@@ -98,13 +98,13 @@ echo -e "${DEBUG}Architecture: '$ARCH', Binary: '$BINARY_NAME'${RESET}"
 DOWNLOAD_URL="https://github.com/debloper/piosk/releases/download/$LATEST_RELEASE/$BINARY_NAME.tar.gz"
 echo -e "${INFO}Downloading from: $DOWNLOAD_URL${RESET}"
 
-if ! curl -fL --progress-bar "$DOWNLOAD_URL" | tar -xz; then
+if ! curl -fL --progress-bar "$DOWNLOAD_URL" | tar -xz -C dashboard/; then
   echo -e "${ERROR}Failed to download or extract the binary.${RESET}"
   exit 1
 fi
 
-chmod +x "$BINARY_NAME"
-mv "$BINARY_NAME" piosk
+chmod +x "dashboard/$BINARY_NAME"
+mv "dashboard/$BINARY_NAME" "dashboard/piosk"
 echo -e "${SUCCESS}PiOSK binary downloaded successfully.${RESET}"
 
 # --- Configuration Setup ---
