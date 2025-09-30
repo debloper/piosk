@@ -127,7 +127,7 @@ for entry in "${FILES[@]}"; do
   fi
 done
 
-echo -e "${SUCCESS}external scripts downloaded successfully.${RESET}"
+echo -e "${SUCCESS}External scripts downloaded successfully.${RESET}"
 
 # --- Configuration Setup ---
 echo -e "${INFO}Restoring configurations...${RESET}"
