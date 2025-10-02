@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/opt/piosk/piosk
+ExecStart=/opt/piosk/dashboard/piosk
 WorkingDirectory=/opt/piosk
 User=root
 Restart=on-failure

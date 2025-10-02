@@ -46,11 +46,11 @@ jobs:
             --allow-run \
             --allow-env \
             --target ${{ matrix.target }} \
-            --output ${{ matrix.output }} \
-            index.ts
+            --output dashboard/${{ matrix.output }} \
+            dashboard/index.ts
 
       - name: Archive binary
-        run: tar -czf ${{ matrix.output }}.tar.gz ${{ matrix.output }}
+        run: tar -czf ${{ matrix.output }}.tar.gz -C dashboard ${{ matrix.output }}
 
       - name: Upload binary as artifact
         uses: actions/upload-artifact@v4
