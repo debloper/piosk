@@ -4,7 +4,7 @@ After=piosk-runner.service
 
 [Service]
 Type=simple
-ExecStart=/opt/piosk/scripts/switcher.sh
+ExecStart=/opt/piosk/scripts/runtime/switcher.sh
 User=PI_USER
 WorkingDirectory=PI_HOME
 Environment=DISPLAY=:0

@@ -1,4 +1,4 @@
-name: Build and Release PiOSK Binaries
+name: Build and Release PiOSK Package
 
 on:
   push:
@@ -8,11 +8,10 @@ on:
 
 permissions:
   contents: write
-  actions: read
 
 jobs:
   build:
-    name: Build for ${{ matrix.os }}
+    name: Build Package for ${{ matrix.os }}
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
@@ -21,12 +20,10 @@ jobs:
           - os: linux-x64
             runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            output: piosk-linux-x64
           # Linux ARM64
           - os: linux-arm64
             runner: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            output: piosk-linux-arm64
 
     steps:
       - name: Checkout code
@@ -37,7 +34,11 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Compile binary
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Compile binary with versioned name
         run: |
           deno compile \
             --allow-net \
@@ -46,18 +47,30 @@ jobs:
             --allow-run \
             --allow-env \
             --target ${{ matrix.target }} \
-            --output dashboard/${{ matrix.output }} \
+            --output piosk-${{ env.VERSION }}-${{ matrix.os }} \
             dashboard/index.ts
 
-      - name: Archive binary
-        run: tar -czf ${{ matrix.output }}.tar.gz -C dashboard ${{ matrix.output }}
+      - name: Assemble Release Package
+        run: |
+          # 1. Create a staging directory to build the package.
+          mkdir staging
 
-      - name: Upload binary as artifact
+          # 2. Copy all necessary assets into the staging directory.
+          cp -r dashboard/ scripts/ services/ config.json.sample staging/
+
+          # 3. Move the compiled binary into the 'dashboard' subdirectory inside staging.
+          mv piosk-${{ env.VERSION }}-${{ matrix.os }} staging/dashboard/
+
+          # 4. Create the final tarball from the contents of the staging directory.
+          #    The -C flag ensures the paths inside the tarball are clean (no leading 'staging/').
+          tar -czf piosk-${{ env.VERSION }}-${{ matrix.os }}.tar.gz -C staging .
+
+      - name: Upload Package as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.output }}
-          path: ${{ matrix.output }}.tar.gz
-          if-no-files-found: ignore
+          name: piosk-package-${{ matrix.os }}
+          path: piosk-${{ env.VERSION }}-${{ matrix.os }}.tar.gz
+          if-no-files-found: error # Fail if the package wasn't created
 
   release:
     name: Create Release
@@ -66,9 +79,6 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -81,5 +91,4 @@ jobs:
           draft: false
           prerelease: true
           generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
