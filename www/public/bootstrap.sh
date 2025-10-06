@@ -39,7 +39,7 @@ download_and_extract() {
     
     msg "$INFO" "Checking for 'jq' dependency..."
     if ! command -v jq &> /dev/null; then
-        apt-get update >/dev/null && apt-get install -y jq
+        apt-get update && apt-get install -y jq
     fi
 
     msg "$INFO" "Finding the latest release..."
