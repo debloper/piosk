@@ -36,33 +36,27 @@ check_sudo() {
 # Downloads and extracts the latest PiOSK release to a specified directory.
 download_and_extract() {
     local target_dir="$1"
-    
-    msg "$INFO" "Checking for 'jq' dependency..."
-    if ! command -v jq &> /dev/null; then
-        apt-get update && apt-get install -y jq
-    fi
 
-    msg "$INFO" "Finding the latest release..."
-    LATEST_RELEASE=$(curl -s https://api.github.com/repos/$PIOSK_REPO/releases/latest | jq -r '.tag_name')
-    if [ -z "$LATEST_RELEASE" ] || [ "$LATEST_RELEASE" = "null" ]; then
-        msg "$ERROR" "Could not find any releases."
-        exit 1
-    fi
-    msg "$SUCCESS" "Latest release is ${LATEST_RELEASE}."
-
+    msg "$INFO" "Determining package architecture..."
+    local ARCH
     ARCH=$(uname -m)
+    local PKG_ARCH
     case "${ARCH}" in
       x86_64) PKG_ARCH="linux-x64" ;;
-      aarch64|arm64) PKG_ARCH="linux-arm64" ;;
+      aarch64|arm64) PKG_ARCH="linux-aarch64" ;;
       *) msg "$ERROR" "Unsupported architecture: $ARCH"; exit 1 ;;
     esac
     
-    local tarball_name="piosk-${LATEST_RELEASE}-${PKG_ARCH}.tar.gz"
-    local download_url="https://github.com/$PIOSK_REPO/releases/download/$LATEST_RELEASE/$tarball_name"
+    local tarball_name="piosk-${PKG_ARCH}.tar.gz"
+    
+    local download_url="https://github.com/$PIOSK_REPO/releases/latest/download/$tarball_name"
     local temp_tarball="/tmp/$tarball_name"
     
-    msg "$INFO" "Downloading package for '$PKG_ARCH'..."
-    curl -fL --progress-bar "$download_url" -o "$temp_tarball"
+    msg "$INFO" "Downloading latest package for '$PKG_ARCH'..."
+    if ! curl -fL --progress-bar "$download_url" -o "$temp_tarball"; then
+        msg "$ERROR" "Download failed. Check the URL or your network connection."
+        exit 1
+    fi
 
     msg "$INFO" "Extracting to $target_dir..."
     rm -rf "$target_dir"
