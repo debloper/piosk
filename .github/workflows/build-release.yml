@@ -35,9 +35,15 @@ jobs:
             echo "os_id=linux-aarch64" >> $GITHUB_OUTPUT
           fi
 
-      - name: Get version from tag
+      - name: Generate version module
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: |
+          # Extract version from the Git tag ref (e.g., refs/tags/v1.2.3 -> v1.2.3)
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          
+          # Use printf to safely write the version file, preventing any injection issues.
+          printf 'export const PIOSK_VERSION = "%s";\n' "$VERSION" > dashboard/version.ts
 
       - name: Compile binary with versioned name
         run: |
@@ -50,6 +56,13 @@ jobs:
             --target ${{ matrix.arch }}-unknown-linux-gnu \
             --output piosk-${{ steps.vars.outputs.os_id }} \
             dashboard/index.ts
+      
+      - name: Verify binary version
+        run: |
+          chmod +x ./piosk-${{ steps.vars.outputs.os_id }}
+          # Run the binary with the --version flag and check if the output contains the correct version string.
+          # The job will fail if the grep command doesn't find a match.
+          ./piosk-${{ steps.vars.outputs.os_id }} --version | grep -q "${{ env.VERSION }}"
 
       - name: Assemble Release Package
         run: |
