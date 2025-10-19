@@ -14,8 +14,18 @@ if [ -z "$URLS" ]; then
     exit 0
 fi
 
-chromium-browser \
-  $URLS \
+# use chromium if available, else chromium-browser
+if command -v chromium >/dev/null 2>&1; then
+    BROWSER=chromium
+elif command -v chromium-browser >/dev/null 2>&1; then
+    BROWSER=chromium-browser
+else
+    echo "Neither chromium nor chromium-browser found"
+    exit 1
+fi
+
+# run chromium/chromium-browser with the URLs and flags
+$BROWSER $URLS \
   --disable-component-update \
   --disable-composited-antialiasing \
   --disable-gpu-driver-bug-workarounds \
