@@ -1,4 +1,3 @@
-import { PIOSK_VERSION } from "./version.ts";
 const CONFIG_FILE = "./config.json";
 
 async function readConfig(): Promise<string> {
@@ -116,12 +115,6 @@ async function handler(req: Request): Promise<Response> {
   
   // Handle static files
   return await serveStaticFile(url.pathname);
-}
-
-// Check if '--version' or '-v' is present in the command-line arguments.
-if (Deno.args.includes("--version") || Deno.args.includes("-v")) {
-  console.log(`piosk version ${PIOSK_VERSION}`);
-  Deno.exit(0); // Exit successfully after printing the version.
 }
 
 const port = parseInt(Deno.env.get("PORT") || "80");
