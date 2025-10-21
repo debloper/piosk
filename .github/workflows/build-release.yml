@@ -26,15 +26,6 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Set OS Identifier
-        id: vars
-        run: |
-          if [ "${{ matrix.arch }}" == "x86_64" ]; then
-            echo "os_id=linux-x64" >> $GITHUB_OUTPUT
-          elif [ "${{ matrix.arch }}" == "aarch64" ]; then
-            echo "os_id=linux-aarch64" >> $GITHUB_OUTPUT
-          fi
-
       - name: Generate version module
         id: get_version
         run: |
@@ -54,15 +45,15 @@ jobs:
             --allow-run \
             --allow-env \
             --target ${{ matrix.arch }}-unknown-linux-gnu \
-            --output piosk-${{ steps.vars.outputs.os_id }} \
+            --output piosk-linux-${{ matrix.arch }} \
             dashboard/index.ts
       
       - name: Verify binary version
         run: |
-          chmod +x ./piosk-${{ steps.vars.outputs.os_id }}
+          chmod +x ./piosk-${{ matrix.arch }}
           # Run the binary with the --version flag and check if the output contains the correct version string.
           # The job will fail if the grep command doesn't find a match.
-          ./piosk-${{ steps.vars.outputs.os_id }} --version | grep -q "${{ env.VERSION }}"
+          ./piosk-${{ matrix.arch }} --version | grep -q "${{ env.VERSION }}"
 
       - name: Assemble Release Package
         run: |
@@ -73,17 +64,17 @@ jobs:
           cp -r dashboard/ scripts/ services/ config.json.sample staging/
 
           # 3. Move the compiled binary into the 'dashboard' subdirectory inside staging.
-          mv piosk-${{ steps.vars.outputs.os_id }} staging/dashboard/
+          mv piosk-linux-${{ matrix.arch }} staging/dashboard/
 
           # 4. Create the final tarball from the contents of the staging directory.
           #    The -C flag ensures the paths inside the tarball are clean (no leading 'staging/').
-          tar -czf piosk-${{ steps.vars.outputs.os_id }}.tar.gz -C staging .
+          tar -czf piosk-linux-${{ matrix.arch }}.tar.gz -C staging .
 
       - name: Upload Package as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: piosk-package-${{ steps.vars.outputs.os_id }}
-          path: piosk-${{ steps.vars.outputs.os_id }}.tar.gz
+          name: piosk-package-${{ matrix.arch }}
+          path: piosk-linux-${{ matrix.arch }}.tar.gz
           if-no-files-found: error # Fail if the package wasn't created
 
   release:

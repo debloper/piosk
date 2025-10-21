@@ -42,7 +42,7 @@ download_and_extract() {
     ARCH=$(uname -m)
     local PKG_ARCH
     case "${ARCH}" in
-      x86_64) PKG_ARCH="linux-x64" ;;
+      x86_64) PKG_ARCH="linux-x86_64" ;;
       aarch64|arm64) PKG_ARCH="linux-aarch64" ;;
       *) msg "$ERROR" "Unsupported architecture: $ARCH"; exit 1 ;;
     esac
