@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 ExecStartPre=/usr/bin/sleep 10
-ExecStart=/opt/piosk/scripts/runner.sh
+ExecStart=/opt/piosk/scripts/runtime/runner.sh
 User=PI_USER
 WorkingDirectory=PI_HOME
 Environment=DISPLAY=:0

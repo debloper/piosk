@@ -121,3 +121,4 @@ const port = parseInt(Deno.env.get("PORT") || "80");
 console.log(`PiOSK Deno server starting on port ${port}...`);
 
 Deno.serve({ port }, handler);
+
