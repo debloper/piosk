@@ -21,7 +21,7 @@ apt-get install -y wtype chromium
 
 # 3. INSTALL BINARY
 msg "$INFO" "Installing PiOSK binary..."
-BINARY_FILE=$(find "$PIOSK_INSTALL_DIR/dashboard" -maxdepth 1 -type f -name 'piosk-v*')
+BINARY_FILE=$(find "$PIOSK_INSTALL_DIR/dashboard" -maxdepth 1 -type f -name 'piosk-linux-*')
 if [ -z "$BINARY_FILE" ]; then
     msg "$ERROR" "PiOSK binary not found. Package is corrupt."
     exit 1
