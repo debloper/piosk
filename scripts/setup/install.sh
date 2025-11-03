@@ -17,7 +17,7 @@ msg "$SUCCESS" "Target user identified as '$PI_USER'."
 # 2. INSTALL RUNTIME DEPENDENCIES
 msg "$INFO" "Installing runtime dependencies (wtype, chromium)..."
 apt-get update
-apt-get install -y wtype chromium
+apt-get install -y wtype chromium jq
 
 # 3. INSTALL BINARY
 msg "$INFO" "Installing PiOSK binary..."
