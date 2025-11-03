@@ -14,7 +14,7 @@ if [ -z "$URLS" ]; then
     exit 0
 fi
 
-chromium-browser \
+chromium \
   $URLS \
   --disable-component-update \
   --disable-composited-antialiasing \
