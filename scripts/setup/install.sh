@@ -17,11 +17,11 @@ msg "$SUCCESS" "Target user identified as '$PI_USER'."
 # 2. INSTALL RUNTIME DEPENDENCIES
 msg "$INFO" "Installing runtime dependencies (wtype, chromium)..."
 apt-get update
-apt-get install -y wtype chromium
+apt-get install -y wtype chromium jq
 
 # 3. INSTALL BINARY
 msg "$INFO" "Installing PiOSK binary..."
-BINARY_FILE=$(find "$PIOSK_INSTALL_DIR/dashboard" -maxdepth 1 -type f -name 'piosk-v*')
+BINARY_FILE=$(find "$PIOSK_INSTALL_DIR/dashboard" -maxdepth 1 -type f -name 'piosk-linux-*')
 if [ -z "$BINARY_FILE" ]; then
     msg "$ERROR" "PiOSK binary not found. Package is corrupt."
     exit 1
