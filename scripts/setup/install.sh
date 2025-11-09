@@ -21,14 +21,13 @@ apt-get install -y wtype chromium jq
 
 # 3. INSTALL BINARY
 msg "$INFO" "Installing PiOSK binary..."
-BINARY_FILE=$(find "$PIOSK_INSTALL_DIR/dashboard" -maxdepth 1 -type f -name 'piosk-linux-*')
-if [ -z "$BINARY_FILE" ]; then
+BINARY_FILE="$PIOSK_INSTALL_DIR/dashboard/piosk"
+if [ ! -f "$BINARY_FILE" ]; then
     msg "$ERROR" "PiOSK binary not found. Package is corrupt."
     exit 1
 fi
 chmod +x "$BINARY_FILE"
-mv "$BINARY_FILE" "$PIOSK_INSTALL_DIR/dashboard/piosk" # Rename the versioned binary to 'piosk' inside /opt/piosk
-msg "$SUCCESS" "Binary prepared at $PIOSK_INSTALL_DIR/dashboard/piosk"
+msg "$SUCCESS" "Binary prepared at $BINARY_FILE"
 
 # 4. SETUP CONFIGURATION
 msg "$INFO" "Setting up configuration file..."

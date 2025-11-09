@@ -35,7 +35,7 @@ jobs:
             --allow-run \
             --allow-env \
             --target ${{ matrix.arch }}-unknown-linux-gnu \
-            --output piosk-linux-${{ matrix.arch }} \
+            --output piosk \
             dashboard/index.ts
 
       - name: Assemble Release Package
@@ -47,7 +47,7 @@ jobs:
           cp -r dashboard/ scripts/ services/ config.json.sample staging/
 
           # 3. Move the compiled binary into the 'dashboard' subdirectory inside staging.
-          mv piosk-linux-${{ matrix.arch }} staging/dashboard/
+          mv piosk staging/dashboard/
 
           # 4. Create the final tarball from the contents of the staging directory.
           #    The -C flag ensures the paths inside the tarball are clean (no leading 'staging/').
