@@ -16,21 +16,27 @@ async function writeConfig(configData: string): Promise<void> {
   await Deno.writeTextFile(CONFIG_FILE, configData);
 }
 
-async function rebootSystem(): Promise<void> {
-  try {
-    // In test mode, don't actually reboot
-    if (Deno.env.get("PIOSK_TEST_MODE") === "true") {
-      console.log("Test mode: Would reboot system");
+async function applyConfigChanges(): Promise<void> {
+  try{
+    if(Deno.env.get("PIOSK_TEST_MODE") === "true"){
+      console.log("Test mode: Would restart piosk-runner.service and piosk-switcher.service");
       return;
     }
-    
-    // Use absolute path to the reboot command
-    const command = new Deno.Command("/sbin/reboot"); 
 
-    // Spawn the process to run in the background and DO NOT await it. 
-    command.spawn();
-  } catch (error) {
-    console.error("Reboot command failed:", error);
+    const command = new Deno.Command("systemctl", {
+      args: ["restart", "piosk-runner.service", "piosk-switcher.service"]
+    });
+
+    const {code, stdout, stderr} = await command.output();
+
+    if(code !== 0){
+      throw new Error(`systemctl failed with code ${code}: ${new TextDecoder().decode(stderr)}`);
+    }
+
+    console.log("Successfully restarted services:", new TextDecoder().decode(stdout));
+
+  } catch(error){
+    console.error("Restart services command failed: ", error);
     throw error;
   }
 }
@@ -100,7 +106,7 @@ async function handler(req: Request): Promise<Response> {
         
         // Reboot system
         try {
-          await rebootSystem();
+          await applyConfigChanges();
           return new Response("New config applied; rebooting for changes to take effect...", { status: 200 });
         } catch (rebootError) {
           console.error("Reboot error:", rebootError);
