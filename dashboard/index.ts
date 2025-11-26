@@ -41,6 +41,69 @@ async function applyConfigChanges(): Promise<void> {
   }
 }
 
+async function getServiceStatus(): Promise<boolean> {
+  if(Deno.env.get("PIOSK_TEST_MODE") === "true") return true;
+
+  try {
+    const command = new Deno.Command("systemctl", {
+      args: ["is-active", "piosk-runner.service"]
+    });
+
+    const { code } = await command.output();
+    return code === 0;
+  } catch(error) {
+    console.error("Status check failed ", error);
+    return false;
+  }
+}
+
+async function startServices(): Promise<void> {
+  try{
+    if(Deno.env.get("PIOSK_TEST_MODE") === "true") {
+      console.log("Test mode: Would START piosk-runner.service and piosk-switcher.service");
+      return;
+    }
+    
+    const command = new Deno.Command("systemctl", {
+      args: ["start", "piosk-runner.service", "piosk-switcher.service"]
+    });
+
+    const { code, stderr } = await command.output();
+  
+    if(code !== 0) {
+      throw new Error(`Start failed: ${new TextDecoder().decode(stderr)}`);
+    }
+  } catch(error) {
+    console.error("Start services command failed: ", error);
+    throw error;
+  }
+}
+
+async function stopServices(): Promise<void> {
+  try {
+    if(Deno.env.get("PIOSK_TEST_MODE") === "true") {
+      console.log("Test mode: Would STOP piosk-runner.service and piosk-switcher.service");
+      return;
+    }
+
+    const command = new Deno.Command("systemctl", {
+      args: ["stop", "piosk-runner.service", "piosk-switcher.service"]
+    });
+
+    const {code, stdout, stderr} = await command.output();
+
+    if(code !== 0){
+      throw new Error(`systemctl stop failed with code ${code}: ${new TextDecoder().decode(stderr)}`);
+    }
+    
+    console.log("Successfully stopped services:", new TextDecoder().decode(stdout));
+
+  } catch (error) {
+    console.error("Stop services command failed: ", error);
+    throw error;
+  }
+}
+
 async function serveStaticFile(pathname: string): Promise<Response> {
   let filePath: string;
   
@@ -116,6 +179,33 @@ async function handler(req: Request): Promise<Response> {
         console.error("Error saving config:", error);
         return new Response("Could not save config.", { status: 500 });
       }
+    }
+  }
+
+  if (url.pathname === "/status" && req.method === "GET") {
+    const isRunning = await getServiceStatus();
+    return new Response(JSON.stringify({ running: isRunning }), {
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  if (url.pathname === "/start" && req.method === "POST") {
+    try {
+      await startServices();
+      return new Response("Kiosk started.", { status: 200 });
+    } catch (error) {
+      console.error("Error starting kiosk:", error);
+      return new Response("Could not start kiosk.", { status: 500 });
+    }
+  }
+
+  if (url.pathname === "/stop" && req.method === "POST") {
+    try {
+      await stopServices();
+      return new Response("Kiosk stopped successfully.", { status: 200 });
+    } catch (error) {
+      console.error("Error stopping kiosk:", error);
+      return new Response("Could not stop kiosk.", { status: 500 });
     }
   }
   
