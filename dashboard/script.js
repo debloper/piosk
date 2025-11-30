@@ -66,7 +66,7 @@ let piosk = {
   },
 
   checkStatus() {
-    $.getJSON('/status')
+    $.getJSON('/services/status')
       .done((data) => {
         piosk.updatePowerBtn(data.running);
       })
@@ -151,7 +151,7 @@ $(document).ready(() => {
     piosk.toggleLoading($btn, true, loadText);
 
     $.ajax({
-      url: '/' + action, 
+      url: '/services/' + action, 
       type: 'POST',
       success: (data) => {
           piosk.showStatus({ status: 200, responseText: data });

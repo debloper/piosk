@@ -136,14 +136,14 @@ async function handler(req: Request): Promise<Response> {
     }
   }
 
-  if (url.pathname === "/status" && req.method === "GET") {
+  if (url.pathname === "/services/status" && req.method === "GET") {
     const isRunning = await getServiceStatus();
     return new Response(JSON.stringify({ running: isRunning }), {
       headers: { "Content-Type": "application/json" }
     });
   }
 
-  if (url.pathname === "/start" && req.method === "POST") {
+  if (url.pathname === "/services/start" && req.method === "POST") {
     try {
       await invokeService("start");
       return new Response("Kiosk started.", { status: 200 });
@@ -153,7 +153,7 @@ async function handler(req: Request): Promise<Response> {
     }
   }
 
-  if (url.pathname === "/stop" && req.method === "POST") {
+  if (url.pathname === "/services/stop" && req.method === "POST") {
     try {
       await invokeService("stop");
       return new Response("Kiosk stopped successfully.", { status: 200 });
