@@ -155,7 +155,6 @@ $(document).ready(() => {
       type: 'POST',
       success: (data) => {
           piosk.showStatus({ status: 200, responseText: data });
-          setTimeout(piosk.checkStatus, 1000); 
       },
       error: (xhr) => {
           piosk.showStatus(xhr);
