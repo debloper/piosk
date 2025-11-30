@@ -156,9 +156,7 @@ $(document).ready(() => {
       success: (data) => {
           piosk.showStatus({ status: 200, responseText: data });
       },
-      error: (xhr) => {
-          piosk.showStatus(xhr);
-      },
+      error: piosk.showStatus,
       complete: () => {
            setTimeout(() => { piosk.toggleLoading($btn, false); }, 500);
       }

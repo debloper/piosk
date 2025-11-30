@@ -121,13 +121,13 @@ async function handler(req: Request): Promise<Response> {
         
         await writeConfig(JSON.stringify(JSON.parse(configData), null, "  "));
         
-        // Reboot system
+        // Restart services
         try {
           await invokeService("restart");
-          return new Response("New config applied; rebooting for changes to take effect...", { status: 200 });
-        } catch (rebootError) {
-          console.error("Reboot error:", rebootError);
-          return new Response("Could not reboot to apply config. Retry or reboot manually.", { status: 500 });
+          return new Response("New config applied; restarting services for changes to take effect...", { status: 200 });
+        } catch (restartError) {
+          console.error("Restart error:", restartError);
+          return new Response("Could not restart services to apply config. Retry manually.", { status: 500 });
         }
       } catch (error) {
         console.error("Error saving config:", error);
