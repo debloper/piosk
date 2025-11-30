@@ -16,31 +16,6 @@ async function writeConfig(configData: string): Promise<void> {
   await Deno.writeTextFile(CONFIG_FILE, configData);
 }
 
-async function applyConfigChanges(): Promise<void> {
-  try{
-    if(Deno.env.get("PIOSK_TEST_MODE") === "true"){
-      console.log("Test mode: Would restart piosk-runner.service and piosk-switcher.service");
-      return;
-    }
-
-    const command = new Deno.Command("systemctl", {
-      args: ["restart", "piosk-runner.service", "piosk-switcher.service"]
-    });
-
-    const {code, stdout, stderr} = await command.output();
-
-    if(code !== 0){
-      throw new Error(`systemctl failed with code ${code}: ${new TextDecoder().decode(stderr)}`);
-    }
-
-    console.log("Successfully restarted services:", new TextDecoder().decode(stdout));
-
-  } catch(error){
-    console.error("Restart services command failed: ", error);
-    throw error;
-  }
-}
-
 async function getServiceStatus(): Promise<boolean> {
   if(Deno.env.get("PIOSK_TEST_MODE") === "true") return true;
 
@@ -57,49 +32,28 @@ async function getServiceStatus(): Promise<boolean> {
   }
 }
 
-async function startServices(): Promise<void> {
-  try{
-    if(Deno.env.get("PIOSK_TEST_MODE") === "true") {
-      console.log("Test mode: Would START piosk-runner.service and piosk-switcher.service");
-      return;
-    }
-    
+async function invokeService(action: "start" | "stop" | "restart"): Promise<void> {
+  const services = ["piosk-runner.service", "piosk-switcher.service"];
+
+  if (Deno.env.get("PIOSK_TEST_MODE") === "true") {
+    console.log(`Test mode: Would ${action.toUpperCase()} services: ${services.join(", ")}`);
+    return;
+  }
+
+  try {
     const command = new Deno.Command("systemctl", {
-      args: ["start", "piosk-runner.service", "piosk-switcher.service"]
+      args: [action, ...services]
     });
 
     const { code, stderr } = await command.output();
-  
-    if(code !== 0) {
-      throw new Error(`Start failed: ${new TextDecoder().decode(stderr)}`);
-    }
-  } catch(error) {
-    console.error("Start services command failed: ", error);
-    throw error;
-  }
-}
 
-async function stopServices(): Promise<void> {
-  try {
-    if(Deno.env.get("PIOSK_TEST_MODE") === "true") {
-      console.log("Test mode: Would STOP piosk-runner.service and piosk-switcher.service");
-      return;
+    if (code !== 0) {
+      throw new Error(`systemctl ${action} failed: ${new TextDecoder().decode(stderr)}`);
     }
 
-    const command = new Deno.Command("systemctl", {
-      args: ["stop", "piosk-runner.service", "piosk-switcher.service"]
-    });
-
-    const {code, stdout, stderr} = await command.output();
-
-    if(code !== 0){
-      throw new Error(`systemctl stop failed with code ${code}: ${new TextDecoder().decode(stderr)}`);
-    }
-    
-    console.log("Successfully stopped services:", new TextDecoder().decode(stdout));
-
+    console.log(`Successfully executed '${action}' on services.`);
   } catch (error) {
-    console.error("Stop services command failed: ", error);
+    console.error(`Service command '${action}' failed: `, error);
     throw error;
   }
 }
@@ -169,7 +123,7 @@ async function handler(req: Request): Promise<Response> {
         
         // Reboot system
         try {
-          await applyConfigChanges();
+          await invokeService("restart");
           return new Response("New config applied; rebooting for changes to take effect...", { status: 200 });
         } catch (rebootError) {
           console.error("Reboot error:", rebootError);
@@ -191,7 +145,7 @@ async function handler(req: Request): Promise<Response> {
 
   if (url.pathname === "/start" && req.method === "POST") {
     try {
-      await startServices();
+      await invokeService("start");
       return new Response("Kiosk started.", { status: 200 });
     } catch (error) {
       console.error("Error starting kiosk:", error);
@@ -201,7 +155,7 @@ async function handler(req: Request): Promise<Response> {
 
   if (url.pathname === "/stop" && req.method === "POST") {
     try {
-      await stopServices();
+      await invokeService("stop");
       return new Response("Kiosk stopped successfully.", { status: 200 });
     } catch (error) {
       console.error("Error stopping kiosk:", error);
