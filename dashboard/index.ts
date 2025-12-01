@@ -16,27 +16,44 @@ async function writeConfig(configData: string): Promise<void> {
   await Deno.writeTextFile(CONFIG_FILE, configData);
 }
 
-async function applyConfigChanges(): Promise<void> {
-  try{
-    if(Deno.env.get("PIOSK_TEST_MODE") === "true"){
-      console.log("Test mode: Would restart piosk-runner.service and piosk-switcher.service");
-      return;
-    }
+async function getServiceStatus(): Promise<boolean> {
+  if(Deno.env.get("PIOSK_TEST_MODE") === "true") return true;
 
+  try {
     const command = new Deno.Command("systemctl", {
-      args: ["restart", "piosk-runner.service", "piosk-switcher.service"]
+      args: ["is-active", "piosk-runner.service"]
     });
 
-    const {code, stdout, stderr} = await command.output();
+    const { code } = await command.output();
+    return code === 0;
+  } catch(error) {
+    console.error("Status check failed ", error);
+    return false;
+  }
+}
 
-    if(code !== 0){
-      throw new Error(`systemctl failed with code ${code}: ${new TextDecoder().decode(stderr)}`);
+async function invokeService(action: "start" | "stop" | "restart"): Promise<void> {
+  const services = ["piosk-runner.service", "piosk-switcher.service"];
+
+  if (Deno.env.get("PIOSK_TEST_MODE") === "true") {
+    console.log(`Test mode: Would ${action.toUpperCase()} services: ${services.join(", ")}`);
+    return;
+  }
+
+  try {
+    const command = new Deno.Command("systemctl", {
+      args: [action, ...services]
+    });
+
+    const { code, stderr } = await command.output();
+
+    if (code !== 0) {
+      throw new Error(`systemctl ${action} failed: ${new TextDecoder().decode(stderr)}`);
     }
 
-    console.log("Successfully restarted services:", new TextDecoder().decode(stdout));
-
-  } catch(error){
-    console.error("Restart services command failed: ", error);
+    console.log(`Successfully executed '${action}' on services.`);
+  } catch (error) {
+    console.error(`Service command '${action}' failed: `, error);
     throw error;
   }
 }
@@ -104,18 +121,45 @@ async function handler(req: Request): Promise<Response> {
         
         await writeConfig(JSON.stringify(JSON.parse(configData), null, "  "));
         
-        // Reboot system
+        // Restart services
         try {
-          await applyConfigChanges();
-          return new Response("New config applied; rebooting for changes to take effect...", { status: 200 });
-        } catch (rebootError) {
-          console.error("Reboot error:", rebootError);
-          return new Response("Could not reboot to apply config. Retry or reboot manually.", { status: 500 });
+          await invokeService("restart");
+          return new Response("New config applied; restarting services for changes to take effect...", { status: 200 });
+        } catch (restartError) {
+          console.error("Restart error:", restartError);
+          return new Response("Could not restart services to apply config. Retry manually.", { status: 500 });
         }
       } catch (error) {
         console.error("Error saving config:", error);
         return new Response("Could not save config.", { status: 500 });
       }
+    }
+  }
+
+  if (url.pathname === "/services/status" && req.method === "GET") {
+    const isRunning = await getServiceStatus();
+    return new Response(JSON.stringify({ running: isRunning }), {
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  if (url.pathname === "/services/start" && req.method === "POST") {
+    try {
+      await invokeService("start");
+      return new Response("Kiosk started.", { status: 200 });
+    } catch (error) {
+      console.error("Error starting kiosk:", error);
+      return new Response("Could not start kiosk.", { status: 500 });
+    }
+  }
+
+  if (url.pathname === "/services/stop" && req.method === "POST") {
+    try {
+      await invokeService("stop");
+      return new Response("Kiosk stopped successfully.", { status: 200 });
+    } catch (error) {
+      console.error("Error stopping kiosk:", error);
+      return new Response("Could not stop kiosk.", { status: 500 });
     }
   }
   
