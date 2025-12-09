@@ -43,19 +43,24 @@ while true; do
   cycle_target=${CYCLES[$CURRENT_TAB_INDEX]}
 
   # --- Handle Refresh Logic ---
-  # Increment the display counter for the current tab.
-  ((REFRESH_COUNTS[$CURRENT_TAB_INDEX]++))
-  echo "Tab $((CURRENT_TAB_INDEX + 1)): Display cycle ${REFRESH_COUNTS[$CURRENT_TAB_INDEX]} of $cycle_target."
+  # Only run this if cycle_target is greater than 0
+  if [ "$cycle_target" -gt 0 ]; then
+    # Increment the display counter for the current tab.
+    ((REFRESH_COUNTS[$CURRENT_TAB_INDEX]++))
+    echo "Tab $((CURRENT_TAB_INDEX + 1)): Display cycle ${REFRESH_COUNTS[$CURRENT_TAB_INDEX]} of $cycle_target."
 
-  # Check if it's time to refresh this specific tab.
-  if [ "${REFRESH_COUNTS[$CURRENT_TAB_INDEX]}" -ge "$cycle_target" ]; then
-    echo "Refreshing Tab $((CURRENT_TAB_INDEX + 1))."
-    
-    # Send Ctrl+r to refresh the current tab using wtype.
-    wtype -M ctrl r -m ctrl
-    
-    # Reset the counter for this tab.
-    REFRESH_COUNTS[$CURRENT_TAB_INDEX]=0
+    # Check if it's time to refresh this specific tab.
+    if [ "${REFRESH_COUNTS[$CURRENT_TAB_INDEX]}" -ge "$cycle_target" ]; then
+      echo "Refreshing Tab $((CURRENT_TAB_INDEX + 1))."
+      
+      # Send Ctrl+r to refresh the current tab using wtype.
+      wtype -M ctrl r -m ctrl
+      
+      # Reset the counter for this tab.
+      REFRESH_COUNTS[$CURRENT_TAB_INDEX]=0
+    fi
+  else
+    echo "Tab $((CURRENT_TAB_INDEX + 1)): Refresh disabled (set to 0)."
   fi
   
   # --- Wait for the specified duration ---
