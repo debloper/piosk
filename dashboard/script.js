@@ -87,7 +87,7 @@ let piosk = {
 
     tmpErr.html(msg);
     $('#urls').append(tmpErr);
-    setTimeout(_ => { $('.alert-danger').remove() }, 5000);
+    setTimeout(_ => { tmpErr.remove() }, 5000);
   }
 };
 
