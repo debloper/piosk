@@ -2,56 +2,51 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="PiOSK Documentation - Setup Guide & Instructions">
+<Layout title="XiOSK Documentation - Setup Guide & Instructions">
   <div class="docs-layout">
     <aside class="sidebar">
       <nav class="sidebar-nav">
         <h3>Documentation</h3>
         <ul>
-          <li><a href="#foreword" class="nav-link" data-section="foreword">Foreword</a></li>
           <li><a href="#setup-guide" class="nav-link" data-section="setup-guide">Setup Guide</a></li>
           <li><a href="#preparation" class="nav-link" data-section="preparation">Preparation</a></li>
-          <li><a href="#installation" class="nav-link" data-section="installation">Installation</a></li>
-          <li><a href="#configuration" class="nav-link" data-section="configuration">Configuration</a></li>
-          <li><a href="#updating" class="nav-link" data-section="updating">Updating</a></li>
-          <li><a href="#uninstallation" class="nav-link" data-section="uninstallation">Uninstallation</a></li>
+          <li><a href="#management" class="nav-link" data-section="management">Setup and Management</a></li>
+          <li><a href="#usage-guide" class="nav-link" data-section="usage-guide">Usage Guide</a></li>
+          <li><a href="#advanced-config" class="nav-link" data-section="advanced-config">Advanced Config</a></li>
           <li><a href="#appendix" class="nav-link" data-section="appendix">Appendix</a></li>
+          <li><a href="#backstory" class="nav-link" data-section="backstory">Backstory</a></li>
         </ul>
       </nav>
     </aside>
 
     <main class="docs-content">
       <div class="docs-container">
-        <h1 class="docs-title">PiOSK Documentation</h1>
+        <h1 class="docs-title">XiOSK Documentation</h1>
         
-        <section id="foreword" class="docs-section">
-          <h2>Foreword</h2>
-          <p>This started as a simple automation script — a wrapper of the <a href="https://www.raspberrypi.com/tutorials/how-to-use-a-raspberry-pi-in-kiosk-mode/" target="_blank">official Raspberry Pi kiosk mode tutorial</a> for personal use. Then one thing lead to the other and I found myself installing nodejs & writing systemd unit files...</p>
-          <p>That's when I realized... maybe there are other people (or future me) who'd also find this "single script setup" useful.</p>
-          <div class="note">
-            <p><strong>Note:</strong> And apparently, I wasn't wrong! From GitHub stars, issue reports, to news articles covering PiOSK - the community acceptance has been far more than I had imagined. So, with the wide range of users, there's a need for stabilizing the repo and consolidating the features.</p>
-          </div>
-        </section>
-
         <section id="setup-guide" class="docs-section">
           <h2>Setup Guide</h2>
+          
+          <div class="note">
+            <p><strong>Note:</strong> Starting with v5.0.0, <strong>PiOSK</strong> has been renamed to <strong>XiOSK</strong>.</p>
+          </div>
+
           <div class="video-embed">
             <iframe 
               src="https://www.youtube.com/embed/CrQjc6P-g1A" 
-              title="PiOSK Setup Video Walkthrough"
+              title="XiOSK Setup Video Walkthrough"
               frameborder="0" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
               allowfullscreen>
             </iframe>
           </div>
-          <p class="video-caption"><strong>PiOSK Setup Video Walkthrough</strong></p>
+          <p class="video-caption"><strong>XiOSK Setup Video Walkthrough</strong></p>
           <div class="important">
-            <p><strong>Important:</strong> PiOSK <strong>assumes</strong> a few things to keep itself lean and just focuses on the essentials. It should still work even if some of those assumptions aren't met, but it may require some tinkering & manual overrides.</p>
+            <p><strong>Important:</strong> XiOSK <strong>assumes</strong> a few things to keep itself lean and just focuses on the essentials. It should still work even if some of those assumptions aren't met, but it may require some tinkering & manual overrides.</p>
           </div>
         </section>
 
         <section id="preparation" class="docs-section">
-          <h2>1.1 Preparation</h2>
+          <h2>1. Preparation</h2>
           <ol>
             <li>Boot into Raspberry Pi desktop<sup>1</sup></li>
             <li>Ensure username, hostname etc. are configured</li>
@@ -66,10 +61,13 @@ import Layout from '../layouts/Layout.astro';
           </div>
         </section>
 
-        <section id="installation" class="docs-section">
-          <h2>1.2 Installation</h2>
-          <p>Either open terminal on the Raspberry Pi's desktop environment, or remote login to it; and run the following command:</p>
-          <div class="code-block" data-code="curl -sSL https://raw.githubusercontent.com/debloper/piosk/v4.0.1/scripts/setup.sh | sudo bash -">
+        <section id="management" class="docs-section">
+          <h2>2. Setup and Management</h2>
+          <p>XiOSK v5 simplifies lifecycle management using a single bootstrap script. You can install, update, backup, or remove the software using the specific flags below.</p>
+
+          <h3>Installation</h3>
+          <p>To install XiOSK on a fresh system, run:</p>
+          <div class="code-block" data-code="curl -sSL https://raw.githubusercontent.com/debloper/xiosk/main/www/public/bootstrap.sh | sudo bash -s -- --install">
             <div class="code-header">
               <span class="code-language">bash</span>
               <button class="copy-button" onclick="copyCode(this)">
@@ -80,87 +78,117 @@ import Layout from '../layouts/Layout.astro';
                 Copy
               </button>
             </div>
-            <code>curl -sSL https://raw.githubusercontent.com/debloper/piosk/v4.0.1/scripts/setup.sh | sudo bash -</code>
+            <code>curl -sSL https://raw.githubusercontent.com/debloper/xiosk/main/www/public/bootstrap.sh | sudo bash -s -- --install</code>
           </div>
-          <p>That's it<sup>2</sup>.</p>
-          <div class="footnote">
-            <p><sup>2</sup> For some reason, if that's <strong>NOT</strong> it, and you hit a snag... please report an issue & give us some context to replicate & debug it.</p>
+
+          <h3>Updating</h3>
+          <p>To update an existing installation to the latest version:</p>
+          <div class="code-block" data-code="curl -sSL https://raw.githubusercontent.com/debloper/xiosk/main/www/public/bootstrap.sh | sudo bash -s -- --update">
+            <div class="code-header">
+              <span class="code-language">bash</span>
+              <button class="copy-button" onclick="copyCode(this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <code>curl -sSL https://raw.githubusercontent.com/debloper/xiosk/main/www/public/bootstrap.sh | sudo bash -s -- --update</code>
+          </div>
+
+          <h3>Backup</h3>
+          <p>To backup your current configuration (URLs, durations, etc.):</p>
+          <div class="code-block" data-code="curl -sSL https://raw.githubusercontent.com/debloper/xiosk/main/www/public/bootstrap.sh | sudo bash -s -- --backup">
+            <div class="code-header">
+              <span class="code-language">bash</span>
+              <button class="copy-button" onclick="copyCode(this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <code>curl -sSL https://raw.githubusercontent.com/debloper/xiosk/main/www/public/bootstrap.sh | sudo bash -s -- --backup</code>
+          </div>
+
+          <h3>Uninstallation / Cleanup</h3>
+          <p>To remove XiOSK from your system:</p>
+          <div class="code-block" data-code="curl -sSL https://raw.githubusercontent.com/debloper/xiosk/main/www/public/bootstrap.sh | sudo bash -s -- --cleanup">
+            <div class="code-header">
+              <span class="code-language">bash</span>
+              <button class="copy-button" onclick="copyCode(this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <code>curl -sSL https://raw.githubusercontent.com/debloper/xiosk/main/www/public/bootstrap.sh | sudo bash -s -- --cleanup</code>
           </div>
         </section>
 
-        <section id="configuration" class="docs-section">
-          <h2>1.3 Configuration</h2>
+        <section id="usage-guide" class="docs-section">
+          <h2>3. Usage Guide</h2>
+          <p>Once installed, XiOSK serves a web dashboard on Port 80. You can access this from any device on the same local network.</p>
           
-          <h3>1.3.1 Basic</h3>
+          <h3>3.1 Accessing the Dashboard</h3>
           <ol>
-            <li>Visit <code>http://&lt;pi's IP address&gt;/</code><sup>3</sup> from a different device on the network</li>
-            <li>You should see the PiOSK dashboard with a list of sample URLs as kiosk mode screens</li>
-            <li>Feel free to add & remove links as necessary (at least 1 link is necessary for it to work)</li>
-            <li>The URLs don't have to be of remote domains. You can use localhost or even <code>file:///path</code></li>
-            <li>Once you're happy with the list, press <code>APPLY ⏻</code> button to apply changes and reboot PiOSK</li>
-            <li>When rebooted, wait for the kiosk mode to start & flip through the pages in fullscreen mode</li>
+            <li>Open a browser on your laptop or phone.</li>
+            <li>Visit <code>http://&lt;pi's IP address&gt;/</code> (e.g., <code>http://192.168.1.50/</code>).</li>
+            <li>If you set a hostname, you might be able to visit <code>http://xiosk.local/</code>.</li>
           </ol>
-          
-          <h3>1.3.2 Advanced</h3>
+
+          <h3>3.2 Managing Screens</h3>
+          <p>The dashboard allows you to define which webpages are displayed on the Kiosk.</p>
+          <ul>
+            <li><strong>Add URL:</strong> Enter a valid URL (remote <code>https://...</code> or local <code>file:///...</code>) and click <strong>ADD</strong>.</li>
+            <li><strong>Duration:</strong> Set how long (in seconds) the screen should remain visible before switching to the next URL.</li>
+            <li><strong>Refresh Every:</strong> Set a count for how many times the page is shown before it is hard-refreshed (reloaded). 
+              <ul>
+                <li><em>Example:</em> Set to <code>10</code> to reload the page after it has been displayed 10 times.</li>
+                <li><em>Disable:</em> Set to <code>0</code> to never refresh the page (useful for static content or SPAs that manage their own data fetching).</li>
+              </ul>
+            </li>
+          </ul>
+
+          <h3>3.3 Applying Changes</h3>
+          <p>Changes made in the list are not active immediately. You must click the <strong>APPLY ⏻</strong> button. This will save your configuration and restart the Kiosk service to load the new settings.</p>
+
+          <h3>3.4 Service Control</h3>
+          <p>You can terminate Kiosk mode without shutting down the Pi by clicking the <strong>STOP</strong> button in the navigation bar. Click <strong>START</strong> to resume the Kiosk display.</p>
+        </section>
+
+        <section id="advanced-config" class="docs-section">
+          <h2>4. Advanced Configuration</h2>
           <div class="warning">
             <p><strong>Warning:</strong> Try these at your own risk; if you know what you're doing. Misconfiguration(s) may break the setup.</p>
           </div>
           <ol>
-            <li>The PiOSK repo is cloned to <code>/opt/piosk</code></li>
-            <li>You can change the dashboard port from <code>index.js</code></li>
-            <li>You can change browser behavior (e.g. no full screen) from <code>scripts/runner.sh</code></li>
-            <li>Some changes can be applied without rebooting, but rebooting is simpler</li>
+            <li>The XiOSK repo is cloned to <code>/opt/xiosk</code></li>
+            <li>You can change the dashboard port from <code>index.ts</code> (Note: Changed from index.js in v5)</li>
+            <li>You can change browser behavior (e.g. no full screen) from <code>scripts/runtime/runner.sh</code></li>
           </ol>
-          
-          <div class="footnote">
-            <p><sup>3</sup> PiOSK uses port 80 on the Pi to serve the web dashboard. If you're planning to use the Pi for other purposes, make sure to avoid port collision.</p>
-          </div>
-        </section>
-
-        <section id="updating" class="docs-section">
-          <h2>1.4 Updating</h2>
-          <p>For now, there's no direct way to update the setup. This will change.</p>
-          <p>You should uninstall old version and then reinstall the new version. As long as you don't delete the backup config file (created during uninstallation), it should be picked up and reinstated by the reinstallation process.</p>
-          <p>Look into the Uninstallation section for the next steps.</p>
-        </section>
-
-        <section id="uninstallation" class="docs-section">
-          <h2>1.5 Uninstallation</h2>
-          <p>In order to uninstall/remove PiOSK from your system, run the <code>cleanup.sh</code> script:</p>
-          <div class="code-block" data-code="sudo /opt/piosk/scripts/cleanup.sh">
-            <div class="code-header">
-              <span class="code-language">bash</span>
-              <button class="copy-button" onclick="copyCode(this)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                Copy
-              </button>
-            </div>
-            <code>sudo /opt/piosk/scripts/cleanup.sh</code>
-          </div>
-          <div class="note">
-            <p><strong>Note:</strong> By default PiOSK doesn't uninstall the system packages it installs as dependencies (i.e. <code>git</code>, <code>jq</code>, <code>wtype</code>). The reason being, if they're force removed, then other packages (which have been installed since) that may also rely on them - will break.</p>
-          </div>
         </section>
 
         <section id="appendix" class="docs-section">
-          <h2>2. Appendix</h2>
+          <h2>5. Appendix</h2>
           
-          <h3 id="assumptions">2.1 Assumptions</h3>
+          <h3 id="assumptions">5.1 Assumptions</h3>
           <ol start="0">
             <li>You're using a Raspberry Pi (other SBCs may work, not tested)</li>
-            <li>You're using "Raspberry Pi OS (64bit)" (This is a mandatory requirement for PiOSK (version 4.0.0 and newer). PiOSK now uses the Deno runtime, which does not provide official binaries for 32-bit ARM systems. This change allows PiOSK to be a standalone executable, simplifying installation by removing the need for a separate Node.js runtime.)</li>
+            <li>You're using "Raspberry Pi OS (64bit)" (This is a mandatory requirement for XiOSK (version 4.0.0 and newer). XiOSK now uses the Deno runtime, which does not provide official binaries for 32-bit ARM systems. This change allows XiOSK to be a standalone executable, simplifying installation by removing the need for a separate Node.js runtime.)</li>
             <li>You've applied proper OS customizations & the Pi is able to access the internet (required for setup)</li>
-            <li>You're not using port 80 on the Pi to run some other web server (apart from PiOSK dashboard)</li>
+            <li>You're not using port 80 on the Pi to run some other web server (apart from XiOSK dashboard)</li>
           </ol>
           
-          <h3 id="recommendations">2.2 Recommendations</h3>
+          <h3 id="recommendations">5.2 Recommendations</h3>
           <h4>Choose the right device and OS</h4>
           <ul>
             <li>Raspberry Pi Zeros struggle running Chromium due to low memory</li>
-            <li>Raspberry Pi4 or Pi5 (or their compute modules) are ideal for PiOSK</li>
+            <li>Raspberry Pi4 or Pi5 (or their compute modules) are ideal for XiOSK</li>
             <li>Apply the necessary customizations (user account, WiFi credentials, SSH access etc)</li>
           </ul>
           
@@ -182,10 +210,19 @@ import Layout from '../layouts/Layout.astro';
           
           <h4>Discover the Pi on the network</h4>
           <ul>
-            <li>Set hostname (e.g. <code>piosk</code>) so you can call it by hostname without needing to hunt for IP</li>
+            <li>Set hostname (e.g. <code>xiosk</code>) so you can call it by hostname without needing to hunt for IP</li>
             <li>The dashboard's URL with the hostname & IP address is shown at the end of the install script</li>
             <li>Or, run angry IP scanner or login to router/switch to discover the Pi's IP the hard way</li>
           </ul>
+        </section>
+
+        <section id="backstory" class="docs-section">
+          <h2>6. Backstory</h2>
+          <p>This started as a simple automation script — a wrapper of the <a href="https://www.raspberrypi.com/tutorials/how-to-use-a-raspberry-pi-in-kiosk-mode/" target="_blank">official Raspberry Pi kiosk mode tutorial</a> for personal use. Then one thing lead to the other and I found myself installing nodejs & writing systemd unit files...</p>
+          <p>That's when I realized... maybe there are other people (or future me) who'd also find this "single script setup" useful.</p>
+          <div class="note">
+            <p><strong>Note:</strong> And apparently, I wasn't wrong! From GitHub stars, issue reports, to news articles covering XiOSK - the community acceptance has been far more than I had imagined. So, with the wide range of users, there's a need for stabilizing the repo and consolidating the features.</p>
+          </div>
         </section>
       </div>
     </main>
@@ -245,6 +282,7 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
+  /* All existing styles remain identical */
   .docs-layout {
     display: grid;
     grid-template-columns: 250px 1fr;
