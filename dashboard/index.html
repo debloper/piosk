@@ -9,15 +9,23 @@
     <title>PiOSK</title>
   </head>
   <body>
-    <nav id="navs" class="navbar bg-body-tertiary">
-      <div class="container-md d-flex justify-content-between">
-        <h1 class="my-1">Pi<span class="bg-danger mx-1 px-1 rounded">OSK</span></h1>
-        <div class="input-group w-75">
-          <input  id="new-url" type="text" class="form-control form-control-lg" placeholder="...add URLs of webpages as screens">
-          <button id="add-url" type="button" class="btn btn-secondary">ADD</button>
-          <button id="execute" type="button" class="btn btn-danger">APPLY <span class="align-text-bottom">⏻</span></button>
+    <nav id="navs" class="navbar bg-body-tertiary py-3">
+      <div class="container-md">
+        <div class="row w-100 align-items-center gy-2 mx-0">      
+          <div class="col-12 col-md-auto text-center text-md-start px-0">
+            <h1 class="my-0">Pi<span class="bg-danger mx-1 px-1 rounded">OSK</span></h1>
+          </div>
+          <div class="col-12 col-md px-md-4">
+            <div class="input-group">
+              <input  id="new-url" type="text" class="form-control form-control-lg" placeholder="...add URLs of webpages as screens">
+              <button id="add-url" type="button" class="btn btn-secondary">ADD</button>
+              <button id="execute" type="button" class="btn btn-danger">APPLY <span class="align-text-bottom">⏻</span></button>
+            </div>
+          </div>
+          <div class="col-12 col-md-auto text-center text-md-end px-0">
+            <button id="toggle-kiosk" type="button" class="btn btn-lg w-100 w-md-auto" style="min-width: 100px;">...</button> 
+          </div>
         </div>
-        <button id="toggle-kiosk" type="button" class="btn btn-lg mx-2" style="min-width: 100px;">...</button> 
       </div>
     </nav>
 
@@ -45,20 +53,21 @@
             <circle cx="15" cy="19" r="2"></circle>
           </svg>
         </span>
-        <div class="d-flex justify-content-between align-items-center flex-grow-1">
-          <div class="d-flex align-items-center flex-grow-1">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center flex-grow-1">
+          <div class="d-flex align-items-center flex-grow-1 text-truncate">
             <button type="button" class="btn btn-close mx-3" aria-label="Remove"></button>
             <a class="link-underline-dark text-truncate"></a>
           </div>
-          <div class="d-flex align-items-center gap-2 ms-3">
-            <div class="input-group input-group-sm" style="width: 150px;">
-              <span class="input-group-text">Duration</span>
+          <div class="d-flex flex-wrap align-items-center justify-content-start justify-content-md-end gap-2 ms-0 ms-md-3 mt-2 mt-md-0">
+            <div class="input-group input-group-sm" style="width: 220px;">
+              <span class="input-group-text">Keep for</span>
               <input type="number" class="form-control duration-input" min="1" max="300" value="10">
-              <span class="input-group-text">s</span>
+              <span class="input-group-text">Seconds</span>
             </div>
-            <div class="input-group input-group-sm" style="width: 120px;">
-              <span class="input-group-text">Cycles</span>
+            <div class="input-group input-group-sm" style="width: 220px;">
+              <span class="input-group-text">Refresh Every</span>
               <input type="number" class="form-control cycles-input" min="0" max="100" value="10">
+              <span class="input-group-text">Cycles</span>
             </div>
           </div>
         </div>
