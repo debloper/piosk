@@ -3,9 +3,9 @@ node_modules/
 package-lock.json
 
 # Deno compiled binaries
-piosk
-piosk.exe
-piosk-*
+xiosk
+xiosk.exe
+xiosk-*
 
 # Test files
 test.sh
