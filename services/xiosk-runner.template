@@ -1,11 +1,11 @@
 [Unit]
-Description=Launch PiOSK runner to start Chromium
+Description=Launch XiOSK runner to start Chromium
 After=network.target
 
 [Service]
 Type=simple
 ExecStartPre=/usr/bin/sleep 10
-ExecStart=/opt/piosk/scripts/runtime/runner.sh
+ExecStart=/opt/xiosk/scripts/runtime/runner.sh
 User=PI_USER
 WorkingDirectory=PI_HOME
 Environment=DISPLAY=:0
