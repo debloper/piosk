@@ -6,11 +6,11 @@ source "$SCRIPT_DIR/common.sh"
 
 msg "$INFO" "Starting configuration backup..."
 
-readonly backup_dir="/opt/piosk-backups"
-readonly latest_file="$backup_dir/piosk-latest.config"
+readonly backup_dir="/opt/xiosk-backups"
+readonly latest_file="$backup_dir/xiosk-latest.config"
 
-if [ ! -f "$PIOSK_CONFIG_FILE" ]; then
-    msg "$WARNING" "Configuration file not found at '$PIOSK_CONFIG_FILE'. Nothing to back up."
+if [ ! -f "$XIOSK_CONFIG_FILE" ]; then
+    msg "$WARNING" "Configuration file not found at '$XIOSK_CONFIG_FILE'. Nothing to back up."
     exit 0
 fi
 
@@ -22,7 +22,7 @@ if [ -f "$latest_file" ]; then
     mv "$latest_file" "$backup_dir/$archived_filename"
 fi
 
-cp "$PIOSK_CONFIG_FILE" "$latest_file"
+cp "$XIOSK_CONFIG_FILE" "$latest_file"
 msg "$SUCCESS" "Backup successful! Latest config saved to: $latest_file"
 
 msg "$DEBUG" "Applying retention policy (keeping last 5)..."
