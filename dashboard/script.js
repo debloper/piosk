@@ -1,10 +1,10 @@
-let piosk = {
+let xiosk = {
   addNewUrl() {
     let newUrl = $('#new-url').val();
     if (!newUrl) return;
 
     // Call appendUrl with just the URL, so it uses default settings (10s, 10 cycles)
-    piosk.appendUrl(newUrl); 
+    xiosk.appendUrl(newUrl); 
     $('#new-url').val('');
   },
 
@@ -30,7 +30,7 @@ let piosk = {
     if (data && data.urls) {
       $.each(data.urls, (index, item) => {
         // Pass all the data (url, duration, cycles) to the updated function
-        piosk.appendUrl(item.url, item.duration, item.cycles);
+        xiosk.appendUrl(item.url, item.duration, item.cycles);
       });
     }
   },
@@ -68,7 +68,7 @@ let piosk = {
   checkStatus() {
     $.getJSON('/services/status')
       .done((data) => {
-        piosk.updatePowerBtn(data.running);
+        xiosk.updatePowerBtn(data.running);
       })
       .fail(() => {
         if (!$('#toggle-kiosk').prop('disabled')) {
@@ -93,14 +93,14 @@ let piosk = {
 
 $(document).ready(() => {
   $.getJSON('/config')
-    .done(piosk.renderPage)
-    .fail(piosk.showStatus);
+    .done(xiosk.renderPage)
+    .fail(xiosk.showStatus);
 
-  piosk.checkStatus();
-  setInterval(piosk.checkStatus, 5000);
+  xiosk.checkStatus();
+  setInterval(xiosk.checkStatus, 5000);
 
-  $('#add-url').on('click', piosk.addNewUrl);
-  $('#new-url').on('keyup', (e) => { if (e.key === 'Enter') piosk.addNewUrl(); });
+  $('#add-url').on('click', xiosk.addNewUrl);
+  $('#new-url').on('keyup', (e) => { if (e.key === 'Enter') xiosk.addNewUrl(); });
 
   $('#urls').on('click', 'button.btn-close', (e) => {
     $(e.target).closest('li.list-group-item').remove();
@@ -109,7 +109,7 @@ $(document).ready(() => {
   // MODIFIED: The #execute handler now saves all settings correctly
   $('#execute').on('click', function(e) {
     const $btn = $(this);
-    piosk.toggleLoading($btn, true, "Applying...");
+    xiosk.toggleLoading($btn, true, "Applying...");
 
     let config = {};
     config.urls = [];
@@ -132,11 +132,11 @@ $(document).ready(() => {
       data: JSON.stringify(config),
       contentType: "application/json; charset=utf-8",
       success: (data) => {
-        piosk.showStatus({ status: 200, responseText: data });
+        xiosk.showStatus({ status: 200, responseText: data });
       },
-      error: piosk.showStatus,
+      error: xiosk.showStatus,
       complete: () => {
-          piosk.toggleLoading($btn, false);
+          xiosk.toggleLoading($btn, false);
       }
     });
   });
@@ -148,17 +148,17 @@ $(document).ready(() => {
     if(action === 'stop' && !confirm("Stop the Kiosk display?")) return;
 
     const loadText = action === 'start' ? "Starting..." : "Stopping...";
-    piosk.toggleLoading($btn, true, loadText);
+    xiosk.toggleLoading($btn, true, loadText);
 
     $.ajax({
       url: '/services/' + action, 
       type: 'POST',
       success: (data) => {
-          piosk.showStatus({ status: 200, responseText: data });
+          xiosk.showStatus({ status: 200, responseText: data });
       },
-      error: piosk.showStatus,
+      error: xiosk.showStatus,
       complete: () => {
-           setTimeout(() => { piosk.toggleLoading($btn, false); }, 500);
+           setTimeout(() => { xiosk.toggleLoading($btn, false); }, 500);
       }
     });
   });

@@ -17,11 +17,11 @@ async function writeConfig(configData: string): Promise<void> {
 }
 
 async function getServiceStatus(): Promise<boolean> {
-  if(Deno.env.get("PIOSK_TEST_MODE") === "true") return true;
+  if(Deno.env.get("XIOSK_TEST_MODE") === "true") return true;
 
   try {
     const command = new Deno.Command("systemctl", {
-      args: ["is-active", "piosk-runner.service"]
+      args: ["is-active", "xiosk-runner.service"]
     });
 
     const { code } = await command.output();
@@ -33,9 +33,9 @@ async function getServiceStatus(): Promise<boolean> {
 }
 
 async function invokeService(action: "start" | "stop" | "restart"): Promise<void> {
-  const services = ["piosk-runner.service", "piosk-switcher.service"];
+  const services = ["xiosk-runner.service", "xiosk-switcher.service"];
 
-  if (Deno.env.get("PIOSK_TEST_MODE") === "true") {
+  if (Deno.env.get("XIOSK_TEST_MODE") === "true") {
     console.log(`Test mode: Would ${action.toUpperCase()} services: ${services.join(", ")}`);
     return;
   }
@@ -168,7 +168,7 @@ async function handler(req: Request): Promise<Response> {
 }
 
 const port = parseInt(Deno.env.get("PORT") || "80");
-console.log(`PiOSK Deno server starting on port ${port}...`);
+console.log(`XiOSK Deno server starting on port ${port}...`);
 
 Deno.serve({ port }, handler);
 
