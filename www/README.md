@@ -1,2 +1,2 @@
-This folder contains the source code for the official PiOSK documentation and landing website.
+This folder contains the source code for the official XiOSK documentation and landing website.
 
