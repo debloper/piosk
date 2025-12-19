@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ensure the script runs from the correct directory, where config.json is located.
-cd /opt/piosk
+cd /opt/xiosk
 
 export XDG_RUNTIME_DIR=/run/user/1000
 
@@ -34,7 +34,7 @@ CURRENT_TAB_INDEX=0
 echo "Switcher waiting for browser to initialize..."
 sleep 15
 
-echo "PiOSK switcher started. Managing $URL_COUNT tabs."
+echo "XiOSK switcher started. Managing $URL_COUNT tabs."
 
 # --- Main Loop ---
 while true; do

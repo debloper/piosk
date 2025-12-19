@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# PiOSK Bootstrap Script (v5)
-# This script fetches the latest PiOSK package and dispatches to the correct internal script.
+# XiOSK Bootstrap Script (v5)
+# This script fetches the latest XiOSK package and dispatches to the correct internal script.
 # 
 # Usage:
-# curl -sSL https://code.debs.io/piosk/bootstrap.sh | sudo bash -s -- [command]
+# curl -sSL https://code.debs.io/xiosk/bootstrap.sh | sudo bash -s -- [command]
 
 # --- Configuration ---
-readonly PIOSK_REPO="debloper/piosk"
-readonly PIOSK_INSTALL_DIR="/opt/piosk"
-readonly PIOSK_TEMP_DIR="/opt/piosk.new"
+readonly XIOSK_REPO="debloper/xiosk"
+readonly XIOSK_INSTALL_DIR="/opt/xiosk"
+readonly XIOSK_TEMP_DIR="/opt/xiosk.new"
 
 # --- ANSI Color Codes & Helper ---
 RESET="\033[0m"
@@ -33,7 +33,7 @@ check_sudo() {
 }
 
 # --- Core Logic ---
-# Downloads and extracts the latest PiOSK release to a specified directory.
+# Downloads and extracts the latest XiOSK release to a specified directory.
 download_and_extract() {
     local target_dir="$1"
 
@@ -47,9 +47,9 @@ download_and_extract() {
       *) msg "$ERROR" "Unsupported architecture: $ARCH"; exit 1 ;;
     esac
     
-    local tarball_name="piosk-${PKG_ARCH}.tar.gz"
+    local tarball_name="xiosk-${PKG_ARCH}.tar.gz"
     
-    local download_url="https://github.com/$PIOSK_REPO/releases/latest/download/$tarball_name"
+    local download_url="https://github.com/$XIOSK_REPO/releases/latest/download/$tarball_name"
     local temp_tarball="/tmp/$tarball_name"
     
     msg "$INFO" "Downloading latest package for '$PKG_ARCH'..."
@@ -70,9 +70,9 @@ download_and_extract() {
 show_help() {
     echo "Usage: curl ... | sudo bash -s -- [command]"
     echo "Commands:"
-    echo "  --install   Install PiOSK."
+    echo "  --install   Install XiOSK."
     echo "  --update    Update an existing installation."
-    echo "  --cleanup   Uninstall PiOSK (requires local installation)."
+    echo "  --cleanup   Uninstall XiOSK (requires local installation)."
     echo "  --backup    Backup configuration (requires local installation)."
 }
 
@@ -89,30 +89,30 @@ shift || true # Shift arguments, ignore error if no args left
 
 case "$COMMAND" in
     --install)
-        download_and_extract "$PIOSK_INSTALL_DIR"
-        bash "$PIOSK_INSTALL_DIR/scripts/setup/install.sh" "$SUDO_USER" "$@"
+        download_and_extract "$XIOSK_INSTALL_DIR"
+        bash "$XIOSK_INSTALL_DIR/scripts/setup/install.sh" "$SUDO_USER" "$@"
         ;;
     --update)
-        if [ -f "$PIOSK_INSTALL_DIR/scripts/setup/backup.sh" ]; then
+        if [ -f "$XIOSK_INSTALL_DIR/scripts/setup/backup.sh" ]; then
             msg "$INFO" "Backing up existing configuration before updating..."
-            bash "$PIOSK_INSTALL_DIR/scripts/setup/backup.sh"
+            bash "$XIOSK_INSTALL_DIR/scripts/setup/backup.sh"
         fi
-        download_and_extract "$PIOSK_TEMP_DIR"
-        bash "$PIOSK_TEMP_DIR/scripts/setup/update.sh" "$SUDO_USER" "$@"
+        download_and_extract "$XIOSK_TEMP_DIR"
+        bash "$XIOSK_TEMP_DIR/scripts/setup/update.sh" "$SUDO_USER" "$@"
         ;;
     --cleanup)
-        if [ ! -f "$PIOSK_INSTALL_DIR/scripts/setup/cleanup.sh" ]; then
-            msg "$ERROR" "PiOSK is not installed. Cannot run cleanup."
+        if [ ! -f "$XIOSK_INSTALL_DIR/scripts/setup/cleanup.sh" ]; then
+            msg "$ERROR" "XiOSK is not installed. Cannot run cleanup."
             exit 1
         fi
-        bash "$PIOSK_INSTALL_DIR/scripts/setup/cleanup.sh" "$@"
+        bash "$XIOSK_INSTALL_DIR/scripts/setup/cleanup.sh" "$@"
         ;;
     --backup)
-        if [ ! -f "$PIOSK_INSTALL_DIR/scripts/setup/backup.sh" ]; then
-            msg "$ERROR" "PiOSK is not installed. Cannot run backup."
+        if [ ! -f "$XIOSK_INSTALL_DIR/scripts/setup/backup.sh" ]; then
+            msg "$ERROR" "XiOSK is not installed. Cannot run backup."
             exit 1
         fi
-        bash "$PIOSK_INSTALL_DIR/scripts/setup/backup.sh" "$@"
+        bash "$XIOSK_INSTALL_DIR/scripts/setup/backup.sh" "$@"
         ;;
     *)
         msg "$ERROR" "Invalid command: $COMMAND"

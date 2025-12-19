@@ -3,7 +3,7 @@
   "exports": "./index.ts",
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-write --allow-run --allow-env index.ts",
-    "compile": "deno compile --allow-net --allow-read --allow-write --allow-run --allow-env --output piosk index.ts"
+    "compile": "deno compile --allow-net --allow-read --allow-write --allow-run --allow-env --output xiosk index.ts"
   },
   "compilerOptions": {
     "strict": true,

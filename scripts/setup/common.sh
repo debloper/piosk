@@ -7,9 +7,9 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 fi
 
 # --- Configuration ---
-readonly PIOSK_INSTALL_DIR="/opt/piosk"
-readonly PIOSK_CONFIG_FILE="$PIOSK_INSTALL_DIR/config.json"
-readonly PIOSK_TEMP_DIR="/opt/piosk.new"
+readonly XIOSK_INSTALL_DIR="/opt/xiosk"
+readonly XIOSK_CONFIG_FILE="$XIOSK_INSTALL_DIR/config.json"
+readonly XIOSK_TEMP_DIR="/opt/xiosk.new"
 
 # --- ANSI Color Codes ---
 RESET='\033[0m'

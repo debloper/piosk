@@ -1,11 +1,11 @@
 [Unit]
-Description=Run PiOSK dashboard
+Description=Run XiOSK dashboard
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/opt/piosk/dashboard/piosk
-WorkingDirectory=/opt/piosk
+ExecStart=/opt/xiosk/dashboard/xiosk
+WorkingDirectory=/opt/xiosk
 User=root
 Restart=on-failure
 

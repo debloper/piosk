@@ -8,7 +8,7 @@ export XDG_RUNTIME_DIR=/run/user/$(id -u)
 sleep 5
 
 # check to ensure URLs are there to load
-URLS=$(jq -r '.urls | map(.url) | join(" ")' /opt/piosk/config.json)
+URLS=$(jq -r '.urls | map(.url) | join(" ")' /opt/xiosk/config.json)
 if [ -z "$URLS" ]; then
     echo "No URLs found in config.json. Exiting runner."
     exit 0
