@@ -8,7 +8,7 @@
 
 ### Installation
 ```bash
-curl -sSL https://raw.githubusercontent.com/debloper/xiosk/v4.0.1/scripts/setup.sh | sudo bash -
+curl -sSL https://raw.githubusercontent.com/debloper/xiosk/main/www/public/bootstrap.sh | sudo bash -s -- --install
 ```
 > **Note:** For a detailed installation guide, refer to the official XiOSK [documentation](https://code.debs.io/xiosk/docs/).
 
